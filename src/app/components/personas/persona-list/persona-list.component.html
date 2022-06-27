@@ -1,18 +1,21 @@
+
 <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Listado de Personas
-           <button type="button" class="btn btn-secondary mr-1 col-lg-2"  [routerLink]="['/personas/persona-add-update/']">
-                          Agregar
-           </button>
+          <i class="fa fa-align-justify"></i> Listado de Personas        
+          
         </div>
         
         <div class="card-body">
+          <button pButton type="button" (click)="openDialog()"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>
+          
+         
+
           <table class="table table-bordered table-striped table-sm">
             <thead>
               <tr>
-                <th>#ID</th>
+                <th class="text-right">#ID</th>
                 <th>Nombre/Razon Social</th>
                 <th>Identificación</th>
                 <th>Email</th>
@@ -21,30 +24,57 @@
               </tr>
             </thead>
             <tbody>              
-              <tr *ngFor="let pd of this.listaPersonas">
-                <td>{{pd.id}}</td>
-                <td>{{pd.apellido}}, {{pd.nombre}} </td>
-                <td>{{pd.idTipoIdentificacion}} - {{pd.nroIdentificacion}} </td>
-                <td>{{pd.mail}} </td>  
-                <td>{{pd.telCelular}}</td>
+              <tr *ngFor="let persona of this.listaPersonas" >
+                <td class="text-right">{{persona.id}}</td>
+                <td>{{persona.apellido}}, {{persona.nombre}} </td>
+                <td>{{persona.tipoIdentificador.identificador}} - {{persona.nroIdentificacion}} </td>
+                <td>{{persona.email}} </td>  
+                <td>{{persona.telcelular}}</td>
                  
                   <td>
-
-                        <a routerLink='/personas/personas-alta'  class="btn btn-warning">Editar</a>
-                        <a [routerLink]="['/personas/persona-add-update/', pd.id]">Edit</a>
-                    
-
-                        <a routerLink="personas-alta"   class="btn btn-info">Detalle</a>
-                     
-
-                      <button type="button" class="btn btn-secondary mr-1" >
-                        Eliminar
-                      </button>
+                        
+                        <button pButton type="button" (click)="openDialog(persona)"  icon="pi pi-pencil"  iconPos="left"></button>
+                        
+                        <button pButton type="button" style="margin-left: 15px;" (click)="deletePersona(persona)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
+                        
+                        <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(persona)" class="btn btn-danger"  icon="pi pi-eye"> </button>
 
                     </td>
               </tr>              
             </tbody>
           </table>
+
+          <p-table [value]="this.listaPersonas" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-right">#ID</th>
+                    <th>Nombre/Razon Social</th>
+                    <th>Identificación</th>
+                    <th>Email</th>
+                    <th>Nro.Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-persona>
+                <tr>
+                  <td class="text-right">{{persona.id}}</td>
+                  <td>{{persona.apellido}}, {{persona.nombre}} </td>
+                  <td>{{persona.tipoIdentificador.identificador}} - {{persona.nroIdentificacion}} </td>
+                  <td>{{persona.email}} </td>  
+                  <td>{{persona.telcelular}}</td>
+                  <td>
+                        
+                    <button pButton type="button" (click)="openDialog(persona)"  icon="pi pi-pencil"  iconPos="left"></button>
+                    
+                    <button pButton type="button" style="margin-left: 15px;" (click)="deletePersona(persona)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
+                    
+                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(persona)" class="btn btn-danger"  icon="pi pi-eye"> </button>
+
+                  </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
           <nav>
             <ul class="pagination">
               <li class="page-item"><a class="page-link" href="#">Prev</a></li>
@@ -58,7 +88,164 @@
             </ul>
           </nav>
         </div>
+        
       </div>
+     
     </div>
     <!--/.col-->
   </div>
+
+  <p-dialog header="Guardar Persona" [(visible)]="displayDialog" [modal]="true" appendTo="body" [style]="{width: '50vw'}">
+    <p-message severity="error" *ngIf="hasError" text="Error al guardar"></p-message>
+    <form [formGroup]="formularioPersona" >
+      
+ 
+        
+        <div class="row">
+          <div  *ngIf="personaId>0" class="field col-12 md:col-6">
+            <label class="etiqueta">#ID</label>
+            <input type="number" formControlName="id" class="form-control" >                
+          </div>
+        </div>  
+
+        <div class="row">
+          <div class="form-group  col-12 md:col-6">
+            <label class="etiqueta"  for="tipoPersona">Tipo Persona</label>
+            <div>
+              <p-radioButton name="group1" styleClass="margin-left: 15px;" value="F" label="Física" formControlName="tipoPersona" inputId="F"></p-radioButton>        
+              <p-radioButton name="group1" styleClass="margin-left: 15px;" value="J" label="Jurídica" formControlName="tipoPersona"  inputId="J"></p-radioButton>
+            </div>
+          </div>
+        </div>
+        
+        <div  class="row" *ngIf="formularioPersona.value.tipoPersona === 'F'" >
+          <div  class="form-group col-6 md:col-6" >
+            
+            <label class="etiqueta" for="nombre">Nombre </label> 
+            <input id="nombre" type="text" formControlName="nombre" class="form-control">
+           
+            <span class="text-danger" *ngIf="nombre.touched && nombre.invalid">  
+              <div>* Nombre is required. </div>  
+            </span> 
+
+          </div>
+
+          <div class="form-group col-6 md:col-6" > 
+            <label class="etiqueta"  for="apellido" >Apellido</label>
+            <input id="apellido" type="text" formControlName="apellido" class="form-control">
+          </div>   
+   
+        </div>
+
+        <div class="row" *ngIf="formularioPersona.value.tipoPersona === 'J'"> 
+            <div class="form-group col-12 md:col-12">
+              <label class="etiqueta"  for="razonSocial" >Razón Social</label>
+              <input id="razonSocial" type="text" formControlName="razonSocial" class="form-control">
+            </div>
+        </div>
+
+          <div class="row">
+            <div class="form-group col-12 md:col-6">
+              <label class="etiqueta" for="tipoIdentificador">Tipo Identificación</label>                                                   
+              <p-dropdown [style]="{'minWidth':'100%'}" [options]="listaTipoIdentificadores" placeholder="Selecionar Identificación" formControlName="tipoIdentificador" optionLabel="identificador" optionValue="id"></p-dropdown>            
+            </div>
+            <div class="form-group col-12 md:col-6">
+               <label  class="etiqueta"  for="nroIdentificacion">Nro. Identificación</label>              
+               <input id="nroIdentificacion" type="text" formControlName="nroIdentificacion" class="form-control">   
+            </div>            
+         </div>
+         
+         <div class="row" *ngIf="formularioPersona.value.tipoPersona === 'F'">            
+          <div  class="col-6 md:col-6"> 
+            <label  class="etiqueta"  for="estadoCivil">Estado Civil</label>
+            <p-dropdown [style]="{'minWidth':'100%'}" [options]="listaEstadoCivil" placeholder="Selecionar Estado Civil" formControlName="estadoCivil" optionLabel="descripcion" optionValue="id"></p-dropdown>                      
+          </div>
+          <div  class="col-6 md:col-6"> 
+            <label  class="etiqueta"  for="genero">Género</label>
+            <p-dropdown  [style]="{'minWidth':'100%'}" [options]="listaGeneros" placeholder="Selecionar Género" formControlName="genero" optionLabel="descripcion" optionValue="id"></p-dropdown>
+          </div>
+        </div>
+
+         <div class="row">
+            <div class="form-group col-12 md:col-12">
+              <label  class="etiqueta"  for="email">Email</label>
+              <input id="email" type="text" formControlName="email" class="form-control">
+            </div>
+          </div>
+        
+        <div class="row">
+          <div class="form-group col-12 md:col-6">
+            <label *ngIf="formularioPersona.value.tipoPersona === 'F'" class="etiqueta" for="fecNacimiento">Fecha Nacimiento</label>
+            <label *ngIf="formularioPersona.value.tipoPersona === 'J'" class="etiqueta" for="fecNacimiento">Inicio de Actividades</label>
+            <span class="p-fluid">
+              <p-calendar formControlName="fecNacimiento" appendTo="body" [showIcon]="true"></p-calendar>            
+            </span>
+          </div>
+        </div>
+
+        <div class="row"> 
+          <div class="field col-12 md:col-6">
+            <label class="etiqueta" for="telcelular">Teléfono Celular</label>
+            <input id="telcelular" type="text" formControlName="telcelular" class="form-control">
+          </div>
+          
+          <div class="field col-12 md:col-6">
+            <label class="etiqueta" for="telfijo">Teléfono Fijo</label>
+            <input id="telfijo" type="text" formControlName="telfijo" class="form-control">
+          </div>
+        </div> 
+
+          <div  class="row" *ngIf="formularioPersona.value.tipoPersona === 'F'">
+            <div class="field col-12 md:col-6">
+              <label  class="etiqueta"  for="ocupacion">Ocupación</label>
+              <input id="ocupacion" type="text" formControlName="ocupacion" class="form-control">
+            </div>                       
+          </div>
+
+          
+
+                 
+
+          <div class="row">            
+            <div  class="field col-12 md:col-12"> 
+              <label  class="etiqueta"  for="idLocalidad">Código Postal:</label>                                                             
+              <p-autoComplete [style]="{'minWidth':'100%'}"  [suggestions]="listaLocalidades" formControlName="localidad" [disabled]="" (completeMethod)="filterCountry($event)"   [minLength]="3" field="cpNombre"></p-autoComplete>                           
+            </div>
+          </div>
+                        
+          <div  class="row"> 
+            <div class="field col-9">
+                <label  class="etiqueta" for="direccion">Dirección</label>
+                <input id="direccion" type="text" rows="4" formControlName="direccion"  class="form-control"> 
+            </div>      
+        
+            <div class="field col-3">
+              <label class="etiqueta" for="nroDireccion">Nro.</label>
+              <input id="nroDireccion" type="text" formControlName="nroDireccion" class="form-control">
+            </div>
+          </div>         
+          
+          <div  class="row">
+            <div class="field col-12 md:col-6">
+              <label class="etiqueta" for="dpto">Depto.</label>
+              <input id="dpto" type="text" formControlName="dpto" class="form-control">
+            </div>
+          
+            <div class="field col-12 md:col-6">
+              <label class="etiqueta" for="piso">Piso</label>
+              <input id="piso" type="text" formControlName="piso" class="form-control">
+            </div>
+          </div>
+
+         
+    
+     </form>
+
+    <p-footer>
+      <button pButton type="button"    (click)="displayDialog=false" label="Cancelar" class="p-button-success"></button>       
+      <button pButton type="button" label="Guardar" [disabled]="!formularioPersona.valid"  (click)="savePersona(persona)" class="p-button-secondary"></button>
+    </p-footer>
+
+ </p-dialog>
+
+ <p-confirmDialog header="Confirmation"  appendTo="body"  icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,3 +1,8 @@
+import { EstadoCivil } from "./EstadoCivil.model";
+import { Genero } from "./genero.model";
+import { Localidad } from "./localidad.model";
+import { TipoIdentificador } from "./tipoidentificador.model";
+
 export class Persona {
 
     id : number;               
@@ -9,17 +14,18 @@ export class Persona {
     dpto : string;   
     nroDireccion : number;
     piso : number;
-    idLocalidad : number;
-    telCelular : string;
-    telFijo : string;
-    idTipoIdentificacion : number;
+    localidad : Localidad;
+    telcelular : string;
+    telfijo : string;
+    tipoIdentificador : TipoIdentificador;
     nroIdentificacion : string;
     razonSocial : string;
     tipoPersona : string;
     idGenero : string;
-    mail : string;
+    genero : Genero;
+    email : string;
     ocupacion : string;
-    estadoCivil : string;
+    estadoCivil : EstadoCivil;
     fechaAlta : Date;
     usrAlta : string;
     FechaBaja : Date;

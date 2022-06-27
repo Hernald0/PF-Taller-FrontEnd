@@ -11,6 +11,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { MessageModule } from 'primeng/message';
     ConfirmDialogModule,
     DialogModule,
     ToastModule,
-    MessageModule
+    MessageModule,
+    ProgressSpinnerModule
   ],
   exports: [
     TableModule,

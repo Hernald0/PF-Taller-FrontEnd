@@ -16,16 +16,15 @@ endPoint: string = environment.baseUrl+"/persona";
 formData:Persona = new Persona();
 //listaPersonas: Persona[];
 
-postPersona() {
-  console.log('llega al servicio');
-  console.log( this.formData);
-  return this.http.post(this.endPoint, this.formData)
+postPersona(payload: Persona) {
+  console.log('Persona Agregar:');
+  console.log(payload);
+   
+  return this.http.post<Persona>(this.endPoint, payload)
 }
 
-putPersona(/*pPersona: Persona*/) {
-  //return this.http.put(this.baseUrl, pPersona)
-  console.log( this.formData);
-  return this.http.put(`${(this.endPoint)}/${this.formData.id}`, this.formData)
+putPersona(persona: Persona) {  
+  return this.http.put<Persona>(this.endPoint, persona)
 }
 
 getPersonas(){
@@ -49,7 +48,6 @@ deletePersona(id: number){
   return this.http.delete(`${this.endPoint}/${id}`);
 }
 
- 
 
 errorHandler(error: Response) {  
   console.log(error);  
