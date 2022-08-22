@@ -44,8 +44,11 @@ import { MatListModule } from '@angular/material/list';
 
 //-----------------------------
 import {PersonasModule} from './components/personas/personas.module';
+
 import { AppPrimeNgModule } from './app.primeng.module';
 import {ConfirmationService, MessageService} from 'primeng/api';
+
+import { ComponentsModule } from './components/components.module';
 //-----------------------------
 
 const firebaseConfig = {
@@ -96,7 +99,8 @@ export function configFactory(provider: DdrConfigurationService) {
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    PersonasModule,
+    PersonasModule, 
+    ComponentsModule, 
     AppPrimeNgModule
   ],
   providers: [

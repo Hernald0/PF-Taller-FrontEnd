@@ -6,6 +6,15 @@ import { EventsComponent } from './components/content/events/events.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PersonaListComponent } from './components/personas/persona-list/persona-list.component';
+import { AseguradoraComponent } from './components/aseguradora/aseguradora.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { EmpleadosComponent } from './components/empleados/empleados.component';
+import { ServiciosComponent } from './components/servicios/servicios.component';
+import { ClientesComponent } from './components/clientes/clientes.component';
+import { VehiculosComponent } from './components/vehiculos/vehiculos.component';
+import { TalleresComponent } from './components/talleres/talleres.component';
+import { MarcasComponent } from './components/marcamodelo/marcas/marcas.component';
+import { ModelosComponent } from './components/marcamodelo/modelos/modelos.component';
 
 const routes: Routes = [
   { path: 'events', component: EventsComponent },
@@ -14,6 +23,15 @@ const routes: Routes = [
   { path: 'manage-events', component: ManageEventsComponent, canActivate: [LoginGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'personas', component: PersonaListComponent },
+  { path: 'aseguradoras', component: AseguradoraComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'empleados', component: EmpleadosComponent },
+  { path: 'servicios', component: ServiciosComponent },
+  { path: 'clientes', component: ClientesComponent },
+  { path: 'vehiculos', component: VehiculosComponent },
+  { path: 'talleres', component: TalleresComponent },
+  { path: 'marcas', component: MarcasComponent },
+  { path: 'modelos', component: ModelosComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'events' }
 ];
 

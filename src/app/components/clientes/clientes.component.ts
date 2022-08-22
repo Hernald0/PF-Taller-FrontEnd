@@ -6,32 +6,32 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { EstadoCivil } from 'src/app/models/EstadoCivil.model';
 import { Genero } from 'src/app/models/genero.model';
 import { Localidad } from 'src/app/models/localidad.model';
-import { Persona } from 'src/app/models/persona.model';
+import { Cliente } from 'src/app/models/cliente.model';
 import { Provincia } from 'src/app/models/provincia.model';
 import { TipoIdentificador } from 'src/app/models/tipoidentificador.model';
 //----------------------
 import { EstadoCivilService } from 'src/app/services/estadocivil.service';
 import { GenerosService } from 'src/app/services/generos.service';
 import { LocalidadService } from 'src/app/services/localidad.service';
-import { PersonasService } from 'src/app/services/personas.service';
+import { ClientesService } from 'src/app/services/clientes.service';
 import { TipoIdentificadorService } from 'src/app/services/tipo-identificador.service';
 
 @Component({
-  selector: 'app-persona-list',
-  templateUrl: './persona-list.component.html',
-  styleUrls: ['./persona-list.component.css']
+  selector: 'app-clientes',
+  templateUrl: './clientes.component.html',
+  styles: []
 })
-export class PersonaListComponent implements OnInit {
+export class ClientesComponent implements OnInit {
 
-  listaPersonas: Persona[];
+  listaClientes: Cliente[];
   listaGeneros: Genero[];
   //listaProvincias: Provincia[];
   listaLocalidades: Localidad[];
   listaTipoIdentificadores: TipoIdentificador[];
   listaEstadoCivil: EstadoCivil[];
   displayDialog: boolean = false;
-  formularioPersona: FormGroup;
-  personaId: number;
+  formularioCliente: FormGroup;
+  clienteId: number;
   hasError: boolean;  
   contador: number;
   editable:boolean;
@@ -40,7 +40,7 @@ export class PersonaListComponent implements OnInit {
   
  
 
-  constructor(public service:PersonasService,
+  constructor(public service:ClientesService,
               public serviceGenero:GenerosService,
               public serviceTipoIdentificador:TipoIdentificadorService,
               public serviceEstadoCivil: EstadoCivilService,
@@ -54,7 +54,7 @@ export class PersonaListComponent implements OnInit {
     this.getListadoLlenarGrilla();
      
                                                 
-    this.formularioPersona = this.formBuilder.group({
+    this.formularioCliente = this.formBuilder.group({
                                                    id:  new FormControl(0),
                                                    nombre: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    apellido:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
@@ -70,7 +70,7 @@ export class PersonaListComponent implements OnInit {
                                                    tipoIdentificador : new FormControl(null),
                                                    nroIdentificacion :  new FormControl(null),
                                                    razonSocial : new FormControl(null),
-                                                   tipoPersona :  new FormControl('F'),                                              
+                                                   tipoCliente :  new FormControl('F'),                                              
                                                    email : new FormControl(null, Validators.compose([Validators.email])),
                                                    ocupacion :new FormControl(null),
                                                    estadoCivil :new FormControl(null)
@@ -78,26 +78,26 @@ export class PersonaListComponent implements OnInit {
     
   }
 
-  openDialog(persona? : Persona, 
+  openDialog(cliente? : Cliente, 
              accion? : string ):void{
     
       this.displayDialog = true;
       this.hasError = false;
-      this.personaId = persona ? persona.id : null;
+      this.clienteId = cliente ? cliente.id : null;
       this.accion = accion;
       
       switch(accion) {
         case "nuevo": 
-            this.tituloHeader = "Nueva Persona";
-            this.formularioPersona.enable();
+            this.tituloHeader = "Nueva Cliente";
+            this.formularioCliente.enable();
             break;
         case "consulta": 
-            this.tituloHeader = "Consulta Persona"
-            this.formularioPersona.disable();
+            this.tituloHeader = "Consulta Cliente"
+            this.formularioCliente.disable();
             break;
         case "edicion": 
-            this.tituloHeader = "Editar Persona";
-            this.formularioPersona.enable();
+            this.tituloHeader = "Editar Cliente";
+            this.formularioCliente.enable();
             break;
         default:
             this.tituloHeader = ""
@@ -105,38 +105,38 @@ export class PersonaListComponent implements OnInit {
       }
 
 
-      this.formularioPersona.controls["id"].setValue( persona ? persona.id : 0 );
-      this.formularioPersona.controls["nombre"].setValue( persona ? persona.nombre : null );
-      this.formularioPersona.controls["apellido"].setValue( persona ? persona.apellido : null );
-      this.formularioPersona.controls["direccion"].setValue( persona ? persona.direccion : null );
-      this.formularioPersona.controls["nroDireccion"].setValue( persona ? persona.nroDireccion : null );      
-      this.formularioPersona.controls["genero"].setValue( persona ? persona.genero : null );
-      this.formularioPersona.controls["localidad"].setValue( persona ? persona.localidad : null );      
-      this.formularioPersona.controls["fecNacimiento"].setValue( persona ? new Date(persona.fecNacimiento)  : null );                                                                                     
-      this.formularioPersona.controls["dpto"].setValue( persona ? persona.dpto : null );                                              
-      this.formularioPersona.controls["piso"].setValue( persona ? persona.piso : null );                                          
-      this.formularioPersona.controls["telcelular"].setValue( persona ? persona.telcelular : null );
-      this.formularioPersona.controls["telfijo"].setValue( persona ? persona.telfijo : null );
-      this.formularioPersona.controls["tipoIdentificador"].setValue( persona ? persona.tipoIdentificador : null );
-      this.formularioPersona.controls["nroIdentificacion"].setValue( persona ? persona.nroIdentificacion : null );
-      this.formularioPersona.controls["razonSocial"].setValue( persona ? persona.razonSocial : null );
-      this.formularioPersona.controls["tipoPersona"].setValue( persona ? persona.tipoPersona : "F" );                                              
-      this.formularioPersona.controls["email"].setValue( persona ? persona.email : null );
-      this.formularioPersona.controls["ocupacion"].setValue( persona ? persona.ocupacion : null );
-      this.formularioPersona.controls["estadoCivil"].setValue( persona ? persona.estadoCivil : null );
+      this.formularioCliente.controls["id"].setValue( cliente ? cliente.id : 0 );
+      this.formularioCliente.controls["nombre"].setValue( cliente ? cliente.persona.nombre : null );
+      this.formularioCliente.controls["apellido"].setValue( cliente ? cliente.persona.apellido : null );
+      this.formularioCliente.controls["direccion"].setValue( cliente ? cliente.persona.direccion : null );
+      this.formularioCliente.controls["nroDireccion"].setValue( cliente ? cliente.persona.nroDireccion : null );      
+      this.formularioCliente.controls["genero"].setValue( cliente ? cliente.persona.genero : null );
+      this.formularioCliente.controls["localidad"].setValue( cliente ? cliente.persona.localidad : null );      
+      this.formularioCliente.controls["fecNacimiento"].setValue( cliente ? new Date(cliente.persona.fecNacimiento)  : null );                                                                                     
+      this.formularioCliente.controls["dpto"].setValue( cliente ? cliente.persona.dpto : null );                                              
+      this.formularioCliente.controls["piso"].setValue( cliente ? cliente.persona.piso : null );                                          
+      this.formularioCliente.controls["telcelular"].setValue( cliente ? cliente.persona.telcelular : null );
+      this.formularioCliente.controls["telfijo"].setValue( cliente ? cliente.persona.telfijo : null );
+      this.formularioCliente.controls["tipoIdentificador"].setValue( cliente ? cliente.persona.tipoIdentificador : null );
+      this.formularioCliente.controls["nroIdentificacion"].setValue( cliente ? cliente.persona.nroIdentificacion : null );
+      this.formularioCliente.controls["razonSocial"].setValue( cliente ? cliente.persona.razonSocial : null );
+      this.formularioCliente.controls["tipoCliente"].setValue( cliente ? cliente.persona.tipoPersona : "F" );                                              
+      this.formularioCliente.controls["email"].setValue( cliente ? cliente.persona.email : null );
+      this.formularioCliente.controls["ocupacion"].setValue( cliente ? cliente.persona.ocupacion : null );
+      this.formularioCliente.controls["estadoCivil"].setValue( cliente ? cliente.persona.estadoCivil : null );
    
 
   };
 
-  deletePersona(persona  : Persona):void{
+  deleteCliente(cliente  : Cliente):void{
     this.confirmationService.confirm({
-      message: 'Desea eliminar a "Id: '+ persona.id + ' - ' + persona.apellido + ', '+ persona.nombre + '"?',
+      message: 'Desea eliminar a "Id: '+ cliente.id + ' - ' + cliente.persona.apellido + ', '+ cliente.persona.nombre + '"?',
       accept: () => {
-          this.service.deletePersona(persona.id).subscribe(
+          this.service.deleteCliente(cliente.id).subscribe(
             
             () => {
-              this.listaPersonas = this.listaPersonas.filter(x => x.id != persona.id);
-              this.messageService.add({severity:'success', detail:'Se eliminó correctamente la Persona "Id: '+ persona.id + ' - ' + persona.apellido + ', '+ persona.nombre + '" eliminada.'});
+              this.listaClientes = this.listaClientes.filter(x => x.id != cliente.id);
+              this.messageService.add({severity:'success', detail:'Se eliminó correctamente la Cliente "Id: '+ cliente.id + ' - ' + cliente.persona.apellido + ', '+ cliente.persona.nombre + '" eliminada.'});
             }
             
           );
@@ -146,10 +146,10 @@ export class PersonaListComponent implements OnInit {
 
    getListadoLlenarGrilla(): void {
    
-    this.service.getPersonas().subscribe(res => {     
-     // console.log('recupera todas las personas');
+    this.service.getClientes().subscribe(res => {     
+     // console.log('recupera todas las clientes');
      // console.log(res); 
-      this.listaPersonas = res as Persona[];       
+      this.listaClientes = res as Cliente[];       
       
      }); 
 
@@ -175,25 +175,25 @@ export class PersonaListComponent implements OnInit {
   }
 
   get nombre() {
-    return this.formularioPersona.get('nombre');
+    return this.formularioCliente.get('nombre');
   }
 
-  savePersona(persona  : Persona):void{
-    //console.log(this.personaId);
+  saveCliente(cliente  : Cliente):void{
+    //console.log(this.clienteId);
     
 
-    let payload: Persona = {
-      ...this.formularioPersona.value
+    let payload: Cliente = {
+      ...this.formularioCliente.value
     };
 
-    console.log('savePersona Payload: ');
+    console.log('saveCliente Payload: ');
     console.log(payload);
     
-    if(!this.personaId){
+    if(!this.clienteId){
                            
-       this.service.postPersona(payload).subscribe(
+       this.service.postCliente(payload).subscribe(
         res => { 
-                  this.messageService.add({severity:'success', detail:'Se agregó correctamente la Persona "'+payload.nombre+'" agregado'});
+                  this.messageService.add({severity:'success', detail:'Se agregó correctamente la Cliente "'+payload.persona.nombre+'" agregado'});
                   console.log('Respuesta POST: ' + res);
                 }, 
                 err => { console.log( err);
@@ -205,9 +205,9 @@ export class PersonaListComponent implements OnInit {
 
     }else{
       console.log(payload);
-      this.service.putPersona(payload).subscribe(
+      this.service.putCliente(payload).subscribe(
         res => { 
-                  this.messageService.add({severity:'success', detail:'Se actualizó correctamente la Persona "'+payload.nombre+'" agregado'});
+                  this.messageService.add({severity:'success', detail:'Se actualizó correctamente la Cliente "'+payload.persona.nombre+'" agregado'});
                   
                 }, 
                 err => { console.log( 'Error en actualización: '); 
@@ -242,13 +242,13 @@ export class PersonaListComponent implements OnInit {
 
  }
 /*
-    this.service.putPersona(payload).subscribe( res => {
+    this.service.putCliente(payload).subscribe( res => {
       
-      let index = this.listaPersonas.findIndex( x => x.id = payload.id);
+      let index = this.listaClientes.findIndex( x => x.id = payload.id);
       
       if( index >= 0 ){
         
-        this.listaPersonas[index] = res;
+        this.listaClientes[index] = res;
         
       }
 */

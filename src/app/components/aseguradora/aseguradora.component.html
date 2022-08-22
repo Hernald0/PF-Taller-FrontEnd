@@ -1,0 +1,101 @@
+
+<div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Aseguradoras        
+          
+        </div>
+        
+        <div class="card-body">
+          <button pButton type="button" (click)="openDialog()"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>                            
+
+          <p-table [value]="listaAseguradoras" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-right">#ID</th>
+                    <th>Nombre</th> 
+                    <th>Fecha Alta</th> 
+                    <th>Usuario Alta</th> 
+                    <th>Fecha Baja</th>       
+                    <th>Usuario Baja</th>              
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-aseguradora>
+                <tr>
+                  <td class="text-right">{{aseguradora.id}}</td>
+                  <td>{{aseguradora.nombre}} </td>     
+                  <td>{{aseguradora.fechaAlta}} </td>  
+                  <td>{{aseguradora.usuarioAlta}} </td>  
+                  <td>{{aseguradora.fechaBaja}} </td>  
+                  <td>{{aseguradora.usuarioBaja}} </td>      
+                  <td>
+                        
+                    <button pButton type="button" (click)="openDialog(aseguradora, false)"  icon="pi pi-pencil"  iconPos="left"></button>
+                    
+                    <button pButton type="button" style="margin-left: 15px;" (click)="deleteAseguradora(aseguradora)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
+                    
+                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(aseguradora, true)" class="p-button-success"  icon="pi pi-eye"> </button>
+                    
+                  </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+          <nav>
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+        
+      </div>
+     
+    </div>
+    <!--/.col-->
+  </div>
+
+  <p-dialog header="Guardar Aseguradora" [(visible)]="displayDialog" [modal]="true" appendTo="body" [style]="{width: '50vw'}">
+    <p-message severity="error" *ngIf="hasError" text="Error al guardar"></p-message>
+    
+    <form [formGroup]="formularioAseguradora" >
+        
+        <div class="row">
+          <div  *ngIf="aseguradoraId>0" class="field col-12 md:col-6" >
+            <label class="etiqueta">#ID</label>
+            <input  [readonly]="true" type="number" formControlName="id" class="form-control" >                
+          </div>
+        </div>  
+        
+     
+          <div  class="row form-group col-6 md:col-6" >
+            
+            <label class="etiqueta" for="nombre">Nombre </label> 
+            <input [readonly]="editable" id="nombre" type="text" formControlName="nombre" class="form-control">
+           
+            <span class="text-danger" *ngIf="nombre.touched && nombre.invalid">  
+              <div>* Nombre es requiredo. </div>  
+            </span> 
+
+          </div>
+
+   
+  
+     </form>
+
+    <p-footer>
+      <button pButton type="button"    (click)="displayDialog=false" label="Cancelar" class="p-button-success"></button>       
+      <button pButton type="button" label="Guardar" [disabled]="!formularioAseguradora.valid"  (click)="saveAseguradora(aseguradora)" class="p-button-secondary"></button>
+    </p-footer>
+
+ </p-dialog>
+
+ <p-confirmDialog header="Confirmation"  appendTo="body"  icon="pi pi-exclamation-triangle"></p-confirmDialog>
