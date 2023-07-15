@@ -16,21 +16,24 @@ export class EstadoCivilService {
   //listaEstadoCivils: EstadoCivil[];
 
   postEstadoCivil(payload: EstadoCivil) {
-    console.log('llega al servicio');
+    console.log('hace post');
     
     return this.http.post<EstadoCivil>(this.endPoint, payload)
   }
 
-  putEstadoCivil(EstadoCivil: EstadoCivil) {  
-    return this.http.put<EstadoCivil>(this.endPoint, EstadoCivil)
+  putEstadoCivil(payload: EstadoCivil) {  
+    console.log('hace put');
+    return this.http.put<EstadoCivil>(this.endPoint, payload)
   }
 
   getEstadoCivils(){
+    console.log('recupera todos');
     return this.http.get<EstadoCivil[]>(this.endPoint);
             
   }
 
   getEstadoCivil(id: number):Observable<EstadoCivil>{
+    console.log('recupera uno');
     /*return this.http.get(`${this.baseUrl}/${id}`)
             .toPromise()
             .then(res => this.formData = res as EstadoCivil);*/

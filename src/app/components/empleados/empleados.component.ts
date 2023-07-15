@@ -14,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
   import { GenerosService } from 'src/app/services/generos.service';
   import { LocalidadService } from 'src/app/services/localidad.service';
   import { TallerService } from 'src/app/services/taller.service';
-  import { TipoIdentificadorService } from 'src/app/services/tipo-identificador.service';
+  import { TipoIdentificadorService } from 'src/app/services/tipoidentificador.service';
 
 @Component({
   selector: 'app-empleados',

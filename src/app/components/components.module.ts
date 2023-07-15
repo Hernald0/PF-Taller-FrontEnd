@@ -15,6 +15,9 @@ import { VehiculosComponent } from './vehiculos/vehiculos.component';
 import { TalleresComponent } from './talleres/talleres.component';
 import { ServiciosComponent } from './servicios/servicios.component';
 import { MarcamodeloModule } from './marcamodelo/marcamodelo.module';
+import { EstadocivilComponent } from './estadocivil/estadocivil.component';
+import { GenerosComponent } from './generos/generos.component';
+import { TipoidentificadorComponent } from './tipoidentificador/tipoidentificador.component';
 
 
 
@@ -28,6 +31,9 @@ import { MarcamodeloModule } from './marcamodelo/marcamodelo.module';
     ClientesComponent,
     VehiculosComponent,
     TalleresComponent,
+    EstadocivilComponent,
+    GenerosComponent,
+    TipoidentificadorComponent,
   ],
   imports: [
     RouterModule,

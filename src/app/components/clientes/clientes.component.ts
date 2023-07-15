@@ -14,7 +14,7 @@ import { EstadoCivilService } from 'src/app/services/estadocivil.service';
 import { GenerosService } from 'src/app/services/generos.service';
 import { LocalidadService } from 'src/app/services/localidad.service';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { TipoIdentificadorService } from 'src/app/services/tipo-identificador.service';
+import { TipoIdentificadorService } from 'src/app/services/tipoidentificador.service';
 
 @Component({
   selector: 'app-clientes',
@@ -60,7 +60,7 @@ export class ClientesComponent implements OnInit {
                                                    apellido:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    direccion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    nroDireccion:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
-                                                   genero:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                   genero: new FormControl(null),// Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    localidad:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    fecNacimiento: new FormControl(null),                                                                                       
                                                    dpto : new FormControl(null),                                                  

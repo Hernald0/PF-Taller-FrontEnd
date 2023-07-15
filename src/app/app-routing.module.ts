@@ -15,6 +15,9 @@ import { VehiculosComponent } from './components/vehiculos/vehiculos.component';
 import { TalleresComponent } from './components/talleres/talleres.component';
 import { MarcasComponent } from './components/marcamodelo/marcas/marcas.component';
 import { ModelosComponent } from './components/marcamodelo/modelos/modelos.component';
+import { EstadocivilComponent } from './components/estadocivil/estadocivil.component';
+import { GenerosComponent } from './components/generos/generos.component';
+import { TipoidentificadorComponent } from './components/tipoidentificador/tipoidentificador.component';
 
 const routes: Routes = [
   { path: 'events', component: EventsComponent },
@@ -26,12 +29,15 @@ const routes: Routes = [
   { path: 'aseguradoras', component: AseguradoraComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'empleados', component: EmpleadosComponent },
+  { path: 'estadocivil', component: EstadocivilComponent },
   { path: 'servicios', component: ServiciosComponent },
   { path: 'clientes', component: ClientesComponent },
   { path: 'vehiculos', component: VehiculosComponent },
   { path: 'talleres', component: TalleresComponent },
   { path: 'marcas', component: MarcasComponent },
-  { path: 'modelos', component: ModelosComponent },
+  { path: 'modelos/:marcaId', component: ModelosComponent },
+  { path: 'generos', component: GenerosComponent },
+  { path: 'tipoidentificador', component: TipoidentificadorComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'events' }
 ];
 

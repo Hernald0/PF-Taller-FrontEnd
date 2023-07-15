@@ -38,10 +38,10 @@ export class MarcasComponent implements OnInit {
     
     
     this.serviceMarcas.getMarcas().subscribe(res => {     
-      // console.log('recupera todas las personas');
-      // console.log(res); 
-       this.listaMarcas = res as Marca[];       
-       
+      // console.log('recupera todas las marcas');
+      
+      this.listaMarcas = res as Marca[];       
+      console.log(this.listaMarcas);        
       }); 
  
 

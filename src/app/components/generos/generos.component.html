@@ -3,37 +3,42 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Listado de Marcas de Vehículos        
+          <i class="fa fa-align-justify"></i> Listado de Géneros     
           
         </div>
         
         <div class="card-body">
-          <button pButton type="button" (click)="openDialog(null, 'nuevo')"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>        
+          <button pButton type="button" (click)="openDialog(null, 'nuevo')"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>          
 
-
-          <p-table [value]="this.listaMarcas" responsiveLayout="scroll">
+          <p-table [value]="listaGenero" responsiveLayout="scroll">
             <ng-template pTemplate="header">
                 <tr>
                     <th class="text-right">#ID</th>
-                    <th>Nombre </th>            
-                    <th>Acciones</th>
+                    <th>Descripción</th>
+                    <th>Fecha Alta</th>
+                    <th>Usuario Alta</th>
+                    <th>Fecha Baja</th>
+                    <th>Usuario Baja</th>
+
+                    
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-marca>
+            <ng-template pTemplate="body" let-Genero>
                 <tr>
-                  <td class="text-right">{{marca.id}}</td>
-                  <td> {{marca.nombre}} </td>
-               
+                  <td class="text-right">{{Genero.id}}</td>
+                  <td>{{Genero.descripcion}}</td>
+                  <td>{{Genero.fechaAlta}}</td>
+                  <td>{{Genero.usuarioAlta}}</td>
+                  <td>{{Genero.fechaBaja}}</td>
+                  <td>{{Genero.usuarioBaja}}</td>
                   <td>
                         
-                    <button pButton type="button" (click)="openDialog(marca, 'edicion')"  icon="pi pi-pencil"  iconPos="left"></button>
+                    <button pButton type="button" (click)="openDialog(Genero, 'edicion')"  icon="pi pi-pencil"  iconPos="left"></button>
                     
-                    <button pButton type="button" style="margin-left: 15px;" (click)="deleteMarca(marca)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
+                    <button pButton type="button" style="margin-left: 15px;" (click)="deleteGenero(Genero)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
                     
-                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(marca, 'consulta')" class="btn btn-danger"  icon="pi pi-eye"> </button>
+                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(Genero, 'consulta')" class="btn btn-danger"  icon="pi pi-eye"> </button>
 
-                    <a   routerLink ="/modelos/{{marca.id}}" ><button class="btn btn-success pull-right" > ...</button></a>
-                    
                   </td>
                 </tr>
             </ng-template>
@@ -61,39 +66,36 @@
 
   <p-dialog header={{this.tituloHeader}} [(visible)]="displayDialog" [modal]="true" appendTo="body" [style]="{width: '50vw'}">
     <p-message severity="error" *ngIf="hasError" text="Error al guardar"></p-message>
-    <form [formGroup]="formularioMarcas" >
+    <form [formGroup]="formularioGenero" >
       
  
         
         <div class="row">
-          <div  *ngIf="marcaId>0" class="field col-12 md:col-6">
+          <div  *ngIf="GeneroId>0" class="field col-12 md:col-6">
             <label class="etiqueta">#ID</label>
             <input  [readonly]="true"  type="number" formControlName="id" class="form-control" >                
           </div>
         </div>  
-
-               
         
-        <div    class="form-group col-6 md:col-6" >
-          
-          <label class="etiqueta" for="nombre">Nombre </label> 
-          <input   id="nombre" type="text" formControlName="nombre" class="form-control">
-          
-          <span class="text-danger" *ngIf="nombre.touched && nombre.invalid">  
-            <div>* Nombre is required. </div>  
-          </span> 
+       
+          <div    class="form-group col-6 md:col-6" >
+            
+            <label class="etiqueta" for="descripcion">Descripción </label> 
+            <input   id="descripcion" type="text" formControlName="descripcion" class="form-control">
+           
+            <span class="text-danger" *ngIf="descripcion.touched && descripcion.invalid">  
+              <div>* Descripción es requiredo. </div>  
+            </span> 
 
-        </div>      
-   
-        
- 
+          </div>
+         
     
      </form>
 
     <p-footer>
       <div *ngIf="this.accion !== 'consulta'" >
       <button pButton type="button"    (click)="displayDialog=false" label="Cancelar" class="p-button-success"></button>       
-      <button pButton type="button" label="Guardar" [disabled]="!formularioMarcas.valid"  (click)="saveMarca(marca)" class="p-button-secondary"></button>
+      <button pButton type="button" label="Guardar" [disabled]="!formularioGenero.valid"  (click)="saveGenero(Genero)" class="p-button-secondary"></button>
       </div>
       <div *ngIf="this.accion === 'consulta'" >
         <button pButton type="button"    (click)="displayDialog=false" label="Volver" class="p-button-success"></button>  

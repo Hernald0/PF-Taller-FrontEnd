@@ -1,10 +1,10 @@
-import { Modelo } from "./modelo.model";
+import {Modelovehiculo } from "./modelovehiculo.model";
 
 export class Marca {
 
     id : number;               
     nombre : string;
-    Modelos? : Modelo[];    
+    modelovehiculos? : Modelovehiculo[];    
  
 
 }

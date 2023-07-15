@@ -7,33 +7,48 @@
           
         </div>
         
+       
+
         <div class="card-body">
-          <button pButton type="button" (click)="openDialog(null, 'nuevo')"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>
+          <div  class="row"   >
+            <div    class="form-group col-3 md:col-3" >
+              
+              <label class="etiqueta" for="idMarca">#ID </label> 
+              <input   id="idMarca" type="text"   class="form-control" value="{{marca?.id}}" readonly="true">
+             
+            </div>
+  
+            <div class="form-group col-6 md:col-6" > 
+              <label class="etiqueta"  for="nombreMarca" >Marca</label>
+              <input id="nombreMarca" type="text"   class="form-control" value="{{marca?.nombre}}" readonly="true">
+              
+            </div>   
+     
+          </div>
           
+          <button pButton type="button" (click)="openDialog(null, 'nuevo')"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>
 
-
-          <p-table [value]="this.listaModelos" responsiveLayout="scroll">
+          <p-table [value]="listaModelos" responsiveLayout="scroll">
             <ng-template pTemplate="header">
                 <tr>
-                    <th class="text-right">#ID</th>
+                    
+                    <th pSortableColumn="id" style="width:20%">#ID <p-sortIcon field="id"></p-sortIcon></th>
                     <th>Nombre </th>            
                     <th>Acciones</th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-marca>
+            <ng-template pTemplate="body" let-modelo>
                 <tr>
-                  <td class="text-right">{{marca.id}}</td>
-                  <td> {{marca.nombre}} </td>
+                  <td class="text-right">{{modelo.id}}</td>
+                  <td> {{modelo.nombre}} </td>
                
                   <td>
                         
-                    <button pButton type="button" (click)="openDialog(marca, 'edicion')"  icon="pi pi-pencil"  iconPos="left"></button>
+                    <button pButton type="button" (click)="openDialog(modelo, 'edicion')"  icon="pi pi-pencil"  iconPos="left"></button>
                     
-                    <button pButton type="button" style="margin-left: 15px;" (click)="deleteModelo(marca)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
+                    <button pButton type="button" style="margin-left: 15px;" (click)="deleteModelo(modelo)" icon="pi pi-trash" class="boton-rojo" iconPos="left"></button>
                     
-                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(marca, 'consulta')" class="btn btn-danger"  icon="pi pi-eye"> </button>
-
-                    <a  [routerLink]="['/modelos']"><button class="btn btn-success pull-right" > ...</button></a>
+                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(modelo, 'consulta')" class="btn btn-danger"  icon="pi pi-eye"> </button>                    
 
                   </td>
                 </tr>
@@ -64,37 +79,30 @@
     <p-message severity="error" *ngIf="hasError" text="Error al guardar"></p-message>
     <form [formGroup]="formularioModelos" >
       
- 
+      <div class="form-group col-6 md:col-6">
         
         <div class="row">
-          <div  *ngIf="marcaId>0" class="field col-12 md:col-6">
+          <div  *ngIf="id>0" class="field col-12 md:col-6">
             <label class="etiqueta">#ID</label>
             <input  [readonly]="true"  type="number" formControlName="id" class="form-control" >                
           </div>
-        </div>  
-
-               
+        </div>           
         
-        <div    class="form-group col-6 md:col-6" >
-          
           <label class="etiqueta" for="nombre">Nombre </label> 
           <input   id="nombre" type="text" formControlName="nombre" class="form-control">
           
           <span class="text-danger" *ngIf="nombre.touched && nombre.invalid">  
-            <div>* Nombre is required. </div>  
+            <div>* Nombre de Modelo es requiredo. </div>  
           </span> 
 
         </div>      
-   
-        
- 
     
      </form>
 
     <p-footer>
       <div *ngIf="this.accion !== 'consulta'" >
       <button pButton type="button"    (click)="displayDialog=false" label="Cancelar" class="p-button-success"></button>       
-      <button pButton type="button" label="Guardar" [disabled]="!formularioModelos.valid"  (click)="saveModelo(marca)" class="p-button-secondary"></button>
+      <button pButton type="button" label="Guardar" [disabled]="!formularioModelos.valid"  (click)="saveModelo(marca, modelo )" class="p-button-secondary"></button>
       </div>
       <div *ngIf="this.accion === 'consulta'" >
         <button pButton type="button"    (click)="displayDialog=false" label="Volver" class="p-button-success"></button>  

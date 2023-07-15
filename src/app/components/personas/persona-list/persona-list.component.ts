@@ -14,7 +14,7 @@ import { EstadoCivilService } from 'src/app/services/estadocivil.service';
 import { GenerosService } from 'src/app/services/generos.service';
 import { LocalidadService } from 'src/app/services/localidad.service';
 import { PersonasService } from 'src/app/services/personas.service';
-import { TipoIdentificadorService } from 'src/app/services/tipo-identificador.service';
+import { TipoIdentificadorService } from 'src/app/services/tipoidentificador.service';
 
 @Component({
   selector: 'app-persona-list',
@@ -56,7 +56,8 @@ export class PersonaListComponent implements OnInit {
                                                 
     this.formularioPersona = this.formBuilder.group({
                                                    id:  new FormControl(0),
-                                                   nombre: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                   nombre: new FormControl(null, Validators.compose([ Validators.minLength(3), Validators.maxLength(30)])),
+                                                   //nombre: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    apellido:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    direccion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                    nroDireccion:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
@@ -144,14 +145,18 @@ export class PersonaListComponent implements OnInit {
   });
   }
 
+  getPersonas():void {
+    this.service.getPersonas().subscribe(res => {     
+      // console.log('recupera todas las personas');
+      // console.log(res); 
+       this.listaPersonas = res as Persona[];       
+       
+      }); 
+  }
+
    getListadoLlenarGrilla(): void {
    
-    this.service.getPersonas().subscribe(res => {     
-     // console.log('recupera todas las personas');
-     // console.log(res); 
-      this.listaPersonas = res as Persona[];       
-      
-     }); 
+     this.getPersonas();
 
      this.serviceGenero.getGeneros().subscribe(res => {     
       this.listaGeneros = res as Genero[];            
@@ -195,6 +200,7 @@ export class PersonaListComponent implements OnInit {
         res => { 
                   this.messageService.add({severity:'success', detail:'Se agregó correctamente la Persona "'+payload.nombre+'" agregado'});
                   console.log('Respuesta POST: ' + res);
+                  this.getPersonas();
                 }, 
                 err => { console.log( err);
                          this.hasError = true; 
@@ -208,7 +214,8 @@ export class PersonaListComponent implements OnInit {
       this.service.putPersona(payload).subscribe(
         res => { 
                   this.messageService.add({severity:'success', detail:'Se actualizó correctamente la Persona "'+payload.nombre+'" agregado'});
-                  
+                  console.log('Respuesta PUT: ' + res);
+                  this.getPersonas();
                 }, 
                 err => { console.log( 'Error en actualización: '); 
                          console.log(err);
@@ -241,6 +248,9 @@ export class PersonaListComponent implements OnInit {
   //}
 
  }
+
+
+
 /*
     this.service.putPersona(payload).subscribe( res => {
       
@@ -253,5 +263,6 @@ export class PersonaListComponent implements OnInit {
       }
 */
 }
+
 
 

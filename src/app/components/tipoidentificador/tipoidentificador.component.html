@@ -1,0 +1,118 @@
+
+<div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Tipos De Identificadores       
+          
+        </div>
+        
+        <div class="card-body">
+          <button pButton type="button" (click)="openDialog(null, 'nuevo')"  label="Agregar" icon="pi pi-plus" iconPos="left" ></button>          
+
+          <p-table [value]="listaTipoIdentificador" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="text-right">#ID</th>
+                    <th>Identificador</th>
+                    <th>Descripción</th>
+                    <th>Fecha Alta</th>
+                    <th>Usuario Alta</th>
+                    <th>Fecha Baja</th>
+                    <th>Usuario Baja</th>
+
+                    
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-TipoIdentificador>
+                <tr>
+                  <td class="text-right">{{TipoIdentificador.id}}</td>
+                  <td>{{TipoIdentificador.identificador}}</td>
+                  <td>{{TipoIdentificador.descripcionIdentificador}}</td>
+                  <td>{{TipoIdentificador.fechaAlta | date:'d/M/yyyy, h:mm a' }}</td>
+                  <td>{{TipoIdentificador.usuarioAlta}}</td>
+                  <td>{{TipoIdentificador.fechaBaja | date:'d/M/yyyy, h:mm a' }} </td>
+                  <td>{{TipoIdentificador.usuarioBaja}}</td>
+                  <td>
+                        
+                    <button pButton type="button" (click)="openDialog(TipoIdentificador, 'edicion')"  icon="pi pi-pencil"  iconPos="left"></button>
+                    
+                    <button pButton type="button" style="margin-left: 15px;" (click)="deleteTipoIdentificador(TipoIdentificador)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
+                    
+                    <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(TipoIdentificador, 'consulta')" class="btn btn-danger"  icon="pi pi-eye"> </button>
+
+                  </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+          <nav>
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+        
+      </div>
+     
+    </div>
+    <!--/.col-->
+  </div>
+
+  <p-dialog header={{this.tituloHeader}} [(visible)]="displayDialog" [modal]="true" appendTo="body" [style]="{width: '50vw'}">
+    <p-message severity="error" *ngIf="hasError" text="Error al guardar"></p-message>
+    <form [formGroup]="formularioTipoIdentificador" >
+      
+ 
+        
+        <div class="row">
+          <div  *ngIf="TipoIdentificadorId>0" class="field col-12 md:col-6">
+            <label class="etiqueta">#ID</label>
+            <input  [readonly]="true"  type="number" formControlName="id" class="form-control" >                
+          </div>
+        </div>  
+        
+       
+          <div    class="form-group col-6 md:col-6" >
+            
+            <label class="etiqueta" for="identificador">Identificador </label> 
+            <input   id="identificador" type="text" formControlName="identificador" class="form-control">
+           
+            <span class="text-danger" *ngIf="identificador.touched && identificador.invalid">  
+              <div>* Identificador es requerido. </div>  
+            </span> 
+
+          </div>
+          <div    class="form-group col-6 md:col-6" >
+            
+            <label class="etiqueta" for="descripcionIdentificador">Descripción </label> 
+            <input   id="descripcionIdentificador" type="text" formControlName="descripcionIdentificador" class="form-control">
+           
+            <span class="text-danger" *ngIf="descripcionIdentificador.touched && descripcionIdentificador.invalid">  
+              <div>* Descripción es requerido. </div>  
+            </span> 
+
+          </div>
+    
+     </form>
+
+    <p-footer>
+      <div *ngIf="this.accion !== 'consulta'" >
+      <button pButton type="button"    (click)="displayDialog=false" label="Cancelar" class="p-button-success"></button>       
+      <button pButton type="button" label="Guardar" [disabled]="!formularioTipoIdentificador.valid"  (click)="saveTipoIdentificador(TipoIdentificador)" class="p-button-secondary"></button>
+      </div>
+      <div *ngIf="this.accion === 'consulta'" >
+        <button pButton type="button"    (click)="displayDialog=false" label="Volver" class="p-button-success"></button>  
+      </div>
+    </p-footer>
+
+ </p-dialog>
+
+ <p-confirmDialog header="Confirmation"  appendTo="body"  icon="pi pi-exclamation-triangle"></p-confirmDialog>

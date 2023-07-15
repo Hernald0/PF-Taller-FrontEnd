@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Marca } from '../models/marca.model';
-import { Modelo } from '../models/modelo.model';
+import { Modelovehiculo } from '../models/modelovehiculo.model';
+import { mvvmModelovehiculo } from '../models/mvvmModeloVehiculo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class MarcamodeloService {
   constructor(private http:HttpClient
     ) { }
 
-endPoint: string = environment.baseUrl+"/Taller/marcavehiculo";
+endPoint: string = environment.baseUrl+"/Taller/";
 formData:Marca = new Marca();
  
 
@@ -21,7 +22,7 @@ postMarca(payload: Marca) {
   console.log('Marca Agregar:');
   console.log(payload);
    
-  return this.http.post<Marca>(this.endPoint, payload)
+  return this.http.post<Marca>(this.endPoint+'updModeloVehiculo', payload)
 }
 
 putMarca(marca: Marca) {  
@@ -29,7 +30,7 @@ putMarca(marca: Marca) {
 }
 
 getMarcas(){
-  return this.http.get<Marca[]>(this.endPoint);
+  return this.http.get<Marca[]>(this.endPoint+"marcaVehiculo");
           
 }
 
@@ -37,7 +38,8 @@ getMarca(id: number):Observable<Marca>{
   /*return this.http.get(`${this.baseUrl}/${id}`)
           .toPromise()
           .then(res => this.formData = res as Marca);*/
-  return this.http.get<Marca>(`${this.endPoint}/${id}`)              
+          console.log(this.endPoint + "marcaModelosVehiculo/"+ id);
+  return this.http.get<Marca>(this.endPoint + 'marcaModelosVehiculo/'+ id)              
           //.map((response: Response) => response.json())
           //.toPromise()
           //.then(res => this.formData = res as Marca)
@@ -50,31 +52,31 @@ deleteMarca(id: number){
 }
 
 /*******************************************************/
-postModelo(payload: Modelo) {
+postModelo(payload: mvvmModelovehiculo) {
   console.log('Modelo Agregar:');
   console.log(payload);
    
-  return this.http.post<Modelo>(this.endPoint, payload)
+  return this.http.post<Modelovehiculo>(this.endPoint+"modelovehiculo", payload)
 }
 
-putModelo(marca: Modelo) {  
-  return this.http.put<Modelo>(this.endPoint, marca)
+putModelo(payload: mvvmModelovehiculo) {  
+  return this.http.put<Modelovehiculo>(this.endPoint + "updModeloVehiculo/", payload)
 }
 
 getModelos(){
-  return this.http.get<Modelo[]>(this.endPoint);
+  return this.http.get<Modelovehiculo[]>(this.endPoint);
           
 }
 
-getModelo(id: number):Observable<Modelo>{
+getModelo(id: number):Observable<Modelovehiculo>{
   
-  return this.http.get<Modelo>(`${this.endPoint}/${id}`)              
+  return this.http.get<Modelovehiculo>(`${this.endPoint}+/${id}`)              
           
 }
 
 deleteModelo(id: number){
-  console.log(this.endPoint+'/'+id);
-  return this.http.delete(`${this.endPoint}/${id}`);
+  console.log("url: "+ this.endPoint + "delModeloVehiculo/"+ id);
+  return this.http.delete(this.endPoint + "delModeloVehiculo/"+ id);
 }
 /*******************************************************/
 errorHandler(error: Response) {  

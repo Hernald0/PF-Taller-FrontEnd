@@ -16,12 +16,13 @@ export class GenerosService {
   //listaGeneros: Genero[];
 
   postGenero(payload: Genero) {
-    console.log('llega al servicio');
+   
     
     return this.http.post<Genero>(this.endPoint, payload)
   }
 
-  putGenero(genero: Genero) {  
+  putGenero(genero: Genero) { 
+    console.log('llega al servicio'); 
     return this.http.put<Genero>(this.endPoint, Genero)
   }
 
