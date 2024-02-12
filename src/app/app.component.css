@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px; /* Ancho de la barra lateral */
+  background-color: #f0f0f0; /* Color de fondo de la barra lateral */
+  /*padding: 20px;  Espaciado interno de la barra lateral */
+}
+
+.content {
+  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+  /*padding: 20px;  Espaciado interno del contenido principal */
+}

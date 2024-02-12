@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth2.service';
 import { Router } from '@angular/router';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'ddr-login',
@@ -18,36 +19,47 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private route: Router
   ) {
-    // Creo el formgroup
-    this.formLogin = this.formBuiler.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      pass: new FormControl('', Validators.required)
-    })
-    this.showLoginError = false;
+  
   }
 
   ngOnInit() {
+      // Creo el formgroup
+      this.formLogin = this.formBuiler.group({
+        email: new FormControl('hernaldo@hotmail.com', [Validators.required, Validators.email]),
+        password: new FormControl('asdas', Validators.required)
+      })
+      this.showLoginError = false;
   }
 
   /**
    * Compruebo si el login es correcto
    */
   checkLogin() {
-
+    
     // Cojo el email y el pass
-    let email = this.formLogin.get('email').value
-    let pass = this.formLogin.get('pass').value
+    //let usuario : Usuario;
+    let usuario: Usuario = {
+      ...this.formLogin.value
+    };
+      console.log(this.formLogin.get('email').value);
+      console.log(this.formLogin.get('password').value);
+      usuario.usuarioNombre = this.formLogin.get('email').value ;
+      //usuario.password = this.formLogin.get('pass').valueOf;
+    //logueado = true;
+    //this.route.navigate(['/events'])
 
     // Nos logueamos 
-    this.authService.login(email, pass).then(state => {
+    this.authService.login(usuario);
+      /*.then(state => {
 
-      console.log(state);
-      this.route.navigate(['/add-event'])
+       console.log(state);
+       this.route.navigate(['/add-event'])
+      //this.route.navigate(['/dashboard'])
 
-    }, error => {
+     }, error => {
       console.error(error);
       this.showLoginError = true;
-    })
+    })*/
 
   }
 

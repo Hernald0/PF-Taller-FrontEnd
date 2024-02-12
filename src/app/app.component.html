@@ -1,17 +1,20 @@
 
-   <app-menubar>
-     
-   </app-menubar>
-   <p-toast></p-toast>
+ 
+<app-menubar></app-menubar>
+ 
 
-<!--div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <ddr-header></ddr-header>
+ 
+<!--div class="container">
+   
+     <div *ngIf="isLoggedIn" class="sidebar">
+       
+      <app-menubar></app-menubar>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <ddr-content></ddr-content>
+  
+    
+    <div class="content">
+      <router-outlet></router-outlet>
+      <p-toast></p-toast>
     </div>
-  </div-->
+
+</div-->

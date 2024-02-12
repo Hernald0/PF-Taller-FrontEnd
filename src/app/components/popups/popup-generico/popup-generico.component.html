@@ -1,0 +1,10 @@
+<p-dialog header="Título del Popup" 
+          [(visible)] = "mostrarPopup" 
+          [closable]  = "true" 
+          [responsive]= "true">
+
+          <app-contenido-popup></app-contenido-popup>
+
+    <button (click)="cerrarPopup()">Cerrar Popup</button>
+
+</p-dialog>

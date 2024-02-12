@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { MessageService } from 'primeng/components/common/messageservice';
-import { TipoIdentificador } from 'src/app/models/TipoIdentificador.model';
+import { TipoIdentificador } from 'src/app/models/tipoidentificador.model';
 import { TipoIdentificadorService } from 'src/app/services/tipoidentificador.service';
 
 @Component({
@@ -37,7 +37,12 @@ export class TipoidentificadorComponent implements OnInit {
       this.formularioTipoIdentificador = this.formBuilder.group({
         id:  new FormControl(0),
         identificador: new FormControl(),
-        descripcionIdentificador: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(40)])),
+        descripcionIdentificador: new FormControl(null, 
+                                                  Validators.compose([Validators.required, 
+                                                                      Validators.minLength(3), 
+                                                                      Validators.maxLength(40)
+                                                                    ])
+                                                  ),
         });
       
   }

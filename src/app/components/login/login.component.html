@@ -1,6 +1,6 @@
 <!-- div class="row" id="login">
   <div class="col-12"-->
-<div class="card">
+ 
     <!-- Muestra el error -->
     <div class="row" *ngIf="showLoginError">
       <div class="col-12">
@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12">
+   
+      <div class="col-6">
         <form [formGroup]="formLogin" (ngSubmit)="checkLogin()">
 
           <!-- Email -->
@@ -26,7 +26,7 @@
           <div class="row form-group">
             <div class="col-12">
               <label for="pass">Password</label>
-              <input type="password" formControlName="pass" class="form-control" id="pass">
+              <input type="password" formControlName="password" class="form-control" id="pass">
             </div>
           </div>
 
@@ -40,8 +40,8 @@
 
         </form>
       </div>
-    </div>
+  
 
   <!--/div>
 </div-->
-</div>
+ 

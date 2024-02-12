@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { MessageService } from 'primeng/components/common/messageservice';
@@ -32,9 +33,14 @@ export class ModelosComponent implements OnInit {
               public formBuilder: FormBuilder,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
-              private rutaActiva: ActivatedRoute
+              private rutaActiva: ActivatedRoute,
+              private _location: Location
               ) { }
 
+  goBack(){
+    this._location.back();
+  }
+  
   ngOnInit(): void 
   
   {

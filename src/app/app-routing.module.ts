@@ -1,5 +1,7 @@
 import { ManageEventsComponent } from './components/content/manage-events/manage-events.component';
-import { LoginGuard } from './services/login-guard.service';
+//import { LoginGuard } from './services/login-guard.service';
+import { AuthGuard } from './components/auth/auth.guard';
+//import { AuthService } from './services/auth2.service';
 import { LoginComponent } from './components/login/login.component';
 import { AddEditEventComponent } from './components/content/add-edit-event/add-edit-event.component';
 import { EventsComponent } from './components/content/events/events.component';
@@ -18,27 +20,30 @@ import { ModelosComponent } from './components/marcamodelo/modelos/modelos.compo
 import { EstadocivilComponent } from './components/estadocivil/estadocivil.component';
 import { GenerosComponent } from './components/generos/generos.component';
 import { TipoidentificadorComponent } from './components/tipoidentificador/tipoidentificador.component';
+import { CotizadorComponent } from './components/cotizador/cotizador.component';
 
 const routes: Routes = [
-  { path: 'events', component: EventsComponent },
-  { path: 'add-event', component: AddEditEventComponent, canActivate: [LoginGuard] },
-  { path: 'edit-event', component: AddEditEventComponent, canActivate: [LoginGuard] },
-  { path: 'manage-events', component: ManageEventsComponent, canActivate: [LoginGuard] },
+  { path: 'events', component: EventsComponent, canActivate: [AuthGuard]  },
+  { path: 'add-event', component: AddEditEventComponent, canActivate: [AuthGuard] },
+  { path: 'edit-event', component: AddEditEventComponent, canActivate: [AuthGuard] },
+  { path: 'manage-events', component: ManageEventsComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'personas', component: PersonaListComponent },
-  { path: 'aseguradoras', component: AseguradoraComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'empleados', component: EmpleadosComponent },
-  { path: 'estadocivil', component: EstadocivilComponent },
-  { path: 'servicios', component: ServiciosComponent },
-  { path: 'clientes', component: ClientesComponent },
-  { path: 'vehiculos', component: VehiculosComponent },
-  { path: 'talleres', component: TalleresComponent },
-  { path: 'marcas', component: MarcasComponent },
-  { path: 'modelos/:marcaId', component: ModelosComponent },
-  { path: 'generos', component: GenerosComponent },
-  { path: 'tipoidentificador', component: TipoidentificadorComponent },
-  { path: '**', pathMatch: 'full', redirectTo: 'events' }
+  { path: 'personas', component: PersonaListComponent, canActivate: [AuthGuard]  },
+  { path: 'aseguradoras', component: AseguradoraComponent, canActivate: [AuthGuard]  },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
+  { path: 'empleados', component: EmpleadosComponent, canActivate: [AuthGuard]  },
+  { path: 'estadocivil', component: EstadocivilComponent, canActivate: [AuthGuard]  },
+  { path: 'servicios', component: ServiciosComponent, canActivate: [AuthGuard]  },
+  { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard]  },
+  { path: 'vehiculos', component: VehiculosComponent , canActivate: [AuthGuard] },
+  { path: 'talleres', component: TalleresComponent, canActivate: [AuthGuard]  },
+  { path: 'marcas', component: MarcasComponent, canActivate: [AuthGuard]  },
+  { path: 'modelos/:marcaId', component: ModelosComponent , canActivate: [AuthGuard] },
+  { path: 'generos', component: GenerosComponent, canActivate: [AuthGuard]  },
+  { path: 'cotizador', component: CotizadorComponent, canActivate: [AuthGuard]  },
+  { path: 'tipoidentificador', component: TipoidentificadorComponent, canActivate: [AuthGuard]  },
+  { path: '**', pathMatch: 'full', redirectTo: 'tipoidentificador' },
+  //{ path: '', redirectTo: '/events', pathMatch: 'full' },
 ];
 
 @NgModule({

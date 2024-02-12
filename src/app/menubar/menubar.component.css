@@ -1,5 +1,6 @@
 .sidenav-container {
   height: 100%;
+  display: flex;
 }
 
 .sidenav {
@@ -14,4 +15,10 @@
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+
+.mat-sidenav-content {
+  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+  padding: 20px; /* Espaciado interno del contenido principal */
 }

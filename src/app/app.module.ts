@@ -34,7 +34,7 @@ import { AddEditEventComponent } from './components/content/add-edit-event/add-e
 import { LoginComponent } from './components/login/login.component';
 import { ManageEventsComponent } from './components/content/manage-events/manage-events.component';
 //-import { MenubarComponent } from './menubar/menubar.component';
-import {MenubarComponent} from './menubar/menubar.component';
+import { MenubarComponent } from './menubar/menubar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,10 +45,14 @@ import { MatListModule } from '@angular/material/list';
 //-----------------------------
 import {PersonasModule} from './components/personas/personas.module';
 
+
 import { AppPrimeNgModule } from './app.primeng.module';
 import {ConfirmationService, MessageService} from 'primeng/api';
 
 import { ComponentsModule } from './components/components.module';
+import { AuthService } from './services/auth2.service';
+import { AuthGuard } from './components/auth/auth.guard';
+//import { LoginGuard } from './services/login-guard.service'
 //-----------------------------
 
 const firebaseConfig = {
@@ -99,11 +103,13 @@ export function configFactory(provider: DdrConfigurationService) {
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    PersonasModule, 
+    PersonasModule,
     ComponentsModule, 
     AppPrimeNgModule
   ],
   providers: [
+    AuthService, 
+    AuthGuard,
     ConfirmationService, 
     MessageService,
     DdrConfigurationService,

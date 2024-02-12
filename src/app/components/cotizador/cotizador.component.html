@@ -1,0 +1,266 @@
+<!-- cotizacion-arreglo.component.html -->
+
+<div class="mat-elevation-z2 p-3">
+  <!-- Primera Fila -->
+  <div class="row mb-3">
+    <div class="col-md-6 mb-3">
+      <!-- Contenido del primer div -->
+      <div class="card">
+        <div class="card">
+          <div class="card-body">
+            
+        
+            <div class="form-group row">
+       
+            
+              <label for="empleado" class="col-sm-3 col-form-label font-weight-bold">Empleado:</label>
+              <div class="col-sm-8">
+                <input type="text" id="empleado" class="form-control">
+              </div>
+              <div class="col-sm-3">
+                <button class="btn btn-primary" (click)="abrirPopup('empleado')">Popup</button>
+              </div>
+            </div>
+        
+            <div class="form-group row">
+              <label for="fecha" class="col-sm-2 col-form-label font-weight-bold">Fecha:</label>
+              <div class="col-sm-10">
+                <input type="text" id="fecha" class="form-control">
+              </div>
+            </div>
+        
+            <div class="form-group row">
+              <label for="id" class="col-sm-2 col-form-label font-weight-bold">ID:</label>
+              <div class="col-sm-10">
+                <input type="text" id="id" class="form-control">
+              </div>
+            </div>
+        
+            <div class="form-group row">
+              <label for="estado" class="col-sm-2 col-form-label font-weight-bold">Estado:</label>
+              <div class="col-sm-10">
+                <input type="text" id="estado" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+    
+    
+    </div>
+    
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <!-- Contenido del segundo div -->
+      <div class="card">
+        <div class="card-body">
+         
+          <div class="form-group">
+            <label for="cliente" class="font-weight-bold">Cliente:</label>
+            <div>
+              <input type="text" id="cliente" class="form-control">
+              <button (click)="abrirPopup('clientes')">Buscar Cliente</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="direccion" class="font-weight-bold">Dirección:</label>
+            <div>
+              <input type="text" id="direccion" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="telefono" class="font-weight-bold">Teléfono:</label>
+            <div>
+              <input type="text" id="telefono" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="celular" class="font-weight-bold">Celular:</label>
+            <div>
+              <input type="text" id="celular" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Primer Div</h5>
+          <div class="form-group">
+            <label for="vehiculo" class="font-weight-bold">Vehículo:</label>
+            <div>
+              <input type="text" id="vehiculo" class="form-control">
+              <button class="btn btn-primary mt-2" (click)="openPopup('vehiculo')">Popup</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fecha" class="font-weight-bold">Patente:</label>
+            <div>
+              <input type="text" id="fecha" class="form-control">
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="id" class="font-weight-bold">Marca:</label>
+            <div>
+              <input type="text" id="id" class="form-control">
+            </div>
+            <label for="id" class="font-weight-bold">Modelo:</label>
+            <div>
+              <input type="text" id="id" class="form-control">
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="estado" class="font-weight-bold">Color:</label>
+            <div>
+              <input type="text" id="estado" class="form-control">
+            </div>
+            <label for="estado" class="font-weight-bold">Año:</label>
+            <div>
+              <input type="text" id="estado" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fecha" class="font-weight-bold">Nro. de Serie:</label>
+            <div>
+              <input type="text" id="fecha" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fecha" class="font-weight-bold">Nro.Económico:</label>
+            <div>
+              <input type="text" id="fecha" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- Inicio tabla -->
+  <!-- Segunda Fila -->
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <!-- Contenido del tercer div (Tabla) -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Tercer Div (Tabla)</h5>
+          <!-- Tabla de PrimeNG >
+          <p-table [value]="items" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5, 10, 20]">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Columna 1</th>
+                <th>Columna 2</th>
+                <th>Columna 3</th>
+                <th>Columna 4</th>
+                <th>Columna 5</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.col1 }}</td>
+                <td>{{ item.col2 }}</td>
+                <td>{{ item.col3 }}</td>
+                <td>{{ item.col4 }}</td>
+                <td>{{ item.col5 }}</td>
+              </tr>
+            </ng-template>
+          </p-table-->
+
+          <!-- Botón para agregar ítems -->
+          <button class="btn btn-success mt-2" (click)="agregarItem()">Agregar Ítem</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin tabla -->
+
+  <!-- Resto del código (cuarto y quinto divs) -->
+  <div class="row mb-3">
+    <div class="col-md-6 mb-3">
+      <!-- Contenido del primer div -->
+      <div class="card">
+        <div class="card-body">
+         
+          <div class="form-group">
+            <label for="observaciones" class="font-weight-bold">Observaciones:</label>
+            <div>
+              <input type="text" id="observaciones" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <!-- Contenido del segundo div -->
+      <div class="card">
+        <div class="card-body">
+           
+    
+          <div class="form-group row">
+            <label for="cliente" class="col-sm-4 col-form-label font-weight-bold">SubTotal:</label>
+            <div class="col-sm-8">
+              <input type="text" id="cliente" class="form-control">
+            </div>
+          </div>
+    
+          <div class="form-group row">
+            <label for="direccion" class="col-sm-4 col-form-label font-weight-bold">Porcentaje Desc.:</label>
+            <div class="col-sm-8">
+              <input type="text" id="direccion" class="form-control">
+            </div>
+          </div>
+    
+          <div class="form-group row">
+            <label for="telefono" class="col-sm-4 col-form-label font-weight-bold">Descuento:</label>
+            <div class="col-sm-8">
+              <input type="text" id="telefono" class="form-control">
+            </div>
+          </div>
+    
+          <div class="form-group row">
+            <label for="celular" class="col-sm-4 col-form-label font-weight-bold">SubTotal con Desc.:</label>
+            <div class="col-sm-8">
+              <input type="text" id="celular" class="form-control">
+            </div>
+          </div>
+    
+          <div class="form-group row">
+            <label for="iva" class="col-sm-4 col-form-label font-weight-bold">IVA:</label>
+            <div class="col-sm-8">
+              <input type="text" id="iva" class="form-control">
+            </div>
+          </div>
+    
+          <div class="form-group row">
+            <label for="importeTotal" class="col-sm-4 col-form-label font-weight-bold">Importe Total:</label>
+            <div class="col-sm-8">
+              <input type="text" id="importeTotal" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  
+
+<app-popup-generico></app-popup-generico>
+ 
+<!--app-popup-generico [visible]="mostrarDialogo">
+  <  Contenido específico del diálogo >
+  <h3>Contenido del Diálogo</h3>
+  <button (click)="ocultarDialogo()">Cerrar</button>
+</app-popup-generico-->
+
+  <!-- Popup de Vehículo >
+  <app-popup-generico *ngIf="showVehiculoePopup">
+    <app-popup-vehiculo></app-popup-vehiculo>
+  </app-popup-generico-->
+
+  <!-- Botones para abrir los popups >
+  <button (click)="showClientPopup = true">Mostrar Popup de Cliente</button>
+  <button (click)="showVehiclePopup = true">Mostrar Popup de Vehículo</button-->
+
+</div>
