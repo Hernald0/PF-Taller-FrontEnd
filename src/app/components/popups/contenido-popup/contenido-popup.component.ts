@@ -24,18 +24,23 @@ import { PopUpDatosService } from '../../../components/servicios/pop-up-datos.se
   `,
 })
 export class ContenidoPopupComponent implements OnInit {
-  @Input() tipo: string;
+  @Input() tipoPopUp: string;
   datos: any[] = [];
 
   constructor(private datosService: PopUpDatosService) {}
 
   ngOnInit() {
+    this.datosService.datos$.subscribe((contenido) => {
+      this.datos = contenido;
+    });
+    
+    /*console.log('ContenidoPopupComponent: ' + this.tipoPopUp);
     this.datosService.datos$.subscribe((datos) => {
       this.datos = datos;
-    });
+    });*/
 
-    if (this.tipo) {
-      this.datosService.cargarDatos(this.tipo);
+    if (this.tipoPopUp) {
+      this.datosService.cargarDatos(this.tipoPopUp);
     }
   }
 }

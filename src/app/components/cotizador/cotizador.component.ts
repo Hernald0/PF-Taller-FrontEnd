@@ -9,9 +9,9 @@ import { PopUpDatosService } from '../servicios/pop-up-datos.service';
 })
 export class CotizadorComponent implements OnInit {
 
-   showClientePopup:  boolean; 
+  showClientePopup:  boolean; 
   showVehiculoePopup: boolean; 
-  //mostrarPopup: boolean = false;
+  mostrarPopup: boolean = false;
   
   constructor(private popupService: PopupService,
               private datosService: PopUpDatosService) 
@@ -25,12 +25,12 @@ export class CotizadorComponent implements OnInit {
   }
 
   abrirPopup(tipo: string) {
-    ;
+    this.mostrarPopup = true;
     this.popupService.actualizarContenidoPopup(this.datosService.cargarDatos(tipo));
     this.popupService.mostrarPopup();
   }
 
   cerrarPopup() {
-    //this.mostrarPopup = false;
+    this.mostrarPopup = false;
   }
 }

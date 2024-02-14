@@ -1,5 +1,5 @@
 // popup-generico.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PopupService } from '../../servicios/pop-up.service';
 //import {ComponentsModule} from '../../components.module';
 
@@ -10,19 +10,21 @@ import { PopupService } from '../../servicios/pop-up.service';
   //providers: [ComponentsModule],
 })
 export class PopupGenericoComponent implements OnInit {
+  @Input() tipoPopUp: string;
+  @Input() mostrarContenido: boolean;
+  
   mostrarPopup: boolean = false;
   contenidoPopup: any;
 
   constructor(private popupService: PopupService) {}
 
   ngOnInit() {
+    console.log('PopupGenericoComponent: ' + this.tipoPopUp );
     this.popupService.mostrarPopup$.subscribe((mostrar) => {
       this.mostrarPopup = mostrar;
     });
 
-    this.popupService.contenidoPopup$.subscribe((contenido) => {
-      this.contenidoPopup = contenido;
-    });
+  
   }
 
   cerrarPopup() {

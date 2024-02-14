@@ -16,12 +16,13 @@ export class PopupService {
     this.mostrarPopupFuente.next(true);
   }
 
-  ocultarPopup() {
+  cerarPopup() {
     this.mostrarPopupFuente.next(false);
   }
 
   actualizarContenidoPopup(contenido: any) {
-    console.log( contenido);
+    console.log( 'actualizarContenidoPopup') 
+    console.log(contenido);
     this.contenidoPopupFuente.next(contenido);
   }
 }
