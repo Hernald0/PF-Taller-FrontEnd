@@ -15,3 +15,8 @@
     padding: 20px;
     border-radius: 8px;
   }
+
+  :host {
+    position: fixed; /* o 'absolute' según tus necesidades */
+    z-index: 1000; /* Ajusta este valor según sea necesario para estar sobre el menú */
+  }

@@ -22,8 +22,8 @@ export class PopUpDatosService {
     // Lógica para obtener datos según el tipo (simulada aquí)
     if (tipo === 'clientes') {
       return [{ id: 1, nombre: 'Cliente 1' }, { id: 2, nombre: 'Cliente 2' }];
-    } else if (tipo === 'proveedores') {
-      return [{ id: 1, nombre: 'Proveedor 1' }, { id: 2, nombre: 'Proveedor 2' }];
+    } else if (tipo === 'empleados') {
+      return [{ id: 1, nombre: 'Empleado 1' }, { id: 2, nombre: 'Empleado 2' }];
     } else if (tipo === 'productos') {
       return [{ id: 1, nombre: 'Producto 1' }, { id: 2, nombre: 'Producto 2' }];
     }

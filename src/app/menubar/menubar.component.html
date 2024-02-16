@@ -1,57 +1,53 @@
 <mat-sidenav-container class="sidenav-container">
-  
-    <mat-sidenav *ngIf="isLoggedIn" #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">     
-     
-        <mat-toolbar>Menu</mat-toolbar>
+  <mat-sidenav *ngIf="isLoggedIn" #drawer class="sidenav" fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <ng-container  >
         <mat-nav-list>      
-        <a mat-list-item href="#">Tablero</a>
-        <a mat-list-item href="#"[routerLink]="['/servicios']">Servicios</a>      
-        <a mat-list-item href="#"[routerLink]="['/personas']">Personas</a>          
-        <a mat-list-item href="#"[routerLink]="['/aseguradoras']">Aseguradora</a>
-        <a mat-list-item href="#"[routerLink]="['/dashboard']">Agenda</a>
-        <a mat-list-item href="#"[routerLink]="['/estadocivil']">Estado Civil</a>
-        <a mat-list-item href="#"[routerLink]="['/tipoidentificador']">Tipo Identificador</a>
-        <a mat-list-item href="#"[routerLink]="['/generos']">Género</a>
-        <a mat-list-item href="#"[routerLink]="['/']">Menu</a>
-        <a mat-list-item href="#"[routerLink]="['/marcas']">Marca Vehículo</a>
-        <a mat-list-item href="#"[routerLink]="['/clientes']">Clientes</a>
-        <a mat-list-item href="#"[routerLink]="['/empleados']">Empleados</a>    
-        <a mat-list-item href="#"[routerLink]="['/']">Rol</a>
-        <a mat-list-item href="#"[routerLink]="['/talleres']">Taller</a>
-        <a mat-list-item href="#"[routerLink]="['/']">Turno</a>
-        <a mat-list-item href="#"[routerLink]="['/usuarios']">Usuario</a>
-        <a mat-list-item href="#"[routerLink]="['/vahiculos']">Vehiculo</a>
-        <a mat-list-item href="#"[routerLink]="['/cotizador']">Cotizador</a>      
-        <a mat-list-item href="#">Configuración</a>
-        </mat-nav-list>
-  
-    </mat-sidenav>
-     
-      <mat-sidenav-content>
-        <mat-toolbar *ngIf="isLoggedIn" color="primary">
-          <button
-            type="button"
-            aria-label="Toggle sidenav"
-            mat-icon-button
-            (click)="drawer.toggle()"
-            *ngIf="isHandset$ | async">
-            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-          </button>
-          <span >Gestion de Taller Web</span>
-        </mat-toolbar>
-        
-        <router-outlet></router-outlet>
-        <p-toast></p-toast>
-     
-      </mat-sidenav-content>
-   
-    
-</mat-sidenav-container>   
-   
-    
-  
-   
-   
+          <a mat-list-item href="#">Tablero</a>
+          <a mat-list-item href="#"[routerLink]="['/servicios']">Servicios</a>      
+          <a mat-list-item href="#"[routerLink]="['/personas']">Personas</a>          
+          <a mat-list-item href="#"[routerLink]="['/aseguradoras']">Aseguradora</a>
+          <a mat-list-item href="#"[routerLink]="['/dashboard']">Agenda</a>
+          <a mat-list-item href="#"[routerLink]="['/estadocivil']">Estado Civil</a>
+          <a mat-list-item href="#"[routerLink]="['/tipoidentificador']">Tipo Identificador</a>
+          <a mat-list-item href="#"[routerLink]="['/generos']">Género</a>
+          <a mat-list-item href="#"[routerLink]="['/']">Menu</a>
+          <a mat-list-item href="#"[routerLink]="['/marcas']">Marca Vehículo</a>
+          <a mat-list-item href="#"[routerLink]="['/clientes']">Clientes</a>
+          <a mat-list-item href="#"[routerLink]="['/empleados']">Empleados</a>    
+          <a mat-list-item href="#"[routerLink]="['/']">Rol</a>
+          <a mat-list-item href="#"[routerLink]="['/talleres']">Taller</a>
+          <a mat-list-item href="#"[routerLink]="['/']">Turno</a>
+          <a mat-list-item href="#"[routerLink]="['/usuarios']">Usuario</a>
+          <a mat-list-item href="#"[routerLink]="['/vahiculos']">Vehiculo</a>
+          <a mat-list-item href="#"[routerLink]="['/cotizador']">Cotizador</a>      
+          <a mat-list-item href="#">Configuración</a>
+          </mat-nav-list>
+      </ng-container>
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar *ngIf="isLoggedIn" color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Gestion de Taller Web</span>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+    <p-toast></p-toast>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

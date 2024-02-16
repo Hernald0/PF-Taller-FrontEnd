@@ -31,6 +31,13 @@ export class CotizadorComponent implements OnInit {
   }
 
   cerrarPopup() {
-    this.mostrarPopup = false;
+    //this.mostrarPopup = false;
+    this.popupService.cerarPopup();
+  }
+
+  itemSeleccionadoDesdePopup(item: any) {
+    console.log('Item seleccionado en el componente llamador:', item);
+  
+    // Realizar acciones adicionales según sea necesario
   }
 }

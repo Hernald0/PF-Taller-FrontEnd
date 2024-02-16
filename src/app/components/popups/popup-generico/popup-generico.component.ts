@@ -1,5 +1,5 @@
 // popup-generico.component.ts
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PopupService } from '../../servicios/pop-up.service';
 //import {ComponentsModule} from '../../components.module';
 
@@ -12,6 +12,7 @@ import { PopupService } from '../../servicios/pop-up.service';
 export class PopupGenericoComponent implements OnInit {
   @Input() tipoPopUp: string;
   @Input() mostrarContenido: boolean;
+  @Output() itemSeleccionado: EventEmitter<any> = new EventEmitter<any>();
   
   mostrarPopup: boolean = false;
   contenidoPopup: any;
@@ -27,8 +28,17 @@ export class PopupGenericoComponent implements OnInit {
   
   }
 
+  seleccionarItem(item: any): void {
+    
+    this.itemSeleccionado.emit(item);
+ 
+    this.cerrarPopup();
+  
+  }
+
   cerrarPopup() {
+    
     this.mostrarPopup = false;
-    // Puedes agregar lógica adicional aquí si es necesario
+  
   }
 }

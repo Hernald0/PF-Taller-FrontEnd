@@ -1,5 +1,5 @@
 // contenido-popup.component.ts
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PopUpDatosService } from '../../../components/servicios/pop-up-datos.service';
 
 @Component({
@@ -10,14 +10,12 @@ import { PopUpDatosService } from '../../../components/servicios/pop-up-datos.se
         <tr>
             <th class="text-right">#ID</th>
             <th>Nombre/Razon Social</th>
-
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-datos>
-        <tr>
+        <tr (dblclick)="seleccionarItem(datos)">
           <td class="text-right">{{datos.id}}</td>
           <td>{{datos.nombre}}  </td>
-             
         </tr>
     </ng-template>
   </p-table>
@@ -25,6 +23,7 @@ import { PopUpDatosService } from '../../../components/servicios/pop-up-datos.se
 })
 export class ContenidoPopupComponent implements OnInit {
   @Input() tipoPopUp: string;
+  @Output() itemSeleccionado: EventEmitter<any> = new EventEmitter<any>();
   datos: any[] = [];
 
   constructor(private datosService: PopUpDatosService) {}
@@ -42,5 +41,11 @@ export class ContenidoPopupComponent implements OnInit {
     if (this.tipoPopUp) {
       this.datosService.cargarDatos(this.tipoPopUp);
     }
+  }
+
+  seleccionarItem( itemSelecionado: any): void {
+    console.log('valor:' , itemSelecionado);
+     // Emitir el item seleccionado para que el popup-generico lo reciba
+    this.itemSeleccionado.emit(itemSelecionado);
   }
 }

@@ -1,9 +1,18 @@
 <p-dialog header="Título del Popup" 
           [(visible)] = "mostrarPopup" 
           [closable]  = "true" 
-          [responsive]= "true">
+          [responsive]= "true"
+          
+          
+         
+          [modal]="true" 
+          appendTo="body" 
+          [style]="{width: '50vw'}"
+          >
 
-          <app-contenido-popup  [tipoPopUp] = "tipoPopUp"></app-contenido-popup>
+          <app-contenido-popup  (itemSeleccionado)="seleccionarItem($event)"
+                                [tipoPopUp] = "tipoPopUp">
+         </app-contenido-popup>
 
     <button (click)="cerrarPopup()">Cerrar Popup</button>
 

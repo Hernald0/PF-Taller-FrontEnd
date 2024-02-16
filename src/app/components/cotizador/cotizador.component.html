@@ -18,7 +18,7 @@
                 <input type="text" id="empleado" class="form-control">
               </div>
               <div class="col-sm-3">
-                <button class="btn btn-primary" (click)="abrirPopup('empleado')">Popup</button>
+                <button class="btn btn-primary" (click)="abrirPopup('empleados')">Empleados</button>
               </div>
             </div>
         
@@ -60,7 +60,7 @@
             <label for="cliente" class="font-weight-bold">Cliente:</label>
             <div>
               <input type="text" id="cliente" class="form-control">
-              <button (click)="abrirPopup('clientes')">Buscar Cliente</button>
+              <button class="btn btn-primary" (click)="abrirPopup('clientes')">Clientes</button>
             </div>
           </div>
           <div class="form-group">
@@ -92,7 +92,7 @@
             <label for="vehiculo" class="font-weight-bold">Vehículo:</label>
             <div>
               <input type="text" id="vehiculo" class="form-control">
-              <button class="btn btn-primary mt-2" (click)="openPopup('vehiculo')">Popup</button>
+              <button class="btn btn-primary mt-2" (click)="openPopup('vehiculos')">Vehículos</button>
             </div>
           </div>
           <div class="form-group">
@@ -246,7 +246,9 @@
 <div>
   
 
-<app-popup-generico   [tipoPopUp] = "tipo" ></app-popup-generico>
+<app-popup-generico [tipoPopUp] = "tipo" 
+                    (itemSeleccionado)="itemSeleccionadoDesdePopup($event)"
+></app-popup-generico>
  
 <!--app-popup-generico [visible]="mostrarDialogo">
   <  Contenido específico del diálogo >
