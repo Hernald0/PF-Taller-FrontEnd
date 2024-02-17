@@ -13,7 +13,6 @@ export class PopUpDatosService {
     // Lógica para cargar datos según el tipo (clientes, proveedores, productos, etc.)
     // Puedes realizar llamadas HTTP u obtener datos de otras fuentes.
     const datos = this.obtenerDatos(tipo);
-    
     this.datosFuente.next(datos);
     //return datos;
   }

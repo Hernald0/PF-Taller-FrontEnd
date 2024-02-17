@@ -11,10 +11,11 @@ import { PopupService } from '../../servicios/pop-up.service';
 })
 export class PopupGenericoComponent implements OnInit {
   @Input() tipoPopUp: string;
-  @Input() mostrarContenido: boolean;
+  @Input() mostrarPopup: boolean;
+  @Input() datos: any[];     
   @Output() itemSeleccionado: EventEmitter<any> = new EventEmitter<any>();
   
-  mostrarPopup: boolean = false;
+ 
   contenidoPopup: any;
 
   constructor(private popupService: PopupService) {}
@@ -37,7 +38,7 @@ export class PopupGenericoComponent implements OnInit {
   }
 
   cerrarPopup() {
-    
+
     this.mostrarPopup = false;
   
   }

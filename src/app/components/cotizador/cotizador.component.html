@@ -246,10 +246,19 @@
 <div>
   
 
-<app-popup-generico [tipoPopUp] = "tipo" 
+<!--app-popup-generico [tipoPopUp] = "tipo" 
                     (itemSeleccionado)="itemSeleccionadoDesdePopup($event)"
-></app-popup-generico>
+                    [columnas]="columnas"
+></app-popup-generico-->
  
+<app-popup-generico 
+                    [mostrarPopup]="mostrarPopup"
+                    [datos]="datos"
+                    
+                    (cerrarPopup)="cerrarPopup()"
+                    (itemSeleccionado)="itemSeleccionadoDesdePopup($event)">
+</app-popup-generico>
+
 <!--app-popup-generico [visible]="mostrarDialogo">
   <  Contenido específico del diálogo >
   <h3>Contenido del Diálogo</h3>

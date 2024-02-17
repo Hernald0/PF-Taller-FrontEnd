@@ -9,19 +9,20 @@ import { PopUpDatosService } from '../servicios/pop-up-datos.service';
 })
 export class CotizadorComponent implements OnInit {
 
-  showClientePopup:  boolean; 
-  showVehiculoePopup: boolean; 
   mostrarPopup: boolean = false;
-  
+  datos: any[] = [];
+  //columnas: { nombre: string, tipo: string }[] = [
+    // Define las columnas según tus necesidades
+  //];
+
   constructor(private popupService: PopupService,
               private datosService: PopUpDatosService) 
   { }
 
   ngOnInit(): void {
-    /*
-    this.showClientePopup= false;
-    this.showVehiculoePopup=false;
-    */
+    this.datosService.datos$.subscribe((contenido) => {
+      this.datos = contenido;
+    });
   }
 
   abrirPopup(tipo: string) {
@@ -31,13 +32,13 @@ export class CotizadorComponent implements OnInit {
   }
 
   cerrarPopup() {
-    //this.mostrarPopup = false;
+    
     this.popupService.cerarPopup();
   }
 
   itemSeleccionadoDesdePopup(item: any) {
     console.log('Item seleccionado en el componente llamador:', item);
-  
+
     // Realizar acciones adicionales según sea necesario
   }
 }

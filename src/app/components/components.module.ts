@@ -20,8 +20,6 @@ import { EstadocivilComponent } from './estadocivil/estadocivil.component';
 import { GenerosComponent } from './generos/generos.component';
 import { TipoidentificadorComponent } from './tipoidentificador/tipoidentificador.component';
 import { CotizadorComponent } from '../components/cotizador/cotizador.component';
-//import { CotizadorModule } from './cotizador/cotizador.module';
-import { ContenidoPopupComponent } from './popups/contenido-popup/contenido-popup.component';
 import { PopupGenericoComponent } from './popups/popup-generico/popup-generico.component';
 
 
@@ -41,7 +39,6 @@ import { PopupGenericoComponent } from './popups/popup-generico/popup-generico.c
     GenerosComponent,
     TipoidentificadorComponent,
     PopupGenericoComponent,
-    ContenidoPopupComponent,
     CotizadorComponent
   ],
   imports: [
@@ -56,7 +53,6 @@ import { PopupGenericoComponent } from './popups/popup-generico/popup-generico.c
     MarcamodeloModule,
     //CotizadorModule
   ],
-  exports:[ PopupGenericoComponent,
-            ContenidoPopupComponent]
+  exports:[ PopupGenericoComponent]
 })
 export class ComponentsModule { }
