@@ -21,8 +21,8 @@ export class PopupService {
   }
 
   actualizarContenidoPopup(contenido: any) {
-    console.log( 'actualizarContenidoPopup') 
-    console.log(contenido);
+    //console.log( 'actualizarContenidoPopup') 
+    //console.log(contenido);
     this.contenidoPopupFuente.next(contenido);
   }
 }

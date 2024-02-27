@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +10,25 @@ export class PopUpDatosService {
 
   private datosFuente = new BehaviorSubject<any[]>([]);
   datos$ = this.datosFuente.asObservable();
+  endPoint: string = environment.baseUrl+"/VistasPopUp";
+  
+  constructor (private http:HttpClient){};
 
   cargarDatos(tipo: string): void {
+    console.log('cargarDatos');
+    this.getDatosVistaPopUp(tipo).subscribe( res => { 
+      console.log(res);
+      const datos =  res;
+      this.datosFuente.next(datos);
+    }, 
+    (error) => {
+      console.error('Error al obtener datos:', error);
+    });
+    
     // Lógica para cargar datos según el tipo (clientes, proveedores, productos, etc.)
     // Puedes realizar llamadas HTTP u obtener datos de otras fuentes.
-    const datos = this.obtenerDatos(tipo);
-    this.datosFuente.next(datos);
+    //const datos = this.obtenerDatos(tipo);
+    //this.datosFuente.next(datos);
     //return datos;
   }
 
@@ -29,4 +44,12 @@ export class PopUpDatosService {
     // Puedes agregar más casos según sea necesario.
     return [];
   }
+
+  getDatosVistaPopUp(nombreVistaPopUp: string ){
+    console.log(nombreVistaPopUp);
+    return this.http.get<any>(`${this.endPoint}/${nombreVistaPopUp}`);     
+  }
+
+
+
 }

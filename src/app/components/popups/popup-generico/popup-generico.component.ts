@@ -1,6 +1,7 @@
 // popup-generico.component.ts
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PopupService } from '../../servicios/pop-up.service';
+
 //import {ComponentsModule} from '../../components.module';
 
 @Component({
@@ -12,16 +13,17 @@ import { PopupService } from '../../servicios/pop-up.service';
 export class PopupGenericoComponent implements OnInit {
   @Input() tipoPopUp: string;
   @Input() mostrarPopup: boolean;
-  @Input() datos: any[];     
+  @Input() datos: any;     
   @Output() itemSeleccionado: EventEmitter<any> = new EventEmitter<any>();
   
  
   contenidoPopup: any;
-
+ 
   constructor(private popupService: PopupService) {}
 
   ngOnInit() {
-    console.log('PopupGenericoComponent: ' + this.tipoPopUp );
+    
+   
     this.popupService.mostrarPopup$.subscribe((mostrar) => {
       this.mostrarPopup = mostrar;
     });
@@ -42,4 +44,23 @@ export class PopupGenericoComponent implements OnInit {
     this.mostrarPopup = false;
   
   }
+
+  getColumnas() {
+    if (this.datos && this.datos.columnas) {
+      console.log(Object.keys(this.datos.columnas));
+      return Object.keys(this.datos.columnas);
+    }
+    return [];
+  }
+
+  obtenerValor(dato: any, columna: string): any {
+    try {
+      return dato[columna];
+    } catch (error) {
+      console.error(`Error al obtener el valor para la columna ${columna}: ${error.message}`);
+      // Puedes manejar el error de alguna manera, por ejemplo, mostrar un valor predeterminado o un mensaje de error.
+      return 'Error';
+    }
+  }
+  
 }
