@@ -10,7 +10,7 @@ export class PopupService {
   private contenidoPopupFuente = new Subject<any>();
 
   mostrarPopup$ = this.mostrarPopupFuente.asObservable();
-  contenidoPopup$ = this.contenidoPopupFuente.asObservable();
+  //contenidoPopup$ = this.contenidoPopupFuente.asObservable();
 
   mostrarPopup() {
     this.mostrarPopupFuente.next(true);

@@ -9,22 +9,21 @@
           >
       
           <ng-container *ngIf="datos">
-            <p-table [value]="datos.consultaSelect">       
-              <ng-template pTemplate="header" let-datos.columnas>
+            <p-table [value]="datos.consultaSelect" [(selection)]="selectedItem" dataKey="Id">
+              <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of datos.columnas">
-                        {{ col }}
-                    </th>
+                  <th *ngFor="let col of datos.columnas">
+                    {{ col }}
+                  </th>
                 </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-dato>
-              <tr [class.fila-seleccionada]="datos === filaSeleccionada" (dblclick)="seleccionarItem(datos)">
-                <td *ngFor="let columna of datos.columnas">
-                  {{ obtenerValor(dato, columna) }}
-                </td>
-              </tr>
-            </ng-template>
-
+              </ng-template>
+              <ng-template pTemplate="body" let-dato>
+                <tr [class.fila-seleccionada]="dato.Id === selectedItem?.Id" (dblclick)="seleccionarItem(dato, datos.clase)">
+                  <td *ngFor="let columna of datos.columnas">
+                    {{ dato[columna] }}
+                  </td>
+                </tr>
+              </ng-template>
             </p-table>
           </ng-container>
 

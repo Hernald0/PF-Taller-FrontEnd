@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -8,28 +8,26 @@ import { environment } from 'src/environments/environment';
 })
 export class PopUpDatosService {
 
-  private datosFuente = new BehaviorSubject<any[]>([]);
-  datos$ = this.datosFuente.asObservable();
+  //private datosFuente = new BehaviorSubject<any[]>([]);
+  //datos$ = this.datosFuente.asObservable();
   endPoint: string = environment.baseUrl+"/VistasPopUp";
   
   constructor (private http:HttpClient){};
-
-  cargarDatos(tipo: string): void {
+  
+  cargarDatos(tipo: string): Observable<any>{
     console.log('cargarDatos');
+
+    return this.getDatosVistaPopUp(tipo);
+    /*
     this.getDatosVistaPopUp(tipo).subscribe( res => { 
+      console.log('cargarDatos dentro');
       console.log(res);
-      const datos =  res;
-      this.datosFuente.next(datos);
+      return res;
+      //this.datosFuente.next(datos);
     }, 
     (error) => {
       console.error('Error al obtener datos:', error);
-    });
-    
-    // Lógica para cargar datos según el tipo (clientes, proveedores, productos, etc.)
-    // Puedes realizar llamadas HTTP u obtener datos de otras fuentes.
-    //const datos = this.obtenerDatos(tipo);
-    //this.datosFuente.next(datos);
-    //return datos;
+    });*/
   }
 
   private obtenerDatos(tipo: string): any[] {
@@ -46,6 +44,7 @@ export class PopUpDatosService {
   }
 
   getDatosVistaPopUp(nombreVistaPopUp: string ){
+    console.log('getDatosVistaPopUp');
     console.log(nombreVistaPopUp);
     return this.http.get<any>(`${this.endPoint}/${nombreVistaPopUp}`);     
   }

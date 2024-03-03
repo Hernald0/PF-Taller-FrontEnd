@@ -15,15 +15,15 @@ export class PopupGenericoComponent implements OnInit {
   @Input() mostrarPopup: boolean;
   @Input() datos: any;     
   @Output() itemSeleccionado: EventEmitter<any> = new EventEmitter<any>();
-  
+
  
-  contenidoPopup: any;
+ // contenidoPopup: any;
  
   constructor(private popupService: PopupService) {}
 
   ngOnInit() {
+  
     
-   
     this.popupService.mostrarPopup$.subscribe((mostrar) => {
       this.mostrarPopup = mostrar;
     });
@@ -31,9 +31,14 @@ export class PopupGenericoComponent implements OnInit {
   
   }
 
-  seleccionarItem(item: any): void {
+  seleccionarItem(item: any, clase: string): void {
     
-    this.itemSeleccionado.emit(item);
+    const objetoEmitir = {
+      item: item,
+      clase: clase
+    };
+
+    this.itemSeleccionado.emit(objetoEmitir);
  
     this.cerrarPopup();
   
@@ -44,15 +49,16 @@ export class PopupGenericoComponent implements OnInit {
     this.mostrarPopup = false;
   
   }
-
+  /*
   getColumnas() {
     if (this.datos && this.datos.columnas) {
       console.log(Object.keys(this.datos.columnas));
       return Object.keys(this.datos.columnas);
     }
     return [];
-  }
+  }*****/
 
+  /*
   obtenerValor(dato: any, columna: string): any {
     try {
       return dato[columna];
@@ -61,6 +67,6 @@ export class PopupGenericoComponent implements OnInit {
       // Puedes manejar el error de alguna manera, por ejemplo, mostrar un valor predeterminado o un mensaje de error.
       return 'Error';
     }
-  }
+  }*/
   
 }

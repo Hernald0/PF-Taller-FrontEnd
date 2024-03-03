@@ -3,8 +3,10 @@ import { PopupService } from '../../components/servicios/pop-up.service';
 import { PopUpDatosService } from '../servicios/pop-up-datos.service';
 import { Cliente } from 'src/app/models/cliente.model';
 import { Empleado } from 'src/app/models/empleado.model';
-import { Modelovehiculo } from 'src/app/models/modelovehiculo.model';
-import { ClientesService } from 'src/app/services/clientes.service';
+import { GlobalService } from 'src/app/services/global.service';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'app-cotizador',
@@ -14,9 +16,12 @@ import { ClientesService } from 'src/app/services/clientes.service';
 export class CotizadorComponent implements OnInit {
 
   mostrarPopup: boolean = false;
-  datos: any[] = [];
+  datos: any;
   cliente: Cliente;
   empleado: Empleado;
+  itemSeleccionadoClase: string;
+  formularioCotizacion: FormGroup;
+ 
   
   //columnas: { nombre: string, tipo: string }[] = [
     // Define las columnas según tus necesidades
@@ -24,21 +29,57 @@ export class CotizadorComponent implements OnInit {
 
   constructor(private popupService: PopupService,
               private datosService: PopUpDatosService,
-              private clientesService: ClientesService) 
+              private globalService: GlobalService,
+              public  formBuilder: FormBuilder,
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService) 
   { }
 
   ngOnInit(): void {
-    this.datosService.datos$.subscribe((contenido) => {
-      
-      this.datos = contenido;
-    
-    });
+        //Inicializar y vincular cada grupo 
+        this.formularioCotizacion = this.formBuilder.group({
+                                                            idCotizacion:  new FormControl(0),
+                                                            nombreEmpleado: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            fechaCotizacion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            estadoCotizacion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            /* */
+                                                            clienteDireccion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            clientenroDireccion:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            clienteTelefono: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            clienteCelular: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            localidad:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            /*
+                                                            fecNacimiento: new FormControl(null),                                                                                       
+                                                            dpto : new FormControl(null),                                                  
+                                                            piso : new FormControl(null),                                             
+                                                            telcelular : new FormControl(null),
+                                                            telfijo : new FormControl(null),
+                                                            tipoIdentificador : new FormControl(null),
+                                                            nroIdentificacion :  new FormControl(null),
+                                                            razonSocial : new FormControl(null),
+                                                            tipoEmpleado :  new FormControl('F'),                                              
+                                                            email : new FormControl(null, Validators.compose([Validators.email])),
+                                                            ocupacion :new FormControl(null),
+                                                            estadoCivil :new FormControl(null)*/
+                                                          });                                                  
+
   }
 
   abrirPopup(tipo: string) {
+    console.log('abrirPopup');
     this.mostrarPopup = true;
-    this.popupService.actualizarContenidoPopup(this.datosService.cargarDatos(tipo));
-    this.popupService.mostrarPopup();
+    this.datosService.cargarDatos(tipo).subscribe(
+      (res) => {
+        console.log('resultado abrirPopup', res);
+        this.datos = res;
+        this.popupService.mostrarPopup();
+      },
+      (error) => {
+        console.error('Error al obtener datos:', error);
+      }
+    );
+    
+    
   }
 
   cerrarPopup() {
@@ -46,9 +87,62 @@ export class CotizadorComponent implements OnInit {
     this.popupService.cerarPopup();
   }
 
-  itemSeleccionadoDesdePopup(item: any) {
-    console.log('Item seleccionado en el componente llamador:', item);
+  setItemSeleccionadoClase(pClase: string){
+      console.log('setItemSeleccionadoClase: ', pClase)
+      this.itemSeleccionadoClase = pClase;
+  };
 
+  itemSeleccionadoDesdePopup(itemSeleccionado: any) {
+    console.log('1 Item seleccionado en el componente llamador:', itemSeleccionado);
+    
+    if (itemSeleccionado.item && itemSeleccionado.clase) {
+      
+      this.globalService.instanciarClasePorNombre(itemSeleccionado.clase, itemSeleccionado.item.Id);
+
+      this.globalService.instanciarClasePorNombreObservable().subscribe((datos: any) => {
+        console.log('Datos obtenidos:', datos);
+
+        if (itemSeleccionado.clase === 'Cliente') {
+          this.formularioCotizacion.patchValue({
+            clienteDireccion: datos.persona.direccion,
+            clientenroDireccion: datos.persona.nroDireccion,
+            clienteTelefono: datos.persona.telfijo,
+            clienteCelular:  datos.persona.telcelular
+          });
+        } else if (itemSeleccionado.clase === 'Empleado') {
+          // Lógica similar para asignar datos de empleado
+        }
+      });
+
+      /*
+      const instancia = this.globalService.instanciarClasePorNombre(itemSeleccionado.clase,  itemSeleccionado.item.Id);
+      
+      switch ( itemSeleccionado.clase ) {
+        case 'Cliente':
+          console.log('asignacion de valores en cotizacion', instancia);
+        
+          this.formularioCotizacion.patchValue({
+          
+           clienteDireccion: instancia.persona.direccion,
+           clientenroDireccion: instancia.persona.nroDireccion
+          
+          });   
+           
+
+            break;
+        case 'Empleado':
+            // statement 2
+            break;
+       
+     }
+      */
+
+    } else {
+      console.log('2 Item seleccionado en el componente llamador:', this.itemSeleccionadoClase);
+      console.error('No se proporcionó un dato válido.');
+    }
+    
+    /*
     if (typeof item === 'object' && item !== null) {
       // Realizar comprobaciones de tipo según las clases conocidas
       if (item instanceof Cliente) {
@@ -70,7 +164,11 @@ export class CotizadorComponent implements OnInit {
       } else {
         console.log('Es un objeto genérico:', item);
       }
-    }
+      
+    }*/
   
   }
+
+   
+  
 }
