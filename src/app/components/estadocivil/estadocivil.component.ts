@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { EstadoCivil } from 'src/app/models/EstadoCivil.model';
+import { EstadoCivil } from 'src/app/models/estadocivil.model';
 import { EstadoCivilService } from 'src/app/services/estadocivil.service';
 
 @Component({

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { AppPrimeNgModule } from 'src/app/app.primeng.module';
-import { DialogModule } from 'primeng/dialog';
+//import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
 //import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {DropdownModule} from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -21,6 +22,17 @@ import { GenerosComponent } from './generos/generos.component';
 import { TipoidentificadorComponent } from './tipoidentificador/tipoidentificador.component';
 import { CotizadorComponent } from '../components/cotizador/cotizador.component';
 import { PopupGenericoComponent } from './popups/popup-generico/popup-generico.component';
+import { ClientevehiculosComponent } from './clientevehiculos/clientevehiculos.component';
+import { TurnoComponent } from './turno/turno.component';
+import { StepsModule } from 'primeng/steps';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FullCalendarModule } from 'primeng/fullcalendar';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { TurnosdashboardComponent } from './turnosdashboard/turnosdashboard.component';
+import { RecepcionvehiculoComponent } from './recepcionvehiculo/recepcionvehiculo.component';
+import { VentasComponent } from './ventas/ventas.component';
+import { OrdenesComponent } from './ordenes/ordenes.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 
 
@@ -39,7 +51,15 @@ import { PopupGenericoComponent } from './popups/popup-generico/popup-generico.c
     GenerosComponent,
     TipoidentificadorComponent,
     PopupGenericoComponent,
-    CotizadorComponent
+    CotizadorComponent,
+    ClientevehiculosComponent,
+    TurnoComponent,
+    ScheduleComponent,
+    TurnosdashboardComponent,
+    RecepcionvehiculoComponent,
+    VentasComponent,
+    OrdenesComponent,
+    UsuariosComponent
   ],
   imports: [
     RouterModule,
@@ -51,6 +71,10 @@ import { PopupGenericoComponent } from './popups/popup-generico/popup-generico.c
     RadioButtonModule,
     DropdownModule,
     MarcamodeloModule,
+    ListboxModule,
+    StepsModule,
+    CheckboxModule,
+    FullCalendarModule
     //CotizadorModule
   ],
   exports:[ PopupGenericoComponent]

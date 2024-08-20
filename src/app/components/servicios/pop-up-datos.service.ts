@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -14,10 +14,10 @@ export class PopUpDatosService {
   
   constructor (private http:HttpClient){};
   
-  cargarDatos(tipo: string): Observable<any>{
+  cargarDatos(tipo: string, parametro: string): Observable<any>{
     console.log('cargarDatos');
 
-    return this.getDatosVistaPopUp(tipo);
+    return this.getDatosVistaPopUp(tipo, parametro);
     /*
     this.getDatosVistaPopUp(tipo).subscribe( res => { 
       console.log('cargarDatos dentro');
@@ -43,10 +43,9 @@ export class PopUpDatosService {
     return [];
   }
 
-  getDatosVistaPopUp(nombreVistaPopUp: string ){
-    console.log('getDatosVistaPopUp');
-    console.log(nombreVistaPopUp);
-    return this.http.get<any>(`${this.endPoint}/${nombreVistaPopUp}`);     
+  getDatosVistaPopUp(nombreVistaPopUp: string, parametro: string | null): Observable<any> {
+    const params = parametro ? { parametro } : {};
+    return this.http.get<any>(`${this.endPoint}/${nombreVistaPopUp}`, { params });
   }
 
 

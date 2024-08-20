@@ -13,7 +13,7 @@
           <p-table [value]="listaServicio" responsiveLayout="scroll">
             <ng-template pTemplate="header">
                 <tr>
-                    <th class="text-right">#ID</th>
+                    <th class="text-right">Código</th>
                     <th class="text-right">Nombre</th>
                     <th class="text-right">Descripción</th>
                     <th class="text-right">Fecha Alta</th>
@@ -74,7 +74,7 @@
         
         <div class="row">
           <div  *ngIf="ServicioId>0" class="field col-12 md:col-6">
-            <label class="etiqueta">#ID</label>
+            <label class="etiqueta">Código</label>
             <input  [readonly]="true"  type="number" formControlName="id" class="form-control" >                
           </div>
         </div>  

@@ -3,7 +3,7 @@ import { FormGroup, Validators,FormBuilder, FormControl } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //----------------------
-import { EstadoCivil } from 'src/app/models/EstadoCivil.model';
+import { EstadoCivil } from 'src/app/models/estadocivil.model';
 import { Genero } from 'src/app/models/genero.model';
 import { Localidad } from 'src/app/models/localidad.model';
 import { Persona } from 'src/app/models/persona.model';

@@ -15,7 +15,7 @@
           <p-table [value]="this.listaClientes" responsiveLayout="scroll">
             <ng-template pTemplate="header">
                 <tr>
-                    <th class="text-right">#ID</th>
+                    <th class="text-right">Código</th>
                     <th>Nombre/Razon Social</th>
                     <th>Identificación</th>
                     <th>Email</th>
@@ -26,8 +26,14 @@
             <ng-template pTemplate="body" let-Cliente>
                 <tr>
                   <td class="text-right">{{Cliente.id}}</td>
-                  <td>{{Cliente.persona.apellido}}, {{Cliente.persona.nombre}} </td>
-                  <td> </td>
+                  <td *ngIf="Cliente.persona.tipoPersona === 'F' ">
+                    {{ Cliente.persona.apellido }}, {{ Cliente.persona.nombre }}
+                  </td>
+                  <td *ngIf="Cliente.persona.tipoPersona === 'J'">
+                    {{ Cliente.persona.razonSocial }}
+                  </td>
+                  
+                  <td>{{Cliente.persona.tipoIdentificador.identificador}} - {{Cliente.persona.nroIdentificacion}} </td>
                   <td>{{Cliente.persona.email}} </td>  
                   <td>{{Cliente.persona.telcelular}}</td>
                   <td>
@@ -37,6 +43,8 @@
                     <button pButton type="button" style="margin-left: 15px;" (click)="deleteCliente(Cliente)" icon="pi pi-trash" class="btn btn-danger" iconPos="left"></button>
                     
                     <button pButton type="button" style="margin-left: 15px;" (click)="openDialog(Cliente, 'consulta')" class="btn btn-danger"  icon="pi pi-eye"> </button>
+                    
+                    <a   routerLink ="/clientevehiculos/{{Cliente.id}}" ><button class="btn btn-success pull-right" > ...</button></a>
 
                   </td>
                 </tr>
@@ -71,7 +79,7 @@
         
         <div class="row">
           <div  *ngIf="ClienteId>0" class="field col-12 md:col-6">
-            <label class="etiqueta">#ID</label>
+            <label class="etiqueta">Código</label>
             <input  [readonly]="true"  type="number" formControlName="id" class="form-control" >                
           </div>
         </div>  

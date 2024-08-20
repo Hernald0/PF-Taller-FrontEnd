@@ -3,7 +3,7 @@ import { FormGroup, Validators,FormBuilder, FormControl } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //----------------------
-import { EstadoCivil } from 'src/app/models/EstadoCivil.model';
+import { EstadoCivil } from 'src/app/models/estadocivil.model';
 import { Genero } from 'src/app/models/genero.model';
 import { Localidad } from 'src/app/models/localidad.model';
 import { Cliente } from 'src/app/models/cliente.model';
@@ -15,6 +15,7 @@ import { GenerosService } from 'src/app/services/generos.service';
 import { LocalidadService } from 'src/app/services/localidad.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { TipoIdentificadorService } from 'src/app/services/tipoidentificador.service';
+import { Persona } from 'src/app/models/persona.model';
 
 @Component({
   selector: 'app-clientes',
@@ -148,7 +149,7 @@ export class ClientesComponent implements OnInit {
    
     this.service.getClientes().subscribe(res => {     
      // console.log('recupera todas las clientes');
-     // console.log(res); 
+      console.log(res); 
       this.listaClientes = res as Cliente[];       
       
      }); 
@@ -178,22 +179,33 @@ export class ClientesComponent implements OnInit {
     return this.formularioCliente.get('nombre');
   }
 
-  saveCliente(cliente  : Cliente):void{
+  saveCliente(cliente?  : Cliente):void{
     //console.log(this.clienteId);
     
+    if (cliente) {
+      // Asignaciones opcionales, asegúrate de que cliente sea un objeto válido
+      cliente.id = null;
+      cliente.persona = null;
+      cliente.taller = null;
+    } else {
+        // Si cliente es undefined, podrías inicializarlo aquí o manejar el caso adecuadamente
+        cliente = new Cliente();
+    }
 
-    let payload: Cliente = {
+    let persona: Persona = {
       ...this.formularioCliente.value
     };
 
-    console.log('saveCliente Payload: ');
-    console.log(payload);
     
-    if(!this.clienteId){
-                           
-       this.service.postCliente(payload).subscribe(
+
+    cliente.persona = persona;
+    
+    //if(!this.clienteId){
+    if(!cliente.id){  
+      console.log('ingresa por alta', cliente);                    
+       this.service.postCliente(cliente).subscribe(
         res => { 
-                  this.messageService.add({severity:'success', detail:'Se agregó correctamente la Cliente "'+payload.persona.nombre+'" agregado'});
+                  this.messageService.add({severity:'success', detail:'Se agregó correctamente la Cliente "'+cliente.persona.nombre+'" agregado'});
                   console.log('Respuesta POST: ' + res);
                 }, 
                 err => { console.log( err);
@@ -201,13 +213,11 @@ export class ClientesComponent implements OnInit {
                 }
         );
 
-        
-
     }else{
-      console.log(payload);
-      this.service.putCliente(payload).subscribe(
+      console.log('ingresa por modificación', cliente);
+      this.service.putCliente(cliente).subscribe(
         res => { 
-                  this.messageService.add({severity:'success', detail:'Se actualizó correctamente la Cliente "'+payload.persona.nombre+'" agregado'});
+                  this.messageService.add({severity:'success', detail:'Se actualizó correctamente la Cliente "'+cliente.persona.nombre+'" agregado'});
                   
                 }, 
                 err => { console.log( 'Error en actualización: '); 

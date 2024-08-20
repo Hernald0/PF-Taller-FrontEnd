@@ -14,17 +14,21 @@
           <div class="card">
             <div class="card">
               <div class="card-body">
-                
-            
-                <div class="form-group row">
-          
+                            
+                <div class="form-group row">          
                 
                   <label for="empleado" class="col-sm-3 col-form-label font-weight-bold">Empleado:</label>
-                  <div class="col-sm-8">
-                    <input type="text" id="empleado" formControlName="nombreEmpleado" class="form-control">
-                  </div>
-                  <div class="col-sm-3">
-                    <button class="btn btn-primary" (click)="abrirPopup('popUp-cotizador-empleados')">Empleados</button>
+                 
+                  <div class="row">
+                    <div class="col-md-2 mb-1">
+                      <input type="text" id="idEmpleado" class="form-control">
+                    </div>
+                    <div class="col-md-2 mb-1">
+                      <button class="btn btn-primary w-100" (click)="abrirPopup('popUp-cotizacion-empleados')"> <i class="pi pi-search"></i></button>
+                    </div>
+                    <div class="col-md-8 mb-1">
+                      <input type="text" id="nombreEmpleado" class="form-control">
+                    </div>
                   </div>
                 </div>
             
@@ -50,8 +54,6 @@
                 </div>
               </div>
             </div>
-            
-        
         
         </div>
         
@@ -64,9 +66,16 @@
             
               <div class="form-group">
                 <label for="cliente" class="font-weight-bold">Cliente:</label>
-                <div>
-                  <input type="text" id="cliente" class="form-control">
-                  <button class="btn btn-primary" (click)="abrirPopup('popUp-cotizacion-clientes')">Clientes</button>
+                <div class="row">
+                  <div class="col-md-2 mb-1">
+                    <input type="text" id="idCliente" formControlName="idCliente" class="form-control">
+                  </div>
+                  <div class="col-md-2 mb-1">
+                    <button class="btn btn-primary w-100" (click)="abrirPopup('popUp-cotizacion-clientes')"> <i class="pi pi-search"></i></button>
+                  </div>
+                  <div class="col-md-8 mb-1">
+                    <input type="text" id="nombreCliente" formControlName="nombreCliente" class="form-control">
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -98,39 +107,39 @@
                 <label for="vehiculo" class="font-weight-bold">Vehículo:</label>
                 <div>
                   <input type="text" id="vehiculo" class="form-control">
-                  <button class="btn btn-primary mt-2" (click)="openPopup('cotizadorPopUpVehiculos')">Vehículos</button>
+                  <button class="btn btn-primary mt-2" (click)="abrirPopup('popUp-cotizacion-vehiculos', formularioCotizacion.get('idCliente').value)">Vehículos</button>
                 </div>
               </div>
               <div class="form-group">
                 <label for="fecha" class="font-weight-bold">Patente:</label>
                 <div>
-                  <input type="text" id="fecha" class="form-control">
+                  <input type="text" id="patente" formControlName="patente" class="form-control">
                 </div>
               </div>
               <div class="form-row">
-                <label for="id" class="font-weight-bold">Marca:</label>
+                <label for="marca" class="font-weight-bold">Marca:</label>
                 <div>
-                  <input type="text" id="id" class="form-control">
+                  <input type="text" id="marca" formControlName="marca" class="form-control">
                 </div>
-                <label for="id" class="font-weight-bold">Modelo:</label>
+                <label for="modelo" class="font-weight-bold">Modelo:</label>
                 <div>
-                  <input type="text" id="id" class="form-control">
+                  <input type="text" id="modelo" formControlName="modelo"  class="form-control">
                 </div>
               </div>
               <div class="form-row">
-                <label for="estado" class="font-weight-bold">Color:</label>
+                <label for="color" class="font-weight-bold">Color:</label>
                 <div>
-                  <input type="text" id="estado" class="form-control">
+                  <input type="text" id="color"   formControlName="color" class="form-control">
                 </div>
-                <label for="estado" class="font-weight-bold">Año:</label>
+                <label for="anio" class="font-weight-bold">Año:</label>
                 <div>
-                  <input type="text" id="estado" class="form-control">
+                  <input type="text" id="anio" formControlName="anio" class="form-control">
                 </div>
               </div>
               <div class="form-group">
-                <label for="fecha" class="font-weight-bold">Nro. de Serie:</label>
+                <label for="numeroserie" class="font-weight-bold">Nro. de Serie:</label>
                 <div>
-                  <input type="text" id="fecha" class="form-control">
+                  <input type="text" id="numeroserie" formControlName="numeroserie" class="form-control">
                 </div>
               </div>
               <div class="form-group">

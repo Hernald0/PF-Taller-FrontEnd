@@ -5,11 +5,12 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-
 import esLocale from '@fullcalendar/core/locales/es';
+
 import { Event } from '../../../models/event.model';
-import { FullCalendar } from 'primeng/components/fullcalendar/fullcalendar';
 import Tooltip from 'tooltip.js'
+import { FullCalendar } from 'primeng/components/fullcalendar/fullcalendar';
+
 import * as $ from 'jquery';
 
 @Component({

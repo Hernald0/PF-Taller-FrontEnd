@@ -1,0 +1,5 @@
+.table-filter th input,
+.table-filter th p-calendar input {
+    width: 100%;
+    box-sizing: border-box;
+}

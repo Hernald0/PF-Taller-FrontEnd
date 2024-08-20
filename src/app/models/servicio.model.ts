@@ -1,9 +1,34 @@
 export class Servicio {
-    id : number;               
-    nombre : string;
-    descripcion: string;
-    fechaAlta : Date;
-    usuarioAlta : string;
-    fechaBaja : Date;
-    usuarioBaja : string;  
+  public id: number;
+  public nombre: string;
+  public descripcion: string;
+  public fechaAlta?: Date;
+  public usuarioAlta?: string;
+  public fechaBaja?: Date;
+  public usuarioBaja?: string;
+  public checked: boolean;
+
+  constructor(
+    id?: number,
+    nombre?: string,
+    descripcion?: string,
+    checkedOrFechaAlta?: boolean | Date,
+    usuarioAlta?: string,
+    fechaBaja?: Date,
+    usuarioBaja?: string
+  ) {
+    this.id = id;
+    this.nombre = nombre;
+    this.descripcion = descripcion;
+
+    if (typeof checkedOrFechaAlta === 'boolean') {
+      this.checked = checkedOrFechaAlta;
+    } else {
+      this.fechaAlta = checkedOrFechaAlta;
+      this.usuarioAlta = usuarioAlta;
+      this.fechaBaja = fechaBaja;
+      this.usuarioBaja = usuarioBaja;
+      this.checked = false;
+    }
   }
+}

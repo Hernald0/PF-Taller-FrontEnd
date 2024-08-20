@@ -1,0 +1,119 @@
+
+<div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Listado de Turnos
+          
+        </div>
+        
+        <div class="card-body">
+           
+            
+            
+            <!-- turnos.component.html -->
+            <form [formGroup]="turnosForm">
+                <button type="button" [routerLink]="['/turno']" routerLinkActive="router-link-active" class="btn btn-primary">Nuevo Turno</button>
+
+                <p-table [value]="turnosFiltrados" [paginator]="true" [rows]="10" class="table-filter">
+                <ng-template pTemplate="header">
+                    <tr>
+                    <th pSortableColumn="id">Identificador <p-sortIcon field="id"></p-sortIcon></th>
+                    <th pSortableColumn="nombre">Nombre/Apellido/Razón Social <p-sortIcon field="nombre"></p-sortIcon></th>
+                    <th pSortableColumn="patente">Patente <p-sortIcon field="patente"></p-sortIcon></th>
+                    <th pSortableColumn="fecha"  >Fecha <p-sortIcon field="fecha" ></p-sortIcon></th>
+                    <th pSortableColumn="hora">Hora <p-sortIcon field="hora"></p-sortIcon></th>
+                    <th pSortableColumn="hora">Estado <p-sortIcon field="status"></p-sortIcon></th>
+                    <th>Acciones</th>
+                    </tr>
+                    <tr>
+                    <th>
+                        <input pInputText type="text" formControlName="id" placeholder="Buscar por Identificador">
+                    </th>
+                    <th>
+                        <input pInputText type="text" formControlName="nombre" placeholder="Buscar por Nombre/Apellido/Razón Social">
+                    </th>
+                    <th>
+                        <input pInputText type="text" formControlName="patente" placeholder="Buscar por Patente">
+                    </th>
+                    <th>
+                        <input type="date" id="fecha" formControlName="fecha"  />
+                    </th>
+                    <th>
+                        
+                        <input pInputText type="text" formControlName="hora" placeholder="Buscar por Hora">
+                    </th>
+                    <th>
+                        <input pInputText type="text" formControlName="status" placeholder="Buscar por Estado">
+                    </th>
+                    <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-turno>
+                    <tr>
+                    <td>{{ turno.id }}</td>
+                    <td>{{ turno.cliente.persona.nombre }}</td>
+                    <td>{{ turno.vehiculo.patente }}</td>
+                    <td>{{ turno.fecha | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ turno.hora }}</td>
+                    <td>{{ turno.status }}</td>
+                    <td>
+
+                        <button type="button" [routerLink]="['/recepcionvehiculo']" routerLinkActive="router-link-active" class="btn btn-primary" (click)="recepcion(turno)">Recepción</button>
+                        <button pButton type="button" [disabled]="turno.status === 'cancelado'" label="Modificar" (click)="modificar(turno)"></button>
+                        <button pButton type="button" [disabled]="turno.status === 'cancelado'" label="Cancelar" (click)="cancelar(turno)"></button>
+                    </td>
+                    </tr>
+                </ng-template>
+                </p-table>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+  <p-dialog header="Modificar Turno" [(visible)]="mostrarModalModificar" [modal]="true" appendTo="body" [style]="{width: '50%'}">
+   
+    <form [formGroup]="formModificarTurno">
+        <div class="form-group">        
+         
+           
+            <div class="text-center mb-3">
+                <h4>Seleccionar Fecha y Horario</h4>   
+            </div>
+
+            <div class="form-group">
+            <div class="col-md-12 col-12">
+                <div class="row">
+                <div class="col-md-9 col-9">
+                    
+                        
+                        <p-calendar  formControlName="fechaNueva" 
+                        class="max-w-full"  
+                        dateFormat="dd-mm-yyyy"      
+                        [inline]="true" 
+                        [showWeek]="true" 
+                        (onSelect) = "recuperarHorarios($event)"
+                        [minDate]="minDate" ></p-calendar>
+                  
+                </div>    
+                <div class="col-md-9 col-3">    
+                    <p-listbox 
+                        [options]="listaHorarios" 
+                        formControlName="horarioSeleccionado" 
+                        optionLabel="hora" 
+                        [style]="{ width: '15rem' }" 
+                        [listStyle]="{ 'max-height': '220px' }">
+                    </p-listbox> 
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+        <p-footer>
+            <button pButton type="button" label="Guardar" (click)="guardar()"></button>
+        </p-footer>
+    </form>
+  </p-dialog>
+  
+  <p-confirmDialog header="Confirmación"  appendTo="body"  icon="pi pi-exclamation-triangle"></p-confirmDialog>

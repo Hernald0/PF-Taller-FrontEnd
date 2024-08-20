@@ -1,0 +1,19 @@
+.container-fluid {
+    background-color: #343a40;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .text-white {
+    color: white;
+  }
+  
+  .table {
+    background-color: #212529;
+    color: white;
+  }
+  
+  .btn {
+    margin-right: 10px;
+  }
+  

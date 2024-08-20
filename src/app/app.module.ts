@@ -52,6 +52,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import { ComponentsModule } from './components/components.module';
 import { AuthService } from './services/auth2.service';
 import { AuthGuard } from './components/auth/auth.guard';
+
 //import { LoginGuard } from './services/login-guard.service'
 //-----------------------------
 
@@ -81,6 +82,7 @@ export function configFactory(provider: DdrConfigurationService) {
     SanitizePipe,
     ManageEventsComponent,
     MenubarComponent
+    
   ],
   imports: [
     BrowserModule,

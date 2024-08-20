@@ -1,0 +1,28 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .table {
+    margin-top: 10px;
+  }
+  
+  .btn-group .btn {
+    margin: 5px;
+  }
+  
+  .btn-group .btn.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .card {
+    margin-top: 20px;
+  }
+  
+  .card-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  

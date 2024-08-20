@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
   import { ConfirmationService, MessageService } from 'primeng/api';
   
   //----------------------
-  import { EstadoCivil } from 'src/app/models/EstadoCivil.model';
+  import { EstadoCivil } from 'src/app/models/estadocivil.model';
   import { Genero } from 'src/app/models/genero.model';
   import { Localidad } from 'src/app/models/localidad.model';
   import { Empleado } from 'src/app/models/empleado.model';

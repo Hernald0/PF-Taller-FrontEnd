@@ -1,0 +1,145 @@
+<div class="card">
+    <div class="card-header">
+      <h2>Venta</h2>
+      <div class="float-right">
+        <button pButton label="Volver" icon="pi pi-arrow-left" class="ui-button-secondary"></button>
+        <button pButton label="Cancelar" icon="pi pi-times" class="ui-button-secondary"></button>
+        <button pButton label="Confirmar" icon="pi pi-check" class="ui-button-primary"></button>
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <!-- Formulario Principal -->
+      <form [formGroup]="ventaForm">
+        <div class="form-row">
+          <div class="col-md-6">
+            <label for="fechaEmision">Fecha emisión:</label>
+            <p-calendar id="fechaEmision" formControlName="fechaEmision" dateFormat="dd/mm/yy"></p-calendar>
+          </div>
+          <div class="col-md-6">
+            <label for="vendedor">Vendedor:</label>
+            <p-dropdown id="vendedor" formControlName="vendedor" [options]="vendedores"></p-dropdown>
+          </div>
+        </div>
+  
+        <div class="form-group mt-3">
+          <label for="cliente">Buscar cliente:</label>
+          <div class="input-group">
+            <input type="text" pInputText formControlName="cliente">
+            <div class="input-group-append">
+              <button pButton type="button" icon="pi pi-plus"></button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Tabla de Ítems -->
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th>Item</th>
+                <th>Importe</th>
+                <th>Cantidad</th>
+                <th>Tipo</th>
+                <th>Bonif.</th>
+                <th>Subtotal</th>
+                <th>IVA</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td>
+                  <p-dropdown [options]="productos" [(ngModel)]="item.producto"></p-dropdown>
+                </td>
+                <td><input pInputText [(ngModel)]="item.importe"></td>
+                <td><input pInputText [(ngModel)]="item.cantidad"></td>
+                <td><p-dropdown [options]="tipos" [(ngModel)]="item.tipo"></p-dropdown></td>
+                <td><input pInputText [(ngModel)]="item.bonificacion"></td>
+                <td>{{ calcularSubtotal(item) }}</td>
+                <td>{{ calcularIVA(item) }}</td>
+                <td><button pButton icon="pi pi-plus"></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Resumen -->
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th colspan="2">Resumen</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Descuento</td>
+                  <td><input pInputText formControlName="descuento" placeholder="%"></td>
+                </tr>
+                <tr>
+                  <td>Repuestos</td>
+                  <td>{{ calcularRepuestos() }}</td>
+                </tr>
+                <tr>
+                  <td>Mano de obra</td>
+                  <td>{{ calcularManoDeObra() }}</td>
+                </tr>
+                <tr>
+                  <td>Total neto</td>
+                  <td>{{ calcularTotalNeto() }}</td>
+                </tr>
+                <tr>
+                  <td>IVA</td>
+                  <td>{{ calcularIVA() }}</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td>{{ calcularTotal() }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+          <!-- Sección de Pago -->
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th colspan="2">Pago</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Efectivo</td>
+                  <td><input pInputText formControlName="efectivo"></td>
+                </tr>
+                <tr>
+                  <td>Cuenta corriente</td>
+                  <td><p-dropdown formControlName="cuentaCorriente" [options]="cuentas"></p-dropdown></td>
+                </tr>
+                <tr>
+                  <td>Total pago</td>
+                  <td>{{ calcularTotalPago() }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+  
+        <!-- Observaciones -->
+        <div class="form-group mt-3">
+          <label for="observaciones">Observaciones:</label>
+          <textarea pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+        </div>
+  
+        <!-- Comentario Interno -->
+        <div class="form-group mt-3">
+          <label for="comentarioInterno">Comentario Interno:</label>
+          <textarea pInputTextarea id="comentarioInterno" formControlName="comentarioInterno"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+  

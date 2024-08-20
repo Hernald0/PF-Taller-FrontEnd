@@ -1,0 +1,153 @@
+<!-- Paso 1: Información del Cliente y del Vehículo -->
+<div class="container" *ngIf="step === 1">
+    <h2>Información del Cliente y del Vehículo</h2>
+    <form (ngSubmit)="nextStep()">
+      <!-- Información del Cliente -->
+      <div class="form-group">
+        <label for="firstName">Nombre:</label>
+        <input type="text" class="form-control" id="firstName" [(ngModel)]="customer.firstName" name="firstName" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Apellido:</label>
+        <input type="text" class="form-control" id="lastName" [(ngModel)]="customer.lastName" name="lastName" required>
+      </div>
+      <div class="form-group">
+        <label for="razonsocial">Razón Social:</label>
+        <input type="text" class="form-control" id="razonsocial" [(ngModel)]="customer.razonsocial" name="razonsocial" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Número de Teléfono:</label>
+        <input type="tel" class="form-control" id="phone" [(ngModel)]="customer.phone" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" class="form-control" id="email" [(ngModel)]="customer.email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="personType">Tipo de Persona:</label>
+        <select class="form-control" id="personType" [(ngModel)]="customer.personType" name="personType" required>
+          <option value="fisica">Física</option>
+          <option value="juridica">Jurídica</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="identifierType">Tipo de Identificador:</label>
+        <select class="form-control" id="identifierType" [(ngModel)]="customer.identifierType" name="identifierType" required>
+          <option value="dni">DNI</option>
+          <option value="cuit">CUIT</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="identifierNumber">Número de Identificador:</label>
+        <input type="text" class="form-control" id="identifierNumber" [(ngModel)]="customer.identifierNumber" name="identifierNumber" required>
+      </div>
+  
+      <!-- Información del Vehículo -->
+      <div *ngIf="existingCustomer">
+        <h3>Seleccionar Vehículo</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patente</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vehicle of customer.vehicles" (click)="selectVehicle(vehicle)">
+              <td>{{ vehicle.patente }}</td>
+              <td>{{ vehicle.marca }}</td>
+              <td>{{ vehicle.modelo }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary" (click)="addNewVehicle()">Agregar Nuevo Vehículo</button>
+      </div>
+      <button type="submit" class="btn btn-primary">Siguiente</button>
+    </form>
+  </div>
+  <!-- Paso 2: Motivo de la Consulta -->
+  
+<!-- Paso 2: Motivo de la Consulta -->
+<div class="container" *ngIf="step === 2">
+    <h2>Motivo de la Consulta</h2>
+    <form (ngSubmit)="nextStep()">
+      <div class="form-group">
+        <label for="reason">Motivo:</label>
+        <select class="form-control" id="reason" [(ngModel)]="reason" name="reason" required>
+          <option *ngFor="let predefinedReason of predefinedReasons" [value]="predefinedReason">{{ predefinedReason }}</option>
+        </select>
+        <input type="text" class="form-control" id="reasonDetail" [(ngModel)]="reasonDetail" name="reasonDetail" placeholder="Detalles adicionales">
+      </div>
+      <button type="button" class="btn btn-secondary" (click)="edit()">Volver</button>
+      <button type="submit" class="btn btn-primary">Siguiente</button>
+    </form>
+  </div>
+  
+  <!-- Paso 3: Selección de Servicios -->
+  <div class="container" *ngIf="step === 3">
+    <h2>Seleccionar Servicios</h2>
+    <form (ngSubmit)="nextStep()">
+      <div class="form-group">
+        <label for="services">Servicios:</label>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Seleccionar</th>
+              <th>Servicio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of services">
+              <td>
+                <input type="checkbox" [(ngModel)]="service.selected" name="service{{ service.id }}">
+              </td>
+              <td>{{ service.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button type="button" class="btn btn-secondary" (click)="edit()">Volver</button>
+      <button type="submit" class="btn btn-primary">Siguiente</button>
+    </form>
+  </div>
+  
+  <!-- Paso 4: Selección de Horarios -->
+  <div class="container" *ngIf="step === 4">
+    <h2>Seleccionar Horario</h2>
+    <form (ngSubmit)="nextStep()">
+      <div class="form-group">
+        <label for="appointmentDate">Seleccionar Fecha:</label>
+        <p-calendar [(ngModel)]="appointmentDate" [minDate]="minDate" [maxDate]="maxDate" [disabledDays]="[0, 6]" [disabledDates]="disabledDates"></p-calendar>
+      </div>
+      <div class="form-group">
+        <label for="appointmentTime">Seleccionar Hora:</label>
+        <div class="btn-group btn-group-toggle" role="group" aria-label="Horarios Disponibles">
+          <button type="button" class="btn btn-outline-primary" *ngFor="let timeSlot of availableTimeSlots" (click)="appointmentTime = timeSlot" [ngClass]="{'active': appointmentTime === timeSlot}">
+            {{ timeSlot }}
+          </button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary" (click)="edit()">Volver</button>
+      <button type="submit" class="btn btn-primary">Siguiente</button>
+    </form>
+  </div>
+  
+  <!-- Paso 5: Resumen -->
+  <div class="container" *ngIf="step === 5">
+    <h2>Resumen</h2>
+    <div class="card">
+      <div class="card-body">
+        <p><strong>Nombre:</strong> {{ customer.firstName }} {{ customer.lastName }}</p>
+        <p><strong>Correo Electrónico:</strong> {{ customer.email }}</p>
+        <p><strong>Vehículo:</strong> {{ selectedVehicle.marca }} {{ selectedVehicle.modelo }} ({{ selectedVehicle.patente }})</p>
+        <p><strong>Motivo:</strong> {{ reason }}</p>
+        <p><strong>Detalles Adicionales:</strong> {{ reasonDetail }}</p>
+        <p><strong>Servicios Seleccionados:</strong> {{ selectedServicesNames }}</p>
+        <p><strong>Fecha de la Cita:</strong> {{ appointmentDate | date }}</p>
+        <p><strong>Hora de la Cita:</strong> {{ appointmentTime }}</p>
+      </div>
+    </div>
+    <button class="btn btn-secondary" (click)="edit()">Volver</button>
+    <button class="btn btn-primary" (click)="confirm()">Confirmar</button>
+  </div>

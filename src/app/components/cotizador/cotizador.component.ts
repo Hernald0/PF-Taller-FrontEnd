@@ -43,11 +43,20 @@ export class CotizadorComponent implements OnInit {
                                                             fechaCotizacion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                             estadoCotizacion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                             /* */
+                                                            idCliente: new FormControl(null),
+                                                            nombreCliente: new FormControl(null),
                                                             clienteDireccion: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                             clientenroDireccion:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                             clienteTelefono: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                             clienteCelular: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
                                                             localidad:new FormControl(null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])),
+                                                            patente: new FormControl(null),
+                                                            marca: new FormControl(null),
+                                                            modelo: new FormControl(null),
+                                                            color: new FormControl(null),
+                                                            anio: new FormControl(null),
+                                                            numeroserie: new FormControl(null)
+
                                                             /*
                                                             fecNacimiento: new FormControl(null),                                                                                       
                                                             dpto : new FormControl(null),                                                  
@@ -65,10 +74,10 @@ export class CotizadorComponent implements OnInit {
 
   }
 
-  abrirPopup(tipo: string) {
+  abrirPopup(tipo: string, parametro?: string) {
     console.log('abrirPopup');
     this.mostrarPopup = true;
-    this.datosService.cargarDatos(tipo).subscribe(
+    this.datosService.cargarDatos(tipo, parametro).subscribe(
       (res) => {
         console.log('resultado abrirPopup', res);
         this.datos = res;
@@ -104,13 +113,32 @@ export class CotizadorComponent implements OnInit {
 
         if (itemSeleccionado.clase === 'Cliente') {
           this.formularioCotizacion.patchValue({
-            clienteDireccion: datos.persona.direccion,
+            idCliente: datos.id,
+            nombreCliente: datos.persona.apellido + ', ' + datos.persona.nombre,
+            clienteDireccion: [datos.persona.direccion, 
+                               datos.persona.nroDireccion, 
+                               datos.persona.dpto, 
+                               datos.persona.piso, 
+                               datos.persona.barrio, 
+                               datos.persona.localidad].filter(val => val).join(' '),
             clientenroDireccion: datos.persona.nroDireccion,
             clienteTelefono: datos.persona.telfijo,
             clienteCelular:  datos.persona.telcelular
           });
         } else if (itemSeleccionado.clase === 'Empleado') {
           // Lógica similar para asignar datos de empleado
+        }
+        else if (itemSeleccionado.clase === 'Vehiculo') {
+        /*  this.formularioCotizacion.patchValue({ 
+
+            patente : datos.
+            marca
+            modelo
+            color
+            anio
+            numeroserie
+          
+          });*/
         }
       });
 

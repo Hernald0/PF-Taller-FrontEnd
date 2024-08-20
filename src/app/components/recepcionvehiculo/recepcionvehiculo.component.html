@@ -1,0 +1,164 @@
+<div class="container p-4" >
+    <h3>Orden</h3>
+    <div class="form-group row">
+      <div class="col-md-4">
+        <label for="fechaIngreso">Fecha ingreso:</label>
+        <p-calendar [(ngModel)]="fechaIngreso" inputId="fechaIngreso"></p-calendar>
+      </div>
+      <div class="col-md-4">
+        <label for="fechaEgreso">Fecha egreso:</label>
+        <p-calendar [(ngModel)]="fechaEgreso" inputId="fechaEgreso"></p-calendar>
+      </div>
+      <div class="col-md-4">
+        <label for="tecnico">Técnico:</label>
+        <p-dropdown [options]="tecnicos" [(ngModel)]="tecnicoSeleccionado" placeholder="Seleccionar"></p-dropdown>
+      </div>
+    </div>
+  
+    <div class="form-group row">
+      <div class="col-md-4">
+        <label for="buscarCliente">Buscar cliente:</label>
+        <input type="text" id="buscarCliente" class="form-control" placeholder="Buscar cliente...">
+      </div>
+      <div class="col-md-4">
+        <label for="buscarVehiculo">Buscar vehículo:</label>
+        <input type="text" id="buscarVehiculo" class="form-control" placeholder="Buscar vehículo...">
+      </div>
+    </div>
+  
+    <div class="form-group row">
+      <div class="col-md-4">
+        <label for="concepto">Concepto:</label>
+        <p-dropdown [options]="conceptos" [(ngModel)]="conceptoSeleccionado" placeholder="Seleccionar"></p-dropdown>
+      </div>
+      <div class="col-md-4">
+        <label for="combustible">Combustible:</label>
+        <p-dropdown [options]="combustibles" [(ngModel)]="combustibleSeleccionado" placeholder="Seleccionar"></p-dropdown>
+      </div>
+      <div class="col-md-4">
+        <label for="recordatorio">Recordatorio:</label>
+        <p-button label="Programar"></p-button>
+      </div>
+    </div>
+  
+    <div class="form-group row">
+      <div class="col-md-4">
+        <label for="kilometraje">Kilometraje:</label>
+        <input type="text" id="kilometraje" class="form-control" [(ngModel)]="kilometraje">
+      </div>
+      <div class="col-md-4">
+        <label for="nombreInspector">Nombre Inspector:</label>
+        <input type="text" id="nombreInspector" class="form-control" [(ngModel)]="nombreInspector">
+      </div>
+    </div>
+  
+    <div class="form-group row">
+      <div class="col-md-4">
+        <p-checkbox label="Cambiar Aceite" [(ngModel)]="cambiarAceite"></p-checkbox>
+      </div>
+      <div class="col-md-4">
+        <p-checkbox label="Chapería" [(ngModel)]="chaperia"></p-checkbox>
+      </div>
+    </div>
+  
+     <!-- Tabla de items -->
+  <p-table [value]="items" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Item</th>
+        <th>Importe</th>
+        <th>Cantidad</th>
+        <th>Tipo</th>
+        <th>Bonif.</th>
+        <th>Subtotal</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+      <tr>
+        <td>
+          <p-autoComplete [(ngModel)]="items[rowIndex].nombre" 
+                          [suggestions]="filteredItems" 
+                          (completeMethod)="search($event)" 
+                          (onSelect)="onSelectItem($event, rowIndex)" 
+                          field="nombre" 
+                          placeholder="Buscar Producto o Servicio...">
+          </p-autoComplete>
+        </td>
+        <td>{{items[rowIndex].importe | currency}}</td>
+        <td><input type="number" [(ngModel)]="items[rowIndex].cantidad" class="form-control" 
+                   (input)="updateSubtotal(rowIndex)"></td>
+        <td>{{items[rowIndex].tipo}}</td>
+        <td><input type="number" [(ngModel)]="items[rowIndex].bonificacion" class="form-control" 
+                   (input)="updateSubtotal(rowIndex)"></td>
+        <td>{{items[rowIndex].subtotal | currency}}</td>
+        <td><button pButton icon="pi pi-trash" class="p-button-danger" (click)="deleteItem(rowIndex)"></button></td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr>
+        <td colspan="6" style="text-align:right">
+          <button pButton icon="pi pi-plus" label="Agregar Item" (click)="addItem()"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h5>Resumen</h5>
+        <div class="row">
+          <div class="col-md-6">Descuento:</div>
+          <div class="col-md-6">{{resumen.descuento | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Repuestos:</div>
+          <div class="col-md-6">{{resumen.repuestos | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Mano de obra:</div>
+          <div class="col-md-6">{{resumen.manoObra | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Total neto:</div>
+          <div class="col-md-6">{{resumen.totalNeto | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">IVA:</div>
+          <div class="col-md-6">{{resumen.iva | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-6"><strong>Total:</strong></div>
+          <div class="col-md-6"><strong>{{resumen.total | currency}}</strong></div>
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <h5>Pago</h5>
+        <div class="form-group">
+          <label for="pagoEfectivo">Efectivo:</label>
+          <input type="text" id="pagoEfectivo" class="form-control" [(ngModel)]="pago.efectivo">
+        </div>
+        <div class="form-group">
+          <label for="cuentaCorriente">Cuenta corriente:</label>
+          <p-dropdown [options]="cuentasCorrientes" [(ngModel)]="pago.cuentaCorriente" placeholder="Seleccionar"></p-dropdown>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Total pago:</div>
+          <div class="col-md-6">{{pago.total | currency}}</div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="form-group mt-4">
+      <label for="observaciones">Observaciones:</label>
+      <textarea id="observaciones" class="form-control" rows="3" [(ngModel)]="observaciones"></textarea>
+    </div>
+  
+    <div class="text-right mt-4">
+      <button pButton label="Volver" class="p-button-secondary"></button>
+      <button pButton label="Cancelar" class="p-button-danger"></button>
+      <button pButton label="Confirmar" class="p-button-primary"></button>
+    </div>
+  </div>
+  

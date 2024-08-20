@@ -1,1 +1,67 @@
-<p>usuarios works!</p>
+<div class="container-fluid text-white">
+    <h3 class="mb-4">Usuario</h3>
+    
+    <form [formGroup]="usuarioForm" (ngSubmit)="guardarUsuario()">
+      <!-- Contenido del formulario -->
+      <div class="row">
+        <!-- Datos del Usuario -->
+        <div class="col-md-4">
+          <h5>Datos del usuario</h5>
+          <div class="form-group">
+            <label for="nombre">Nombre*</label>
+            <input id="nombre" formControlName="nombre" pInputText class="form-control" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="usuario">Usuario*</label>
+            <input id="usuario" formControlName="usuario" pInputText class="form-control" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="clave">Clave*</label>
+            <input id="clave" formControlName="clave" pPassword class="form-control" type="password" />
+          </div>
+          <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <input id="tipo" formControlName="tipo" pInputText class="form-control" type="text" />
+          </div>
+        </div>
+  
+        <!-- Restricciones -->
+        <div class="col-md-4">
+          <h5>Restricciones</h5>
+          <div class="form-check">
+            <input id="puedeCrear" formControlName="puedeCrear" type="checkbox" pCheckbox class="form-check-input" />
+            <label for="puedeCrear" class="form-check-label">Puede crear</label>
+          </div>
+          <div class="form-check">
+            <input id="puedeEditar" formControlName="puedeEditar" type="checkbox" pCheckbox class="form-check-input" />
+            <label for="puedeEditar" class="form-check-label">Puede editar</label>
+          </div>
+          <div class="form-check">
+            <input id="puedeEliminar" formControlName="puedeEliminar" type="checkbox" pCheckbox class="form-check-input" />
+            <label for="puedeEliminar" class="form-check-label">Puede eliminar</label>
+          </div>
+          <div class="form-check">
+            <input id="puedeVerPrecios" formControlName="puedeVerPrecios" type="checkbox" pCheckbox class="form-check-input" />
+            <label for="puedeVerPrecios" class="form-check-label">Puede ver precios</label>
+          </div>
+        </div>
+  
+        <!-- Acceso a Módulos -->
+        <div class="col-md-4">
+          <h5>Acceso a módulos</h5>
+          <div *ngFor="let modulo of modulos; let i = index" class="form-check">
+            <input [id]="'modulo' + i" [formControlName]="i" type="checkbox" pCheckbox class="form-check-input" />
+            <label [for]="'modulo' + i" class="form-check-label">{{ modulo }}</label>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Botones de Acción -->
+      <div class="mt-4 text-right">
+        <button pButton type="button" label="Volver" icon="pi pi-arrow-left" class="p-button-secondary"></button>
+        <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-danger"></button>
+        <button pButton type="submit" label="Confirmar" icon="pi pi-check" class="p-button-success"></button>
+      </div>
+    </form>
+  </div>
+  

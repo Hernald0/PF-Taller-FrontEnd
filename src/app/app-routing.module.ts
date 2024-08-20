@@ -21,6 +21,14 @@ import { EstadocivilComponent } from './components/estadocivil/estadocivil.compo
 import { GenerosComponent } from './components/generos/generos.component';
 import { TipoidentificadorComponent } from './components/tipoidentificador/tipoidentificador.component';
 import { CotizadorComponent } from './components/cotizador/cotizador.component';
+import { ClientevehiculosComponent } from './components/clientevehiculos/clientevehiculos.component';
+import { TurnoComponent } from './components/turno/turno.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
+import { TurnosdashboardComponent } from './components/turnosdashboard/turnosdashboard.component';
+import { VentasComponent } from './components/ventas/ventas.component';
+import { OrdenesComponent } from './components/ordenes/ordenes.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { RecepcionvehiculoComponent } from './components/recepcionvehiculo/recepcionvehiculo.component';
 
 const routes: Routes = [
   { path: 'events', component: EventsComponent, canActivate: [AuthGuard]  },
@@ -28,6 +36,7 @@ const routes: Routes = [
   { path: 'edit-event', component: AddEditEventComponent, canActivate: [AuthGuard] },
   { path: 'manage-events', component: ManageEventsComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
+  { path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard]  },
   { path: 'personas', component: PersonaListComponent, canActivate: [AuthGuard]  },
   { path: 'aseguradoras', component: AseguradoraComponent, canActivate: [AuthGuard]  },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
@@ -35,13 +44,20 @@ const routes: Routes = [
   { path: 'estadocivil', component: EstadocivilComponent, canActivate: [AuthGuard]  },
   { path: 'servicios', component: ServiciosComponent, canActivate: [AuthGuard]  },
   { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard]  },
+  { path: 'clientevehiculos/:clienteId', component: ClientevehiculosComponent , canActivate: [AuthGuard] },
   { path: 'vehiculos', component: VehiculosComponent , canActivate: [AuthGuard] },
   { path: 'talleres', component: TalleresComponent, canActivate: [AuthGuard]  },
   { path: 'marcas', component: MarcasComponent, canActivate: [AuthGuard]  },
   { path: 'modelos/:marcaId', component: ModelosComponent , canActivate: [AuthGuard] },
   { path: 'generos', component: GenerosComponent, canActivate: [AuthGuard]  },
+  { path: 'schedule', component: ScheduleComponent, canActivate: [AuthGuard] }, 
+  { path: 'turno', component: TurnoComponent, canActivate: [AuthGuard] },
+  { path: 'turnosdashboard', component: TurnosdashboardComponent, canActivate: [AuthGuard] },
+  { path: 'recepcionvehiculo', component: RecepcionvehiculoComponent, canActivate: [AuthGuard] },
   { path: 'cotizador', component: CotizadorComponent, canActivate: [AuthGuard]  },
   { path: 'tipoidentificador', component: TipoidentificadorComponent, canActivate: [AuthGuard]  },
+  { path: 'ventas', component: VentasComponent, canActivate: [AuthGuard]  },
+  { path: 'ordenes', component: OrdenesComponent, canActivate: [AuthGuard]  },
   { path: '**', pathMatch: 'full', redirectTo: 'tipoidentificador' },
   //{ path: '', redirectTo: '/events', pathMatch: 'full' },
 ];

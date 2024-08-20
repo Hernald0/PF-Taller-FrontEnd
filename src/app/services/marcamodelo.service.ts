@@ -63,9 +63,9 @@ putModelo(payload: mvvmModelovehiculo) {
   return this.http.put<Modelovehiculo>(this.endPoint + "updModeloVehiculo/", payload)
 }
 
-getModelos(){
-  return this.http.get<Modelovehiculo[]>(this.endPoint);
-          
+getModelos(idMarca: number){
+  console.log(`${this.endPoint}+"modelos/"+${idMarca}`);
+  return  this.http.get<Marca>(`${this.endPoint}marcaModelosVehiculo/${idMarca}`) ;
 }
 
 getModelo(id: number):Observable<Modelovehiculo>{

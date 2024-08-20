@@ -1,0 +1,23 @@
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-header h2 {
+    margin: 0;
+  }
+  
+  .table th,
+  .table td {
+    vertical-align: middle;
+  }
+  
+  .table-responsive {
+    margin-top: 1rem;
+  }
+  
+  .ui-button-secondary {
+    margin-right: 0.5rem;
+  }
+  

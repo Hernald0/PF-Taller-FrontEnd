@@ -13,7 +13,7 @@
           <div  class="row"   >
             <div    class="form-group col-3 md:col-3" >
               
-              <label class="etiqueta" for="idMarca">#ID </label> 
+              <label class="etiqueta" for="idMarca">Código </label> 
               <input   id="idMarca" type="text"   class="form-control" value="{{marca?.id}}" readonly="true">
              
             </div>
@@ -32,7 +32,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     
-                    <th pSortableColumn="id" style="width:20%">#ID <p-sortIcon field="id"></p-sortIcon></th>
+                    <th pSortableColumn="id" style="width:20%">Código <p-sortIcon field="id"></p-sortIcon></th>
                     <th>Nombre </th>            
                     <th>Acciones</th>
                 </tr>
@@ -84,7 +84,7 @@
         
         <div class="row">
           <div  *ngIf="id>0" class="field col-12 md:col-6">
-            <label class="etiqueta">#ID</label>
+            <label class="etiqueta">Código</label>
             <input  [readonly]="true"  type="number" formControlName="id" class="form-control" >                
           </div>
         </div>           
