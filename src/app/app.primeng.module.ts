@@ -15,6 +15,7 @@ import { ProgressSpinnerModule} from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 
 
+
 @NgModule({
   imports: [
     TableModule,
@@ -30,7 +31,8 @@ import { StepsModule } from 'primeng/steps';
     ToastModule,
     MessageModule,
     ProgressSpinnerModule,
-    StepsModule
+    StepsModule,
+    
   ],
   exports: [
     TableModule,
@@ -44,7 +46,8 @@ import { StepsModule } from 'primeng/steps';
     ConfirmDialogModule,
     DialogModule,
     ToastModule,
-    MessageModule
+    MessageModule,
+ 
   ]
 })
 export class AppPrimeNgModule{

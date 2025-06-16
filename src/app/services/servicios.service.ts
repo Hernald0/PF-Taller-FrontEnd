@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Servicio } from '../models/servicio.model';
+import { ItemDto } from '../models/ItemDto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ServiciosService {
 
   constructor(private http:HttpClient) { }
 
-  endPoint: string = environment.baseUrl+"/Taller/";
+  endPoint: string = environment.baseUrl+"/ServiciosRepuestos/";
   formData:Servicio = new Servicio();
   //listaServicios: Servicio[];
 
@@ -43,6 +44,14 @@ export class ServiciosService {
   deleteServicio(id: number){
     console.log(this.endPoint+'delServicio'+'/'+id);
     return this.http.delete(`${this.endPoint+'delServicio'}/${id}`);
+  }
+
+  searchFilterRepServ(filterString: string){
+    console.log('filterString', filterString);
+    
+    const params = new HttpParams().set('pBusqueda', filterString);
+    return this.http.get<ItemDto[]>(this.endPoint+'findFilterServReps', { params }) 
+
   }
 
   /*

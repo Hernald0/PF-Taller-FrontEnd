@@ -95,6 +95,7 @@ formatDate(date: Date): string {
      // Copia inicial de los turnos
   }
 
+  /*
   aplicarFiltros() {
     const { id, nombre, patente, fecha, hora } = this.turnosForm.value;
 
@@ -109,7 +110,29 @@ formatDate(date: Date): string {
           );
         });
    
-  }
+  }*/
+
+        aplicarFiltros(limpiar: boolean = false): void {
+          if (limpiar) {
+            this.turnosForm.reset(); // Limpia todos los campos del formulario
+          }
+          
+          const { id, nombre, patente, fecha, hora } = this.turnosForm.value;
+        
+          this.turnosFiltrados = this.turnos.filter(turno => {
+            const nombreCliente = turno.cliente && turno.cliente.persona ? turno.cliente.persona.nombre : null;
+            const patenteVehiculo = turno.vehiculo ? turno.vehiculo.patente : null;
+        
+            return (
+              (!id || turno.id.toString().includes(id)) &&
+              (!nombre || (nombreCliente && nombreCliente.toLowerCase().includes(nombre.toLowerCase()))) &&
+              (!patente || (patenteVehiculo && patenteVehiculo.toLowerCase().includes(patente.toLowerCase()))) &&
+              (!fecha || new Date(turno.fecha).toLocaleDateString() === new Date(fecha).toLocaleDateString()) &&
+              (!hora || turno.hora.toString().includes(hora))
+            );
+          });
+        }
+
 
   nuevo() {
     // Lógica para crear un nuevo turno

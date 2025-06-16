@@ -1,145 +1,285 @@
 <div class="card">
-    <div class="card-header">
-      <h2>Venta</h2>
-      <div class="float-right">
-        <button pButton label="Volver" icon="pi pi-arrow-left" class="ui-button-secondary"></button>
-        <button pButton label="Cancelar" icon="pi pi-times" class="ui-button-secondary"></button>
-        <button pButton label="Confirmar" icon="pi pi-check" class="ui-button-primary"></button>
-      </div>
+  <div class="card-header">
+    <h2>Venta</h2>
+    <div class="float-right">
+      <button pButton label="Volver" (click)="goBack()" icon="pi pi-arrow-left" class="ui-button-secondary"></button>
+      <button pButton label="Cancelar"  *ngIf="!camposReadOnly"  icon="pi pi-times" class="ui-button-secondary"></button>
+      <button pButton label="Guardar"   *ngIf="!camposReadOnly"  (click)="submitVenta('guardar')" icon="pi pi-check" class="ui-button-primary"></button>
+      <button pButton label="Confirmar"   (click)="submitVenta()" icon="pi pi-check" class="ui-button-primary"></button>
     </div>
-    
-    <div class="card-body">
-      <!-- Formulario Principal -->
-      <form [formGroup]="ventaForm">
-        <div class="form-row">
-          <div class="col-md-6">
-            <label for="fechaEmision">Fecha emisión:</label>
-            <p-calendar id="fechaEmision" formControlName="fechaEmision" dateFormat="dd/mm/yy"></p-calendar>
-          </div>
-          <div class="col-md-6">
-            <label for="vendedor">Vendedor:</label>
-            <p-dropdown id="vendedor" formControlName="vendedor" [options]="vendedores"></p-dropdown>
-          </div>
+  </div>
+
+
+
+  <div class="card-body">
+    <!-- Formulario Principal -->
+    <form [formGroup]="ventaForm">
+      <div class="card">
+        <div class="card-body">
+            <div class="form-row align-items-center">
+              <div class="col-auto">
+                <label class="etiqueta" for="fechaEmision">Fecha emisión:</label>
+              </div>
+              <div class="col-auto">
+                <!--input id="fechaEmision" type="text" formControlName="fechaEmision" class="form-control"-->
+                <p-calendar [readonlyInput]="camposReadOnly" id="fechaEmision" formControlName="fechaEmision" dateFormat="dd/mm/yy"></p-calendar>
+              </div>
+            
+              <div class="col-auto">
+                <label class="etiqueta" for="usuario">Usuario:</label>
+              </div>
+              <div class="col-auto">
+                <input id="usuario" [readonly]="true" type="text" formControlName="usuario" class="form-control">
+        
+              </div>
+
+              <div class="col-auto">
+                <label class="etiqueta" for="nrooperacion">Nro. Presupuesto:</label>
+              </div>
+              <div class="col-auto">
+                <input id="nrooperacion" [readonly]="true" type="text" formControlName="nrooperacion" class="form-control">
+              
+              </div>
+
+            </div>
         </div>
-  
-        <div class="form-group mt-3">
-          <label for="cliente">Buscar cliente:</label>
-          <div class="input-group">
-            <input type="text" pInputText formControlName="cliente">
-            <div class="input-group-append">
-              <button pButton type="button" icon="pi pi-plus"></button>
+      </div>
+
+ 
+        
+        <!-- Contenido completo del formulario cuando esté expandido -->
+        <div class="card">
+          <div class="card-body">
+            <div formGroupName="cliente">
+              <div class="form-group">
+                <label for="cliente" class="font-weight-bold">Cliente:</label>
+                <div class="row">
+                  <div class="col-md-2 mb-1">
+                    <input type="text" id="idCliente" formControlName="idCliente" class="form-control" readonly="readonly"> <!-- Cambiado aquí -->
+                  </div>
+                  <div class="col-md-2 mb-1">
+                    <button class="btn btn-primary" (click)="abrirPopup('popUp-cotizacion-clientes')"> 
+                      <i class="pi pi-search"></i>
+                    </button>
+                  </div>
+                  <div class="col-md-8 mb-1">
+                    <input type="text" id="nombreCliente" formControlName="nombreCliente" class="form-control" readonly="readonly"> <!-- Cambiado aquí -->
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="direccion" class="font-weight-bold">Dirección:</label>
+                  <div>
+                    <input type="text" id="direccion" formControlName="direccionCliente" class="form-control" readonly="readonly"> <!-- Cambiado aquí -->
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="telefono" class="font-weight-bold">Teléfono:</label>
+                  <div>
+                    <input type="text" id="telefono" formControlName="telefonoCliente" class="form-control" readonly="readonly"> <!-- Cambiado aquí -->
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+ 
+      
+
+      <!-- Tabla de Ítems -->
+      <div class="table-responsive mt-3">
+        <table id="tabla-detalles" class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th style="display: none;">ItemId</th>  
+              <th>Item</th>
+              <th style="width:50px">Tipo</th>
+              <th style="width:50px">Importe</th>
+              <th style="width:50px">Cantidad</th>
+              <th style="width:50px">Bonif.</th>
+              <th>IVA</th>
+              <th>Subtotal</th>              
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="items">
+            <!--tr *ngFor="let item of form.controls['items'].controls; let i = index" [formGroupName]="i"-->
+            <ng-container *ngFor="let itemrow of items.controls; let i=index; let l=last">
+            <tr  
+                 *ngIf="!camposReadOnly" 
+                 [formGroupName]="i" >
+              <td style="display: none;"><input pInputText formControlName="id" ></td>  
+              <td>
+                <!--[suggestions]="filteredItems" 
+                (completeMethod)="searchItems($event)" 
+                (onSelect)="onSelectItem($event, i)" 
+                field="nombre"-->
+                <p-autoComplete formControlName="producto"                                
+                                [suggestions]="suggestions" 
+                                (completeMethod)="searchItems($event)" 
+                                (onSelect)="onSelectItem($event, i)"
+                                field="nombre"
+                                [minLength]="3"
+                                [dropdown]="false"
+                                placeholder="Escribe al menos 3 caracteres"
+                                                       
+                                >
+                                <ng-template let-item pTemplate="item">
+                                  <div class="p-d-flex p-ai-center">
+                                    <!-- Cambiado ngClass para que utilice las clases correctas de PrimeIcons -->
+                                    <div>
+                                      <div>{{ item.nombre }}</div>
+                                      <small class="p-text-muted">{{ item.tipo | titlecase }}</small>                                      
+                                    </div>
+                                  </div>
+                                </ng-template>
+
+                </p-autoComplete>
+              </td>
+              <td style="width:50px"><input pInputText formControlName="tipo" [readonly]="i >= 0"></td>
+              <td style="width:50px"><input pInputText formControlName="precioUnitario" [readonly]="i >= 0"></td>
+              <td style="width:50px"><input pInputText formControlName="cantidad" (input)="updateSubtotal(i)" [readonly]="i > 0"></td>
+              <td style="width:50px"><input pInputText formControlName="bonificacion" (input)="updateSubtotal(i)" [readonly]="i > 0"></td>
+              <td>{{ calcularIVA(i)  }}</td>
+              <td>{{ calcularItem(i) }}</td>
+              
+              <td>
+                
+                <button pButton icon="pi pi-plus" (click)="addItem(i)" *ngIf="i == 0" ></button>
+                <button pButton icon="pi pi-trash" class="p-button-danger" *ngIf="i > 0" (click)="deleteItem(i)"></button>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+ 
+
   
-        <!-- Tabla de Ítems -->
-        <div class="table-responsive mt-3">
-          <table class="table table-bordered">
-            <thead class="thead-dark">
+
+      <!-- Resumen -->
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <table class="table">
+            <thead>
               <tr>
-                <th>Item</th>
-                <th>Importe</th>
-                <th>Cantidad</th>
-                <th>Tipo</th>
-                <th>Bonif.</th>
-                <th>Subtotal</th>
-                <th>IVA</th>
-                <th>Acciones</th>
+                <th colspan="2">Resumen</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of items">
-                <td>
-                  <p-dropdown [options]="productos" [(ngModel)]="item.producto"></p-dropdown>
-                </td>
-                <td><input pInputText [(ngModel)]="item.importe"></td>
-                <td><input pInputText [(ngModel)]="item.cantidad"></td>
-                <td><p-dropdown [options]="tipos" [(ngModel)]="item.tipo"></p-dropdown></td>
-                <td><input pInputText [(ngModel)]="item.bonificacion"></td>
-                <td>{{ calcularSubtotal(item) }}</td>
-                <td>{{ calcularIVA(item) }}</td>
-                <td><button pButton icon="pi pi-plus"></button></td>
+              <tr>
+                <td>Descuento</td>
+                <td><input [readonly]= "camposReadOnly" pInputText formControlName="descuento" placeholder="%"></td>
+              </tr>
+              <tr>
+                <td>Descuento Total Items</td>
+                <td>{{calcularBonificacionItems()}}</td>
+              </tr>
+              <tr>
+                <td>Repuestos</td>
+                <td>{{ calcularRepuestos() }}</td>
+              </tr>
+              <tr>
+                <td>Servicio</td>
+                <td>{{ calcularServicios() }}</td>
+              </tr>
+              <tr>
+                <td>Total neto</td>
+                <td>{{ calcularTotalNeto() }}</td>
+              </tr>
+              <tr>
+                <td>IVA</td>
+                <td>{{ calcularIVARepuestosYServicios() }}</td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td>{{ calcularTotal() }}</td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <!-- Sección de Pago -->
+        <div class="col-md-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th colspan="2">Pago</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Efectivo</td>
+                <td>
+                  <input [readonly]="camposReadOnly" pInputText formControlName="efectivo"  type="number" >
+                </td>
+              </tr>
+        
   
-        <!-- Resumen -->
-        <div class="row mt-3">
-          <div class="col-md-6">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th colspan="2">Resumen</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Descuento</td>
-                  <td><input pInputText formControlName="descuento" placeholder="%"></td>
-                </tr>
-                <tr>
-                  <td>Repuestos</td>
-                  <td>{{ calcularRepuestos() }}</td>
-                </tr>
-                <tr>
-                  <td>Mano de obra</td>
-                  <td>{{ calcularManoDeObra() }}</td>
-                </tr>
-                <tr>
-                  <td>Total neto</td>
-                  <td>{{ calcularTotalNeto() }}</td>
-                </tr>
-                <tr>
-                  <td>IVA</td>
-                  <td>{{ calcularIVA() }}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td>{{ calcularTotal() }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-  
-          <!-- Sección de Pago -->
-          <div class="col-md-6">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th colspan="2">Pago</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Efectivo</td>
-                  <td><input pInputText formControlName="efectivo"></td>
-                </tr>
-                <tr>
-                  <td>Cuenta corriente</td>
-                  <td><p-dropdown formControlName="cuentaCorriente" [options]="cuentas"></p-dropdown></td>
-                </tr>
-                <tr>
-                  <td>Total pago</td>
-                  <td>{{ calcularTotalPago() }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              <tr>
+                <td>Cuenta corriente</td>
+                <td>
+                  <input [readonly]="camposReadOnly" pInputText formControlName="cuentaCorriente"  type="number" >
+                </td>
+              </tr>
+        
+              <tr>
+                <td>Tarjeta de crédito</td>
+                <td>
+                  <p-dropdown [readonly]="camposReadOnly"
+                              formControlName="tarjetaCredito"
+                              [options]="marcasTarjeta"
+                              placeholder="Seleccionar tarjeta">
+                  </p-dropdown>
+                </td>
+              </tr>
+              <tr>
+                <td>Monto tarjeta de crédito</td>
+                <td>
+                  <input  pInputText formControlName="montoTarjetaCredito" type="number" >
+                </td>
+              </tr>
+        
+              <tr>
+                <td>Total pago</td>
+                <td>{{ calcularTotalPago() }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-  
-        <!-- Observaciones -->
-        <div class="form-group mt-3">
-          <label for="observaciones">Observaciones:</label>
-          <textarea pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
-        </div>
-  
-        <!-- Comentario Interno -->
-        <div class="form-group mt-3">
-          <label for="comentarioInterno">Comentario Interno:</label>
-          <textarea pInputTextarea id="comentarioInterno" formControlName="comentarioInterno"></textarea>
-        </div>
-      </form>
-    </div>
+        <!--Sección moredadores-->
+      </div>
+
+     
+
+      <!-- Observaciones -->
+      <div class="form-group mt-3">
+        <label for="observaciones">Observaciones:</label>
+        <textarea [readonly]= "camposReadOnly" pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+      </div>
+
+ 
+    </form>
   </div>
-  
+   {{this.items}}
+</div>
+
+<app-popup-generico 
+                    [mostrarPopup]="mostrarPopup"
+                    (cerrarPopup)="cerrarPopup()"
+                    [datos]="datos"                                        
+                    (itemSeleccionado)="itemSeleccionadoDesdePopup($event)"
+                    >
+</app-popup-generico>
+
+<p-dialog header="Error" [(visible)]="displayDialog" [modal]="true" appendTo="body" [style]="{width: '50vw'}">
+   
+   El total de Pago y de la Venta deben coincidir.
+ 
+
+  <p-footer>
+    <button pButton type="button"    (click)="displayDialog=false" label="Aceptar" class="p-button-success"></button>       
+     
+  </p-footer>
+
+</p-dialog>

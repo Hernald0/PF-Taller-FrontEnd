@@ -46,7 +46,9 @@
                     <th>
                         <input pInputText type="text" formControlName="status" placeholder="Buscar por Estado">
                     </th>
-                    <th></th>
+                    <th>
+                        <button pButton type="button" label="Limpiar" (click)="aplicarFiltros(true)"></button>
+                    </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-turno>

@@ -33,6 +33,8 @@ import { RecepcionvehiculoComponent } from './recepcionvehiculo/recepcionvehicul
 import { VentasComponent } from './ventas/ventas.component';
 import { OrdenesComponent } from './ordenes/ordenes.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { AccordionModule } from 'primeng/accordion';
+import { AdminVentasComponent } from './admin-ventas/admin-ventas.component'; 
 
 
 
@@ -59,7 +61,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
     RecepcionvehiculoComponent,
     VentasComponent,
     OrdenesComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    AdminVentasComponent
   ],
   imports: [
     RouterModule,
@@ -74,7 +77,9 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
     ListboxModule,
     StepsModule,
     CheckboxModule,
-    FullCalendarModule
+    FullCalendarModule,
+    AccordionModule
+ 
     //CotizadorModule
   ],
   exports:[ PopupGenericoComponent]

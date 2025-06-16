@@ -123,6 +123,13 @@ export class serviciosComponent implements OnInit {
     };
 
     console.log('saveServicio Payload: ');
+    
+    Object.keys(payload).forEach(key => {
+      if (typeof payload[key] === 'string') {
+        payload[key] = payload[key].trim();
+      }
+    });
+
     console.log(payload);
     
     if(!this.ServicioId){

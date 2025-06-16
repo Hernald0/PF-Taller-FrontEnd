@@ -21,3 +21,10 @@
     margin-right: 0.5rem;
   }
   
+  #tabla-detalles tbody tr:first-child td {
+    border-bottom: 4px solid #000; /* Ajusta el grosor y color del borde */
+}
+
+.table-responsive {
+  overflow: visible; /* Asegúrate de que el contenedor no limite el desbordamiento */
+}
