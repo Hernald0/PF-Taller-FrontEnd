@@ -61,9 +61,29 @@
                     <td>{{ turno.status }}</td>
                     <td>
 
-                        <button type="button" [routerLink]="['/recepcionvehiculo']" routerLinkActive="router-link-active" class="btn btn-primary" (click)="recepcion(turno)">Recepción</button>
-                        <button pButton type="button" [disabled]="turno.status === 'cancelado'" label="Modificar" (click)="modificar(turno)"></button>
-                        <button pButton type="button" [disabled]="turno.status === 'cancelado'" label="Cancelar" (click)="cancelar(turno)"></button>
+                        <button type="button" 
+                                [disabled]="turno.status === 'cancelado' || turno.status === 'recibido'"  
+                                [routerLink]="['/recepcionvehiculo/',turno.id]" 
+                                routerLinkActive="router-link-active" 
+                                class="btn btn-primary" 
+                                (click)="recepcion(turno)">Recepción</button>
+
+                        <button pButton type="button" 
+                                [disabled]="turno.status === 'cancelado' || turno.status === 'recibido'" 
+                                label="Modificar" (click)="modificar(turno)"></button>
+
+                        <button pButton 
+                                type="button"
+                                [disabled]="turno.status === 'cancelado' || turno.status === 'recibido'" 
+                                label="Cancelar" 
+                                (click)="cancelar(turno)"></button>
+
+                        <button type="button" 
+                                [disabled]="turno.status === 'cancelado' "  
+                                [routerLink]="['/recepcionvehiculo/',turno.id]"
+                                routerLinkActive="router-link-active" 
+                                class="btn btn-primary" 
+                                (click)="consultar(turno)" >Consultar</button>
                     </td>
                     </tr>
                 </ng-template>

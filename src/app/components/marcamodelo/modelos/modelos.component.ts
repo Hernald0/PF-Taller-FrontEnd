@@ -109,7 +109,7 @@ export class ModelosComponent implements OnInit {
 
                 //console.log("modelo.id "+ modelo.id );
                 this.formularioModelos.controls["id"].setValue( modelo ? modelo.id : null );
-                this.formularioModelos.controls["nombre"].setValue( modelo ? modelo.nombre : null );                
+                this.formularioModelos.controls["nombre"].setValue( modelo ? modelo.nombreModelo : null );                
                 
   };
 
@@ -119,12 +119,12 @@ export class ModelosComponent implements OnInit {
   {
     this.confirmationService.confirm(
       {
-      message: 'Desea eliminar a "Id: '+ modelo.id + ' - ' +  modelo.nombre + '"?',
+      message: 'Desea eliminar a "Id: '+ modelo.id + ' - ' +  modelo.nombreModelo + '"?',
       accept: () => {
           this.serviceModelos.deleteModelo(modelo.id).subscribe(            
             () => {
               this.listaModelos = this.listaModelos.filter(x => x.id != modelo.id);
-              this.messageService.add({severity:'success', detail:'Se eliminó correctamente la Modelo "Id: '+ modelo.id +  modelo.nombre + '" eliminada.'});
+              this.messageService.add({severity:'success', detail:'Se eliminó correctamente la Modelo "Id: '+ modelo.id +  modelo.nombreModelo + '" eliminada.'});
             }
             
           );
@@ -151,7 +151,7 @@ export class ModelosComponent implements OnInit {
           const modelovehiculo1: Modelovehiculo = this.formularioModelos.value;
           
           console.log("modelovehiculo1 " + modelovehiculo1.id);
-          console.log("modelovehiculo1.nombre" + modelovehiculo1.nombre);
+          console.log("modelovehiculo1.nombre" + modelovehiculo1.nombreModelo);
           /*           
           let modelo2: new Modelovehiculo() = {
             ...this.formularioModelos.value
@@ -161,7 +161,7 @@ export class ModelosComponent implements OnInit {
             idMarca : marca.id,               
             nombreMarca : marca.nombre,    
             idModelo : modelovehiculo1.id,
-            nombreModelo : modelovehiculo1.nombre  
+            nombreModelo : modelovehiculo1.nombreModelo  
           };
 
           console.log('saveModelo Payload2: ');
@@ -206,7 +206,7 @@ export class ModelosComponent implements OnInit {
   actualizarNombreModelo(modeloActualizado: Modelovehiculo): void {
     const modelo = this.listaModelos.find(m => m.id === modeloActualizado.id);
     if (modelo) {
-      modelo.nombre = modeloActualizado.nombre;
+      modelo.nombreModelo = modeloActualizado.nombreModelo;
     }
   }
 

@@ -1,7 +1,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h2>Turno - Recepción del Vehiculo</h2>
+    <h2>Órden de trabajo</h2>
     <div class="float-right">
       <button pButton label="Volver" (click)="goBack()" icon="pi pi-arrow-left" class="ui-button-secondary"></button>
       <button pButton label="Cancelar"  *ngIf="!camposReadOnly"  icon="pi pi-times" class="ui-button-secondary"></button>
@@ -14,7 +14,7 @@
 
   <div class="card-body">
     <!-- Formulario Principal -->
-    <form [formGroup]="recepcionForm">
+    <form [formGroup]="ordenForm">
       <div class="card">
         <div class="card-body">
             <div class="form-row align-items-center">
@@ -325,11 +325,11 @@
               </tr>
               <tr>
                 <td>Repuestos</td>
-                <td>{{ calcularRepuestos() }}</td>
+                <td>{{ this.totalRepuestos }}</td>
               </tr>
               <tr>
                 <td>Servicio</td>
-                <td>{{ calcularServicios() }}</td>
+                <td>{{ this.totalServicios }}</td>
               </tr>
               <tr>
                 <td>Total neto</td>

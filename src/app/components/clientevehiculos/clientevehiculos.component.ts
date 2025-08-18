@@ -239,7 +239,7 @@ export class ClientevehiculosComponent implements OnInit, OnDestroy {
           let newCliente = res as Cliente;
           this.listaVehiculos = newCliente.vehiculos;
           console.log('Vehiculos a mostrar en NUEVO:',newCliente.vehiculos);
-          this.messageService.add({ severity: 'success', detail: 'Se agregó correctamente el Modelo "' + vehiculoFormulario.modelovehiculo.nombre + '" agregado' });
+          this.messageService.add({ severity: 'success', detail: 'Se agregó correctamente el Modelo "' + vehiculoFormulario.modelovehiculo.nombreModelo + '" agregado' });
         },
         err => {
           this.hasError = true;
@@ -269,7 +269,7 @@ export class ClientevehiculosComponent implements OnInit, OnDestroy {
               console.log('Modificación listado de vehículos: ',listaVehiculos);
               this.listaVehiculos = cliente.vehiculos;
           
-              this.messageService.add({ severity: 'success', detail: 'Se actualizó correctamente el Modelo "' + vehiculoFormulario.modelovehiculo.nombre + '" agregado' });
+              this.messageService.add({ severity: 'success', detail: 'Se actualizó correctamente el Modelo "' + vehiculoFormulario.modelovehiculo.nombreModelo + '" agregado' });
         },
         err => {
           console.error('Error al obtener el cliente:', err);
@@ -294,10 +294,10 @@ export class ClientevehiculosComponent implements OnInit, OnDestroy {
 
   deleteVehiculo(vehiculo: Vehiculo): void {
     let idVehiculo = vehiculo.id;
-    let modeloVehiculo = vehiculo.modelovehiculo.nombre;
+    let modeloVehiculo = vehiculo.modelovehiculo.nombreModelo;
 
     this.confirmationService.confirm({
-      message: 'Desea eliminar a "Id: ' + vehiculo.id + ' - ' + vehiculo.modelovehiculo.nombre + '"?',
+      message: 'Desea eliminar a "Id: ' + vehiculo.id + ' - ' + vehiculo.modelovehiculo.nombreModelo + '"?',
       accept: () => {
         this.serviceClientes.deleteClienteVehiculo(vehiculo.id).pipe(
           takeUntil(this.unsubscribe$)

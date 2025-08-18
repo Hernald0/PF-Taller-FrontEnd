@@ -2,19 +2,19 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Listado de Ventas
+                <i class="fa fa-align-justify"></i> Listado de Ordenes de {{Usuario}}
             </div>
 
             <div class="card-body">
-                <form [formGroup]="ventasForm">
-                    <button type="button" [routerLink]="['/venta']" routerLinkActive="router-link-active" class="btn btn-primary">
-                        Nueva Venta
+                <form [formGroup]="ordenesForm">
+                    <button type="button" [routerLink]="['/orden']" routerLinkActive="router-link-active" class="btn btn-primary">
+                        Nueva Orden
                     </button>
 
-                    <p-table [value]="ventasFiltradas" [paginator]="true" [rows]="10" class="table-filter">
+                    <p-table [value]="ordenesFiltradas" [paginator]="true" [rows]="10" class="table-filter">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th pSortableColumn="id">ID Venta <p-sortIcon field="id"></p-sortIcon></th>
+                                <th pSortableColumn="id">ID Orden <p-sortIcon field="id"></p-sortIcon></th>
                                 <th pSortableColumn="cliente">Cliente <p-sortIcon field="cliente"></p-sortIcon></th>
                                 <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
                                 <th pSortableColumn="montoTotal">Monto Total <p-sortIcon field="montoTotal"></p-sortIcon></th>
@@ -35,23 +35,18 @@
                             </tr>
                         </ng-template>
 
-                        <ng-template pTemplate="body" let-venta>
+                        <ng-template pTemplate="body" let-order>
                             <tr>
-                                <td>{{ venta.id }}</td>
-                                <td>{{ venta.cliente.persona.nombre }}</td>
-                                <td>{{ venta.fechaEmision | date: 'dd/MM/yyyy' }}</td>
-                                <td>{{ venta.montoTotal | currency: '$' }}</td>
-                                <td>{{ venta.estado  | uppercase }}</td>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.cliente.persona.nombre }}</td>
+                                <td>{{ order.fechaEmision | date: 'dd/MM/yyyy' }}</td>
+                                <td>{{ order.montoTotal | currency: '$' }}</td>
+                                <td>{{ order.estado  | uppercase }}</td>
                                 <td>
-                                    <!--button pButton [disabled]="venta.estado != 'cancelada'"  type="button" label="Ver" class="p-button-info" (click)="verDetalles(venta)"></button>
-                                
-                                    <a  *ngIf= "venta.estado != 'venta'" routerLink ="/venta/{{venta.id}}" ><button class="btn btn-success pull-right" >Modificar</button></a>
-            
-                                    <button pButton type="button" [disabled]="venta.estado != 'presupuesto'" label="Cancelar" class="p-button-danger" (click)="cancelar(venta)"></button-->
-                               
-                                    <button type="button" [disabled]="venta.estado != 'presupuesto'" [routerLink]="['/venta', venta.id]" routerLinkActive="router-link-active" class="btn btn-primary">Modificar</button>
-                                    <button pButton type="button" [routerLink]="['/venta/venta.id']" routerLinkActive="router-link-active"  label="Ver"   (click)="verDetalle(venta)"></button>
-                                    <button pButton type="button" [disabled]="venta.estado != 'presupuesto'" label="Cancelar"  (click)="verDetalle(venta)"></button>
+                                    
+                                    <button type="button" [disabled]="order.estado === 'finalizado'" [routerLink]="['/orden', order.id]" routerLinkActive="router-link-active" class="btn btn-primary">Modificar</button>
+                                    <button pButton type="button" [routerLink]="['/orden', order.id]" routerLinkActive="router-link-active"  label="Ver"   (click)="verDetalle(order)"></button>
+                                    <button pButton type="button" [disabled]="order.estado  === 'finalizado'" label="Cancelar"  (click)="verDetalle(order)"></button>
 
                                 </td>
                             </tr>

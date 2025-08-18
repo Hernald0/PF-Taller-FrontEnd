@@ -25,11 +25,12 @@ import { ClientevehiculosComponent } from './components/clientevehiculos/cliente
 import { TurnoComponent } from './components/turno/turno.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { TurnosdashboardComponent } from './components/turnosdashboard/turnosdashboard.component';
-import { OrdenesComponent } from './components/ordenes/ordenes.component';
+import { OrdenComponent } from './components/orden/orden.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { RecepcionvehiculoComponent } from './components/recepcionvehiculo/recepcionvehiculo.component';
 import { AdminVentasComponent } from './components/admin-ventas/admin-ventas.component';
 import { VentasComponent } from './components/ventas/ventas.component';
+import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 
 const routes: Routes = [
   { path: 'events', component: EventsComponent, canActivate: [AuthGuard]  },
@@ -54,13 +55,16 @@ const routes: Routes = [
   { path: 'schedule', component: ScheduleComponent, canActivate: [AuthGuard] }, 
   { path: 'turno', component: TurnoComponent, canActivate: [AuthGuard] },
   { path: 'turnosdashboard', component: TurnosdashboardComponent, canActivate: [AuthGuard] },
-  { path: 'recepcionvehiculo', component: RecepcionvehiculoComponent, canActivate: [AuthGuard] },
+  { path: 'recepcionvehiculo/:turnoId', component: RecepcionvehiculoComponent, canActivate: [AuthGuard] },
   { path: 'cotizador', component: CotizadorComponent, canActivate: [AuthGuard]  },
   { path: 'tipoidentificador', component: TipoidentificadorComponent, canActivate: [AuthGuard]  },
   { path: 'admin-ventas', component: AdminVentasComponent, canActivate: [AuthGuard]  },
   { path: 'venta/:ventaId', component: VentasComponent, canActivate: [AuthGuard]  },
   { path: 'venta', component: VentasComponent, canActivate: [AuthGuard]  },
-  { path: 'ordenes', component: OrdenesComponent, canActivate: [AuthGuard]  },
+  { path: 'orden', component: OrdenComponent, canActivate: [AuthGuard]  },
+  { path: 'orden/:orderId', component: OrdenComponent, canActivate: [AuthGuard]  },
+  { path: 'admin-orders', component: AdminOrdersComponent, canActivate: [AuthGuard]  },
+  
   { path: '**', pathMatch: 'full', redirectTo: 'tipoidentificador' },
   //{ path: '', redirectTo: '/events', pathMatch: 'full' },
 ];

@@ -38,6 +38,8 @@ export class PopUpDatosService {
       return [{ id: 1, nombre: 'Empleado 1' }, { id: 2, nombre: 'Empleado 2' }];
     } else if (tipo === 'productos') {
       return [{ id: 1, nombre: 'Producto 1' }, { id: 2, nombre: 'Producto 2' }];
+    } else if (tipo === 'vehiculo') {
+      return [{ id: 1, nombre: 'Producto 1' }, { id: 2, nombre: 'Producto 2' }];
     }
     // Puedes agregar más casos según sea necesario.
     return [];

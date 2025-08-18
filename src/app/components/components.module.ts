@@ -31,11 +31,12 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { TurnosdashboardComponent } from './turnosdashboard/turnosdashboard.component';
 import { RecepcionvehiculoComponent } from './recepcionvehiculo/recepcionvehiculo.component';
 import { VentasComponent } from './ventas/ventas.component';
-import { OrdenesComponent } from './ordenes/ordenes.component';
+import { OrdenComponent } from './orden/orden.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { AccordionModule } from 'primeng/accordion';
-import { AdminVentasComponent } from './admin-ventas/admin-ventas.component'; 
-
+import { AdminVentasComponent } from './admin-ventas/admin-ventas.component';
+import { AdminOrdersComponent } from './admin-orders/admin-orders.component'; 
+import { ProgressBarModule } from 'primeng/progressbar';
 
 
 
@@ -60,9 +61,10 @@ import { AdminVentasComponent } from './admin-ventas/admin-ventas.component';
     TurnosdashboardComponent,
     RecepcionvehiculoComponent,
     VentasComponent,
-    OrdenesComponent,
+    OrdenComponent,
     UsuariosComponent,
-    AdminVentasComponent
+    AdminVentasComponent,
+    AdminOrdersComponent
   ],
   imports: [
     RouterModule,
@@ -78,7 +80,8 @@ import { AdminVentasComponent } from './admin-ventas/admin-ventas.component';
     StepsModule,
     CheckboxModule,
     FullCalendarModule,
-    AccordionModule
+    AccordionModule,
+    ProgressBarModule
  
     //CotizadorModule
   ],

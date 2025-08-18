@@ -1,5 +1,4 @@
-
- .card-header {
+.card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,8 +27,4 @@
 
 .table-responsive {
   overflow: visible; /* Asegúrate de que el contenedor no limite el desbordamiento */
-}
-
-.fila-en-edicion {
-  background-color: #f0f8ff; /* color suave para destacar */
 }

@@ -25,7 +25,8 @@ export class TurnosdashboardComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private turnoService: TurnoService,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private router: Router
   ) {
     this.turnosForm = this.fb.group({
       id: [''],
@@ -138,9 +139,10 @@ formatDate(date: Date): string {
     // Lógica para crear un nuevo turno
   }
 
-  recepcion(turno) {
-    // Lógica para manejar la recepción
-  }
+  consultar(turno: Turno) {
+   console.log(turno);
+   this.router.navigate(['/recepcionvehiculo', turno.id], { queryParams: { modo: 'ver' } });
+   }
 
   modificar(turno) {
      

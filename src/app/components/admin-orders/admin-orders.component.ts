@@ -1,39 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Cliente } from '../../models/cliente.model';
-import { Venta } from '../../models/venta.model';
-import { VentaService } from 'src/app/services/venta.service';
+import { Orden } from '../../models/orden.model';
+import { OrdenService } from 'src/app/services/orden.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { MessageService } from 'primeng/components/common/messageservice';
-import { Router } from '@angular/router';
- 
-
-//import { VENTAS_DUMMIES, Venta } from '../../models/venta.model';
+import { Router } from '@angular/router'; 
 
 @Component({
-  selector: 'admin-ventas',
-  templateUrl: './admin-ventas.component.html',
-  styleUrls: ['./admin-ventas.component.css']
+  selector: 'app-admin-orders',
+  templateUrl: './admin-orders.component.html',
+  styleUrls: ['./admin-orders.component.css']
 })
-export class AdminVentasComponent implements OnInit {
-  ventas: Venta[] = [];
-  ventasFiltradas: Venta[] = [];
-  ventasForm: FormGroup;
+export class AdminOrdersComponent implements OnInit {
+  ordenes: Orden[] = [];
+  ordenesFiltradas: Orden[] = [];
+  ordenesForm: FormGroup;
   estados: { label: string, value: string }[] = [
     { label: 'Cancelado', value: 'cancelado' },
-    { label: 'Venta', value: 'venta' },
+    { label: 'Orden', value: 'orden' },
     { label: 'Presupuesto', value: 'presupuesto' }
   ];
 
 
   constructor(private fb: FormBuilder,
               private confirmationService: ConfirmationService,
-              private VentasService : VentaService,
+              private OrdenesService : OrdenService,
               private messageService: MessageService,
               private router: Router
   ) {
-    this.ventasForm = this.fb.group({
+    this.ordenesForm = this.fb.group({
       id: [''],
       cliente: [''],
       fechaEmision: [''],
@@ -46,13 +43,15 @@ export class AdminVentasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.VentasService.getVentasAll().subscribe(resp => {
-      this.ventas = resp as Venta[];
-      this.ventasFiltradas = [...this.ventas];
+    
+    this.OrdenesService.getOrdenAll().subscribe(resp => {
+      this.ordenes = resp as Orden[];
+      console.log(this.ordenes);
+      this.ordenesFiltradas = [...this.ordenes];
     });
     
 
-    this.ventasForm.valueChanges.subscribe(() => {
+    this.ordenesForm.valueChanges.subscribe(() => {
       this.aplicarFiltros();
     });
 
@@ -62,41 +61,41 @@ export class AdminVentasComponent implements OnInit {
   
   aplicarFiltros(limpiar: boolean = false): void {
     if (limpiar) {
-      this.ventasForm.reset();
-      this.ventasFiltradas = [...this.ventas];
+      this.ordenesForm.reset();
+      this.ordenesFiltradas = [...this.ordenes];
       return;
     }
-    const { id, cliente, fecha, estado, montoTotal } = this.ventasForm.value;
+    const { id, cliente, fecha, estado, montoTotal } = this.ordenesForm.value;
 
-    console.log('Estado en formulario:', this.ventasForm.value.estado);
-    console.log('Tipo:', typeof this.ventasForm.value.estado);
+    console.log('Estado en formulario:', this.ordenesForm.value.estado);
+    console.log('Tipo:', typeof this.ordenesForm.value.estado);
     console.log('Tipo:', fecha);
     
-    this.ventasFiltradas = this.ventas.filter(venta =>
-      (!id || venta.id.toString().includes(id)) &&
-      (!cliente || venta.cliente.persona.nombre.toLowerCase().includes(cliente.persona.nombre.toLowerCase())) &&
-      (!montoTotal || venta.montoTotal === montoTotal) &&
-      (!fecha || venta.fechaEmision === fecha) &&
-      (!estado || (typeof venta.estado === 'string' && venta.estado.toLowerCase().includes(estado.toLowerCase())))
-      //(!estado.value || (venta.estado && venta.estado.toLowerCase().includes(estado.toLowerCase())))
-      //(!estado || venta.estado.toLowerCase().includes(estado.value.toLowerCase()) )
+    this.ordenesFiltradas = this.ordenes.filter(orden =>
+      (!id || orden.id.toString().includes(id)) &&
+      (!cliente || orden.cliente.persona.nombre.toLowerCase().includes(cliente.persona.nombre.toLowerCase())) &&
+      (!montoTotal || orden.montoTotal === montoTotal) &&
+      (!fecha || orden.fechaEmision === fecha) &&
+      (!estado || (typeof orden.estado === 'string' && orden.estado.toLowerCase().includes(estado.toLowerCase())))
+      //(!estado.value || (orden.estado && orden.estado.toLowerCase().includes(estado.toLowerCase())))
+      //(!estado || orden.estado.toLowerCase().includes(estado.value.toLowerCase()) )
     );
    
   }
 
- verDetalle(venta: Venta) {
-  console.log(venta);
-  this.router.navigate(['/venta', venta.id], { queryParams: { modo: 'ver' } });
+ verDetalle(orden: Orden) {
+  console.log('orden: ', orden);
+  this.router.navigate(['/orden', orden.id], { queryParams: { modo: 'ver' } });
   }
   
-  cancelar(venta: Venta): void {
+  cancelar(orden: Orden): void {
    
     // Cambia el estado del turno a cancelado
-    venta.estado = 'cancelado';
+    orden.estado = 'cancelado';
     this.confirmationService.confirm({
-      message: '¿Desea cancelar el presupuesto de: '+ venta.cliente.persona.nombre + ' - ' + venta.id + '"?',
+      message: '¿Desea cancelar el presupuesto de: '+ orden.cliente.persona.nombre + ' - ' + orden.id + '"?',
       accept: () => {
-          this.VentasService.cancelarVenta(venta.id).subscribe(
+          this.OrdenesService.cancelarOrden(orden.id).subscribe(
             
                 (response) => {
                   // Aquí puedes verificar si el backend devuelve algún tipo de respuesta
@@ -104,14 +103,14 @@ export class AdminVentasComponent implements OnInit {
                   this.messageService.add({ 
                       severity: 'success', 
                       summary: 'Presupuesto cancelado.', 
-                      detail: 'Se canceló correctamente el presupueso de ' + venta.cliente.persona.nombre + ' - ' + venta.id + '.' 
+                      detail: 'Se canceló correctamente el presupueso de ' + orden.cliente.persona.nombre + ' - ' + orden.id + '.' 
                   });
                   
                   // Actualiza el estado del turno a 'Cancelado'
-                  venta.estado = 'cancelado';
+                  orden.estado = 'cancelado';
                   
            
-                  this.ventas = [...this.ventas]; 
+                  this.ordenes = [...this.ordenes]; 
                   this.aplicarFiltros();
               },
               (error) => {
@@ -129,4 +128,5 @@ export class AdminVentasComponent implements OnInit {
     this.aplicarFiltros(); // Aplicar filtros después de cancelar
  
   }
+
 }

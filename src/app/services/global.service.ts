@@ -3,6 +3,8 @@ import { Cliente } from '../models/cliente.model';
 import { Empleado } from '../models/empleado.model';
 import { ClientesService } from './clientes.service';
 import { Subject } from 'rxjs';
+import { Vehiculo } from '../models/vehiculo.model';
+import { TallerService } from './taller.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,9 @@ export class GlobalService {
 
   private datosSubject = new Subject<any>();
 
-  constructor(private clientesService : ClientesService) { }
+  constructor(private clientesService : ClientesService,
+              private tallerService :  TallerService
+  ) { }
 
   instanciarClasePorNombre(nombreClase: string, id: number): any | null {
     
@@ -20,7 +24,8 @@ export class GlobalService {
     const clasesDisponibles: { [key: string]: any } = {
       
       Cliente: Cliente,
-      Empleado: Empleado
+      Empleado: Empleado,
+      Vehiculo: Vehiculo
    
     };
   
@@ -44,6 +49,11 @@ export class GlobalService {
             break;
         case 'Empleado':
             // statement 2
+            break;
+        case 'Vehiculo':
+            /* this.clientesService. .getCliente(id).subscribe((cliente: Cliente) => {
+              this.datosSubject.next(cliente);
+            }); */
             break;
        
      }

@@ -3,6 +3,7 @@ import { Cliente } from "./cliente.model";
 import { Vehiculo } from "./vehiculo.model";
 
 import { Servicio } from "./servicio.model";
+import { VentaDetalle } from "./ventaDetalle.model";
 
 
 export class Turno {
@@ -18,6 +19,8 @@ export class Turno {
     motivoConsulta: string;
 
     servicios: Servicio[];
+    
+    items: VentaDetalle[];
     
     hora?: Date;
 

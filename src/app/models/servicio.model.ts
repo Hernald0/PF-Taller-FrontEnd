@@ -2,6 +2,10 @@ export class Servicio {
   public id: number;
   public nombre: string;
   public descripcion: string;
+  public duracionAproxima: number;
+  public tipo: string;
+  public precioCosto: number;
+  public precioVenta: number;
   public fechaAlta?: Date;
   public usuarioAlta?: string;
   public fechaBaja?: Date;

@@ -5,7 +5,7 @@
       <button pButton label="Volver" (click)="goBack()" icon="pi pi-arrow-left" class="ui-button-secondary"></button>
       <button pButton label="Cancelar"  *ngIf="!camposReadOnly"  icon="pi pi-times" class="ui-button-secondary"></button>
       <button pButton label="Guardar"   *ngIf="!camposReadOnly"  (click)="submitVenta('guardar')" icon="pi pi-check" class="ui-button-primary"></button>
-      <button pButton label="Confirmar"   (click)="submitVenta()" icon="pi pi-check" class="ui-button-primary"></button>
+      <button pButton label="Confirmar"  *ngIf="!camposReadOnly"  (click)="submitVenta()" icon="pi pi-check" class="ui-button-primary"></button>
     </div>
   </div>
 
@@ -105,8 +105,8 @@
           <tbody formArrayName="items">
             <!--tr *ngFor="let item of form.controls['items'].controls; let i = index" [formGroupName]="i"-->
             <ng-container *ngFor="let itemrow of items.controls; let i=index; let l=last">
-            <tr  
-                 *ngIf="!camposReadOnly" 
+            <tr  *ngIf="!(modo === 'ver' && i === 0)"
+                
                  [formGroupName]="i" >
               <td style="display: none;"><input pInputText formControlName="id" ></td>  
               <td>
@@ -122,7 +122,7 @@
                                 [minLength]="3"
                                 [dropdown]="false"
                                 placeholder="Escribe al menos 3 caracteres"
-                                                       
+                                [readonly]="i > 0 || modo === 'ver'"                       
                                 >
                                 <ng-template let-item pTemplate="item">
                                   <div class="p-d-flex p-ai-center">
@@ -136,24 +136,24 @@
 
                 </p-autoComplete>
               </td>
-              <td style="width:50px"><input pInputText formControlName="tipo" [readonly]="i >= 0"></td>
-              <td style="width:50px"><input pInputText formControlName="precioUnitario" [readonly]="i >= 0"></td>
-              <td style="width:50px"><input pInputText formControlName="cantidad" (input)="updateSubtotal(i)" [readonly]="i > 0"></td>
-              <td style="width:50px"><input pInputText formControlName="bonificacion" (input)="updateSubtotal(i)" [readonly]="i > 0"></td>
+              <td style="width:50px"><input pInputText formControlName="tipo" [readonly]="i >= 0 "></td>
+              <td style="width:50px"><input pInputText formControlName="precioUnitario" [readonly]="i >= 0 "></td>
+              <td style="width:50px"><input pInputText formControlName="cantidad"   [readonly]="i > 0 " ></td>
+              <td style="width:50px"><input pInputText formControlName="bonificacion"  [readonly]="i > 0 "></td>
               <td>{{ calcularIVA(i)  }}</td>
               <td>{{ calcularItem(i) }}</td>
               
               <td>
                 
-                <button pButton icon="pi pi-plus" (click)="addItem(i)" *ngIf="i == 0" ></button>
-                <button pButton icon="pi pi-trash" class="p-button-danger" *ngIf="i > 0" (click)="deleteItem(i)"></button>
+                <button pButton icon="pi pi-plus" (click)="addItem(i)" *ngIf="i == 0  " ></button>
+                <button pButton icon="pi pi-trash" class="p-button-danger" *ngIf="i > 0 && modo != 'ver'" (click)="deleteItem(i)"></button>
               </td>
             </tr>
           </ng-container>
           </tbody>
         </table>
       </div>
- 
+      <!-- Fin item -->
 
   
 
@@ -261,7 +261,7 @@
  
     </form>
   </div>
-   {{this.items}}
+
 </div>
 
 <app-popup-generico 

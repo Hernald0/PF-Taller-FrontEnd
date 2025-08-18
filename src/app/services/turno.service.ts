@@ -17,6 +17,9 @@ export class TurnoService {
   constructor(private http:HttpClient) { }
 
   
+  recepcionTurno(payload: any) {  
+    return this.http.post<any>(this.endPoint+'/recepcionTurno/', payload)
+  }
 
   modificarTurno(payload: Turno) {  
     return this.http.put<any>(this.endPoint+'/modificarTurno/', payload)
@@ -26,11 +29,16 @@ export class TurnoService {
     return this.http.post<any>(this.endPoint, payload)
   }
 
+  getTurno(id: number){
+
+      //return this.http.get(`${this.endPoint}/${id}`, null);
+      return this.http.get(`${this.endPoint}/${id}`);
+            
+  }
+
   getTurnosAll(){
  
-
-      return this.http.get<Turno[]>(this.endPoint+'/turnosAll/' );
-            
+      return this.http.get<Turno[]>(this.endPoint+'/turnosAll/' );            
   }
   
   cancelarTurno(id: string)

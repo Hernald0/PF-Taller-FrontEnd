@@ -146,7 +146,7 @@
                 <label class="etiqueta" for="modelovehiculo">Modelo </label> 
               </div>
               <div>
-                <p-dropdown id="modelovehiculo" formControlName="modelovehiculo" [options]="modelosDeMarcaSeleccionada" optionLabel="nombre" [filter]="true" ></p-dropdown>
+                <p-dropdown id="modelovehiculo" formControlName="modelovehiculo" [options]="modelosDeMarcaSeleccionada" optionLabel="nombreModelo" [filter]="true" ></p-dropdown>
               </div>
               <!--span class="text-danger" *ngIf="nombre.touched && nombre.invalid">  
                 <div>* Nombre de Modelo es requiredo. </div>  
@@ -245,7 +245,7 @@
           <ul>
             <li><strong>Patente:</strong> {{ vehiculoForm.get('vehiculo.patente')?.value }}</li>
             <li><strong>Marca:</strong> {{ vehiculoForm.get('vehiculo.marcavehiculo')?.value.nombre }}</li>
-            <li><strong>Modelo:</strong> {{ vehiculoForm.get('vehiculo.modelovehiculo')?.value.nombre }}</li>
+            <li><strong>Modelo:</strong> {{ vehiculoForm.get('vehiculo.modelovehiculo')?.value.nombreModelo }}</li>
           </ul>
         </div>
         <div>
@@ -266,7 +266,8 @@
           <p><strong>Fecha Seleccionada: </strong>{{ fechaForm.get('fecha')?.value | date:'dd-MM-yyyy' }}</p>
           <p><strong>Hora Seleccionada: </strong> {{ fechaForm.get('horarioSeleccionado')?.value?.hora }}</p>
         </div>
-        <button type="button" pButton label="Cancelar" (click)="goBack()">  </button>
+        <button type="button" pButton label="Cerrar" (click)="goBack()">  </button>
+        <button type="button" [disabled]="EstadoConfirmado" pButton label="Cancelar" (click)="goBack()">  </button>
         <button type="button" [disabled]="EstadoConfirmado" pButton label="Anterior" (click)="anteriorStep()"></button>
         <button type="button" [disabled]="EstadoConfirmado || !stepForm.valid" pButton label="Confirmar Turno" (click)="confirmarTurno()"></button>
         <button type="button" [disabled]="!(EstadoConfirmado)" pButton label="Nuevo Turno" (click)="navigateToNewTurno()"></button>

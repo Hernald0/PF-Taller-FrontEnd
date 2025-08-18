@@ -56,6 +56,8 @@ export class VentasComponent implements OnInit {
   private searchTerms = new Subject<string>();
   ventaRecuperada : Venta;
 
+  private modo: 'ver' | 'editar' = 'editar';
+
   constructor(private fb: FormBuilder,
               private servicioRepuestosServicios: ServiciosService,
               private popupService: PopupService,
@@ -65,10 +67,15 @@ export class VentasComponent implements OnInit {
               private _location: Location,
                private rutaActiva: ActivatedRoute,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService
-             // private cdr: ChangeDetectorRef
+              private messageService: MessageService,
+              private route: ActivatedRoute
               
   ) {
+    this.route.queryParams.subscribe(params => {
+      if (params['modo'] === 'ver') {
+        this.modo = 'ver';
+      }
+    });
     }
 
    goBack(){
@@ -86,6 +93,8 @@ export class VentasComponent implements OnInit {
           this.ventaId = params.ventaId;
         }
       );
+
+  
 
     this.ventaForm = this.fb.group({
 
@@ -114,6 +123,11 @@ export class VentasComponent implements OnInit {
   
     this.items = this.ventaForm.get('items') as FormArray;
     
+    this.ventaForm.get('items')!.valueChanges
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(() => {
+          this.recalcularTotalesYCampos();
+        });
 
     this.ventaForm.get('tarjetaCredito')!.valueChanges.subscribe(value => {
       if (value) {
@@ -124,7 +138,7 @@ export class VentasComponent implements OnInit {
     });
 
  
-    console.log('1');
+  
       
     if (this.ventaId) {
       
@@ -137,7 +151,7 @@ export class VentasComponent implements OnInit {
                           this.ventaForm.patchValue({
                                                       fechaEmision:new Date(this.ventaRecuperada.fechaEmision),
                                                       usuario: this.ventaRecuperada.usuario,
-                                                      items:  this.ventaRecuperada.items,
+                                                      //items:  this.ventaRecuperada.items,
                                                       cliente: {
                                                         idCliente: this.ventaRecuperada.cliente.id,
                                                         nombreCliente: this.ventaRecuperada.cliente.persona.nombre,
@@ -154,13 +168,30 @@ export class VentasComponent implements OnInit {
                                                       observaciones: this.ventaRecuperada.observaciones 
                           });
     
-        this.items.clear();
+      this.items.clear();
 
-        console.log(this.ventaRecuperada.items);
+      // Primero agregamos la fila vacía
+      this.items.push(this.createItem());
 
-        this.ventaRecuperada.items.forEach(detalle => {
-          this.items.push(this.createItemFromDetalle(detalle));
-        }); 
+      // Luego insertamos los ítems de la venta después del primero (es decir, desde índice 1)
+      this.ventaRecuperada.items.forEach((detalle, idx) => {
+        this.items.insert(idx + 1, this.createItemFromDetalle(detalle));
+      });
+
+      this.recalcularTotalesYCampos();
+      /*
+      console.log('Items en el form:');
+      this.items.controls.forEach((item: FormGroup, i: number) => {
+        console.log(`Item ${i}`, {
+          tipo: item.get('tipo').value,
+          subtotal: item.get('subtotal').value,
+          bonificacion: item.get('bonificacion').value,
+          iva: item.get('iva').value
+        });
+      });*/
+      
+     
+
 
       });
     } else {
@@ -168,31 +199,37 @@ export class VentasComponent implements OnInit {
       this.items.push(this.createItem());
     } 
 
+    if (this.modo === 'ver') {
+      this.ventaForm.disable();
+      this.protejerCampos(true);
+    }
+
   }
 
+  
   createItemFromDetalle(detalle: VentaDetalle): FormGroup {
     
-    console.log('imprime el item',detalle )
-   
-    return this.fb.group({
-     
-      id: [detalle.Id || null],
-      tipo: [detalle.tipo || null],
-      cantidad: [detalle.cantidad || 0 ],
-      precioUnitario: [detalle.precioUnitario || 0],
-      iva: [detalle.iva || 0],
-      bonificacion: [detalle.bonificacion || 0],
-      producto: [detalle|| null],  //  este campo es necesario para el HTML
-      importe:  [detalle.importe || null],
-      subtotal:  [detalle.subtotal || null]
+
+    return this.fb.group({    
+        id: [detalle.Id || null],
+        tipo: [detalle.tipo || null],
+        cantidad: [detalle.cantidad || 0 ],
+        precioUnitario: [detalle.precioUnitario || 0],
+        iva: [detalle.iva || 0],
+        bonificacion: [detalle.bonificacion || 0],
+        producto: [detalle|| null],  //  este campo es necesario para el HTML
+        subtotal:  [detalle.subtotal || null]
     });
+
+     
+     
   }
 
   createItem(): FormGroup {
     return this.fb.group({
       id: ['', Validators.required],
       producto: ['', Validators.required],
-      importe: [0, Validators.required],
+      precioUnitario: [0, Validators.required],
       cantidad: [1, Validators.required],
       tipo: ['', Validators.required],
       bonificacion: [0],
@@ -203,6 +240,7 @@ export class VentasComponent implements OnInit {
 
   addItem(index: number) {
 
+   
 
      const itemFormGroup = this.items.at(index) as FormGroup;
 
@@ -220,7 +258,7 @@ export class VentasComponent implements OnInit {
      const nuevoItemCompleto = this.fb.group({
          id: itemFormGroup.get('id').value, 
          producto: itemFormGroup.get('producto').value,
-         importe: itemFormGroup.get('importe').value, 
+         precioUnitario: itemFormGroup.get('precioUnitario').value, 
          cantidad: itemFormGroup.get('cantidad').value,
          tipo: itemFormGroup.get('tipo').value.charAt(0).toUpperCase() + itemFormGroup.get('tipo').value.slice(1),
          bonificacion: itemFormGroup.get('bonificacion').value,
@@ -355,7 +393,7 @@ export class VentasComponent implements OnInit {
     
     itemFormGroup.patchValue({
                               id: selectedItem.id,
-                              importe: selectedItem.precioVenta,
+                              precioUnitario: selectedItem.precioVenta,
                               tipo: selectedItem.tipo,
                               subtotal: this.calcularSubtotal(index)
                             });
@@ -373,7 +411,7 @@ export class VentasComponent implements OnInit {
       console.warn(`No se encontró el FormGroup para el índice: ${index}`);
       return 0;
     }
-    const importe = itemFormGroup.get('importe').value;
+    const importe = itemFormGroup.get('precioUnitario').value;
     const cantidad = itemFormGroup.get('cantidad').value;
   
     return (importe * cantidad); 
@@ -384,19 +422,29 @@ export class VentasComponent implements OnInit {
 
   // Métodos de cálculo del resumen
   calcularRepuestos(): number {
-    console.log('cantidad de items',this.items.length );
-    console.log('cantidad de items',this.items.controls
-      .filter((item: FormGroup) => item.get('tipo').value === 'Repuesto') );
-    this.totalRepuestos =  this.items.controls
-      .filter((item: FormGroup) => item.get('tipo').value === 'Repuesto')
-      .map((item: FormGroup) => item.get('subtotal').value)
+
+     this.totalRepuestos =  this.items.controls
+      .filter((item: FormGroup, index: number) => index > 0)
+      .map((item: FormGroup) => Number(item.get('subtotal').value))
       .reduce((acc, val) => acc + val, 0);
 
-      return this.totalRepuestos;
+       
+  /*
+    const asdasd= this.items.controls.filter((item: FormGroup, index: number) => index > 0)
+                                             .filter((item: FormGroup) => item.get('tipo').value === 'Repuesto')
+                                             .map((item: FormGroup) =>  item.get('subtotal').value)  
+                                             .reduce((acc, val) => acc + val, 0)
+                                             ;
+    this.totalRepuestos = asdasd;     */
+    return this.totalRepuestos;
+
   }
+
+ 
 
   calcularServicios(): number {
     this.totalServicios =  this.items.controls
+      .filter((item: FormGroup, index: number) => index > 0)
       .filter((item: FormGroup) => item.get('tipo').value === 'Servicio')
       .map((item: FormGroup) => item.get('subtotal').value)
       .reduce((acc, val) => acc + val, 0);
@@ -415,12 +463,24 @@ export class VentasComponent implements OnInit {
 
   calcularIVARepuestosYServicios(): number {
     this.totalIVA =  this.items.controls
+      .filter((item: FormGroup, index: number) => index > 0)
       .map((item: FormGroup) => item.get('iva').value)
       .reduce((acc, val) => acc + val, 0);
     
     return this.totalIVA;
   }
 
+  recalcularTotalesYCampos() {
+  for (let i = 0; i < this.items.length; i++) {
+    this.calcularItem(i);
+    this.calcularIVA(i);
+  }
+
+  this.calcularIVARepuestosYServicios();
+  this.calcularBonificacionItems();
+  this.calcularServicios();
+  this.calcularRepuestos();
+}
 
   /*
   updateTotals() {
@@ -514,8 +574,8 @@ export class VentasComponent implements OnInit {
                             cantidad: item.cantidad,
                             bonificacion: item.bonificacion,
                             tipo: item.producto.tipo,
-                            importe: item.producto.importe,
-                            iva: item.producto.iva,
+                            precioUnitario: item.precioUnitario,
+                            iva: item.iva,
                             subtotal: item.producto.subtotal,
                           }));
                           
