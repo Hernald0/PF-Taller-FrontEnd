@@ -4,16 +4,17 @@
     <h2>Órden de trabajo</h2>
     <div class="float-right">
       <button pButton label="Volver" (click)="goBack()" icon="pi pi-arrow-left" class="ui-button-secondary"></button>
-      <button pButton label="Cancelar"  *ngIf="!camposReadOnly"  icon="pi pi-times" class="ui-button-secondary"></button>
-      
-      <button pButton label="Confirmar"  *ngIf="!camposReadOnly"  (click)="submitRecepcion()" icon="pi pi-check" class="ui-button-primary"></button>
+      <button pButton label="Cancelar"  *ngIf=" this.modo === 'nuevo' "  icon="pi pi-times" (click)="cancelarOrden()" class="ui-button-secondary"></button>  
+      <button pButton label="A Confirmar por cliente"  *ngIf="!camposReadOnly"  (click)="submitOrden()" icon="pi pi-check" class="ui-button-primary"></button>    
+      <button pButton label="Guardar"  *ngIf="!camposReadOnly"  (click)="submitOrden()" icon="pi pi-check" class="ui-button-primary"></button>
+      <button pButton label="Finalizar Orden"  *ngIf="!camposReadOnly"  (click)="submitOrden()" icon="pi pi-check" class="ui-button-primary"></button>
     </div>
   </div>
 
  
 
   <div class="card-body">
-    <!-- Formulario Principal -->
+    <!-- Formulario Principal --> 
     <form [formGroup]="ordenForm">
       <div class="card">
         <div class="card-body">
@@ -31,6 +32,18 @@
               </div>
               <div class="col-auto">
                 <input id="usuario" [readonly]="true" type="text" formControlName="usuario" class="form-control">
+              </div>
+              <div class="col-auto">
+                <label class="etiqueta" for="estado">Estado:</label>
+              </div>
+              <div class="col-auto">
+                <input id="estado" [readonly]="true" type="text" formControlName="estado" class="form-control">
+              </div>
+              <div class="col-auto">
+                <label class="etiqueta" for="usuario">Técnico Asignado:</label>
+              </div>
+              <div class="col-auto">
+                <input id="usuario" [readonly]="true" type="text" formControlName="tecnicoAsignado" class="form-control">
         
               </div>
 
@@ -92,7 +105,7 @@
                                     </div>
                                     <div class="col-md-2 mb-1">
                                     
-                                      <button class="btn btn-primary" (click)="abrirPopup('popUp-cotizacion-vehiculos', ventaForm.get('cliente.idCliente').value)"> 
+                                      <button class="btn btn-primary" (click)="abrirPopup('popUp-cotizacion-vehiculos', ordenForm.get('cliente.idCliente').value)"> 
                                         <i class="pi pi-search"></i>
                                       </button>
                                     </div>
@@ -159,12 +172,12 @@
                   <p-button 
                     icon="pi pi-minus" 
                     (onClick)="calculoCombustible(-25)" 
-                    [disabled]="value <= 0 || camposReadOnly">
+                    [disabled]="value <= 0 || camposReadOnly || this.modo === 'editar'">
                   </p-button>
                   <p-button 
                     icon="pi pi-plus" 
                     (onClick)="calculoCombustible(25)" 
-                    [disabled]="value >= 100 || camposReadOnly">
+                    [disabled]="value >= 100 || camposReadOnly || this.modo === 'editar'">
                   </p-button>
                 </div>  
               </div>
@@ -174,7 +187,7 @@
             <div class="form-group col-md-6">
               <label for="kilometraje" class="font-weight-bold">Kilometraje:</label>
               <div>
-                <input type="number" id="kilometraje" formControlName="kilometraje"   class="form-control"  [readonly]="camposReadOnly" > 
+                <input type="number" id="kilometraje" formControlName="kilometraje"   class="form-control"  [readonly]="camposReadOnly  || this.modo === 'editar'" > 
               </div>
             </div>
           </div>
@@ -191,16 +204,18 @@
                     <div>                    
                       <p-dropdown  [style]="{'minWidth':'100%'}" 
                                    [options]="listaSeguros" 
+                                   [readonly]="camposReadOnly  || this.modo === 'editar'"
                                    placeholder="Sin Aseguradora" 
                                    formControlName="aseguradora" 
                                    optionLabel="nombre" 
                                    optionValue="id"
                                    dataKey="id"
+                                   
                                  ></p-dropdown>
                     </div>
                     <label for="nroSiniestro" class="font-weight-bold">Nro. Siniestro:</label>
                     <div>
-                      <input type="text" formControlName="nroSiniestro"  class="form-control" > 
+                      <input type="text" formControlName="nroSiniestro"  class="form-control" [readonly]="camposReadOnly  || this.modo === 'editar'" > 
                     </div>
                 </div>
              
@@ -208,11 +223,11 @@
                 <div class="form-group col-md-6">
                     <label for="inspector" class="font-weight-bold">Inspector:</label>
                     <div>
-                      <input type="text" formControlName="inspector"  class="form-control" > 
+                      <input type="text" formControlName="inspector" [readonly]="this.modo === 'editar'" class="form-control" > 
                     </div>
                     <label for="franquicia" class="font-weight-bold">Franquicia:</label>
                     <div>
-                      <input type="number" formControlName="franquicia"  class="form-control" > 
+                      <input type="number" formControlName="franquicia" [readonly]="this.modo === 'editar'" class="form-control" > 
                     </div>
                 </div>
             </div>
@@ -223,9 +238,21 @@
         <div class="card-body">
            <!-- Observaciones -->
           <div class="form-group col-md-12">
-            <label class="font-weight-bold" for="observaciones">Observaciones:</label>
+            <label class="font-weight-bold" for="observaciones">Observaciones del Cliente:</label>
              <div>
-                <textarea [readonly]= "camposReadOnly" style="min-width: 100%; width: 100%" pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+                <textarea [readonly]= "camposReadOnly || this.modo === 'editar'"  style="min-width: 100%; width: 100%" pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+             </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="card">
+        <div class="card-body">
+           <!-- Observaciones -->
+          <div class="form-group col-md-12">
+            <label class="font-weight-bold" for="observacionesTecnicas">Observaciones del Técnico:</label>
+             <div>
+                <textarea [readonly]= "camposReadOnly" style="min-width: 100%; width: 100%" pInputTextarea id="observacionesTecnicas" formControlName="observacionesTecnicas"></textarea>
              </div>
           </div>
         </div>
@@ -233,7 +260,9 @@
 
       <!-- Tabla de Ítems -->
       <div class="table-responsive mt-3">
-        <table id="tabla-detalles" class="table table-bordered">
+        <table id="tabla-detalles" 
+               class="table table-bordered"
+               [ngClass]="{ 'consulta': esConsulta, 'edicion': !esConsulta }">
           <thead class="thead-dark">
             <tr>
               <th style="display: none;">ItemId</th>  
@@ -303,6 +332,11 @@
           </ng-container>
           </tbody>
         </table>
+        <div *ngIf="( esConsulta && items && items.length === 1)">
+         
+            Sin Items asociados. 
+          
+      </div>
       </div>
       <!-- Fin item -->
 

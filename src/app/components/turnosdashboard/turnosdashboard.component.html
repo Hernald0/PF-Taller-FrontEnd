@@ -66,7 +66,7 @@
                                 [routerLink]="['/recepcionvehiculo/',turno.id]" 
                                 routerLinkActive="router-link-active" 
                                 class="btn btn-primary" 
-                                (click)="recepcion(turno)">Recepción</button>
+                                 >Recepción</button>
 
                         <button pButton type="button" 
                                 [disabled]="turno.status === 'cancelado' || turno.status === 'recibido'" 

@@ -31,6 +31,8 @@ import { RecepcionvehiculoComponent } from './components/recepcionvehiculo/recep
 import { AdminVentasComponent } from './components/admin-ventas/admin-ventas.component';
 import { VentasComponent } from './components/ventas/ventas.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
+import { UsuariosListComponent } from './components/usuarios-list/usuarios-list.component';
+import { UsuarioFormComponent } from './components/usuario-form/usuario-form.component';
 
 const routes: Routes = [
   { path: 'events', component: EventsComponent, canActivate: [AuthGuard]  },
@@ -64,6 +66,9 @@ const routes: Routes = [
   { path: 'orden', component: OrdenComponent, canActivate: [AuthGuard]  },
   { path: 'orden/:orderId', component: OrdenComponent, canActivate: [AuthGuard]  },
   { path: 'admin-orders', component: AdminOrdersComponent, canActivate: [AuthGuard]  },
+  { path: 'usuarios-list', component: UsuariosListComponent, canActivate: [AuthGuard]  },
+  { path: 'usuarios/new', component: UsuarioFormComponent, canActivate: [AuthGuard]  },
+  
   
   { path: '**', pathMatch: 'full', redirectTo: 'tipoidentificador' },
   //{ path: '', redirectTo: '/events', pathMatch: 'full' },

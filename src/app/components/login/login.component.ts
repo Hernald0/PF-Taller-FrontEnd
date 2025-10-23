@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     };
       console.log(this.formLogin.get('email').value);
       console.log(this.formLogin.get('password').value);
-      usuario.usuarioNombre = this.formLogin.get('email').value ;
+      usuario.username = this.formLogin.get('email').value ;
       //usuario.password = this.formLogin.get('pass').valueOf;
     //logueado = true;
     //this.route.navigate(['/events'])

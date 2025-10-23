@@ -37,6 +37,7 @@ export class GlobalService {
         case 'Cliente':
             // statement 1
             this.clientesService.getCliente(id).subscribe((cliente: Cliente) => {
+              console.log('GlobalService.instanciarClasePorNombre devolucón del servicio',cliente );
               this.datosSubject.next(cliente);
             }); 
             /*
@@ -51,9 +52,9 @@ export class GlobalService {
             // statement 2
             break;
         case 'Vehiculo':
-            /* this.clientesService. .getCliente(id).subscribe((cliente: Cliente) => {
-              this.datosSubject.next(cliente);
-            }); */
+             this.tallerService.getVehiculo(id).subscribe((vehiculo: Vehiculo) => {console.log('dato globalservice: ',vehiculo);
+              this.datosSubject.next(vehiculo);
+            });  
             break;
        
      }

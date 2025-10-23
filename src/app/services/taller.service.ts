@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Empleado } from '../models/empleado.model';
+import { Vehiculo } from '../models/vehiculo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,10 @@ export class TallerService {
     console.log(this.endPoint+'/'+id);
     return this.http.delete(`${this.endPoint}/${id}`);
   }
+
+  getVehiculo(id: number){
+     
+    return this.http.get<Vehiculo>(`${this.endPoint}/Vehiculo/${id}`);
+  } 
 
 }

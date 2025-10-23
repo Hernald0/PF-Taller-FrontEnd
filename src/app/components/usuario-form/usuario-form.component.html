@@ -1,0 +1,32 @@
+<div class="container mt-3">
+  <h3>{{ usuario.usuarioId === 0 ? 'Nuevo Usuario' : 'Editar Usuario' }}</h3>
+  <form (ngSubmit)="saveUsuario()">
+    <div class="form-group">
+      <label>Usuario</label>
+      <input [(ngModel)]="usuario.username" name="username" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input [(ngModel)]="usuario.email" name="email" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Nombre Completo</label>
+      <input [(ngModel)]="usuario.nombreCompleto" name="nombreCompleto" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Activo</label>
+      <input type="checkbox" [(ngModel)]="usuario.activo" name="activo">
+    </div>
+    <div class="form-group">
+      <label>Roles</label>
+      <div *ngFor="let rol of rolesDisponibles">
+        <input type="checkbox"
+              [checked]="tieneRol(rol)"
+              (change)="toggleRol(rol, $event)">
+        {{ rol.nombre }}
+      </div>
+    </div>
+    <button class="btn btn-success" type="submit">Guardar</button>
+    <button class="btn btn-secondary" type="button" (click)="router.navigate(['/usuarios'])">Cancelar</button>
+  </form>
+</div>

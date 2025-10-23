@@ -23,7 +23,12 @@
               </div>
               <div class="col-auto">
                
-                <p-calendar [readonlyInput]="camposReadOnly" id="fechaRecepcion" formControlName="fechaRecepcion" dateFormat="dd/mm/yy"></p-calendar>
+                <p-calendar [readonlyInput]="camposReadOnly" 
+                            id="fechaRecepcion" 
+                            formControlName="fechaRecepcion"
+                             [showTime]="true" 
+                            [hourFormat]="24"
+                            dateFormat="dd/mm/yy"></p-calendar>
               </div>
             
               <div class="col-auto">
@@ -225,7 +230,7 @@
           <div class="form-group col-md-12">
             <label class="font-weight-bold" for="observaciones">Observaciones:</label>
              <div>
-                <textarea [readonly]= "camposReadOnly" style="min-width: 100%; width: 100%" pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+                <textarea [readonly]= "camposReadOnly" style="min-width: 100%; width: 100%" pInputTextarea id="motivoConsulta" formControlName="motivoConsulta"></textarea>
              </div>
           </div>
         </div>
@@ -233,7 +238,9 @@
 
       <!-- Tabla de Ítems -->
       <div class="table-responsive mt-3">
-        <table id="tabla-detalles" class="table table-bordered">
+        <table id="tabla-detalles" 
+               class="table table-bordered" 
+               [ngClass]="{ 'consulta': esConsulta, 'edicion': !esConsulta }">
           <thead class="thead-dark">
             <tr>
               <th style="display: none;">ItemId</th>  
@@ -284,8 +291,8 @@
               <td style="width:50px"><input pInputText formControlName="precioUnitario" [readonly]="i >= 0 "></td>
               <td style="width:50px"><input pInputText formControlName="cantidad"   [readonly]="i >= 0 && (idxEditar != i)" ></td>
               <td style="width:50px"><input pInputText formControlName="bonificacion"  [readonly]="i >= 0 && (idxEditar != i)"></td>
-              <td>{{ calcularIVA(i)  }}</td>
-              <td>{{ calcularItem(i) }}</td>
+              <td>{{ calcularIVA(i)  | currency }}</td>
+              <td>{{ calcularItem(i) | currency }}</td>
               
               <td>
                 
@@ -300,14 +307,22 @@
                 </button>
               </td>
             </tr>
+            
           </ng-container>
+           
+         
           </tbody>
+        
         </table>
+      
       </div>
       <!-- Fin item -->
-
-  
-
+ 
+      <div *ngIf="( esConsulta && items && items.length === 1)">
+         
+            Sin Items asociados. 
+          
+      </div>
       <!-- Resumen -->
       <div class="row mt-3">
         <div class="col-md-6">
@@ -325,11 +340,11 @@
               </tr>
               <tr>
                 <td>Repuestos</td>
-                <td>{{ calcularRepuestos() }}</td>
+                <td>{{ totalRepuestos }}</td>
               </tr>
               <tr>
                 <td>Servicio</td>
-                <td>{{ calcularServicios() }}</td>
+                <td>{{ totalServicios }}</td>
               </tr>
               <tr>
                 <td>Total neto</td>

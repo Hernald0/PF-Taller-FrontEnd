@@ -30,7 +30,7 @@ export class OrdenService {
       'Content-Type': 'application/json'
     });
     console.log('se ejecuta postOrden'); 
-    return this.http.post<any>(this.endPoint, payload, { headers });
+    return this.http.post<any>(this.endPoint+'/postOrden/', payload, { headers });
 
     
   }

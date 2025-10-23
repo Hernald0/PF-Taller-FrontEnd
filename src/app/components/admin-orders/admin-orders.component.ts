@@ -75,7 +75,7 @@ export class AdminOrdersComponent implements OnInit {
       (!id || orden.id.toString().includes(id)) &&
       (!cliente || orden.cliente.persona.nombre.toLowerCase().includes(cliente.persona.nombre.toLowerCase())) &&
       (!montoTotal || orden.montoTotal === montoTotal) &&
-      (!fecha || orden.fechaEmision === fecha) &&
+      (!fecha || orden.fecha === fecha) &&
       (!estado || (typeof orden.estado === 'string' && orden.estado.toLowerCase().includes(estado.toLowerCase())))
       //(!estado.value || (orden.estado && orden.estado.toLowerCase().includes(estado.toLowerCase())))
       //(!estado || orden.estado.toLowerCase().includes(estado.value.toLowerCase()) )

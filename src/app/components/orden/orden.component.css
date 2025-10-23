@@ -21,9 +21,14 @@
     margin-right: 0.5rem;
   }
   
-  #tabla-detalles tbody tr:first-child td {
-    border-bottom: 4px solid #000; /* Ajusta el grosor y color del borde */
-}
+  #tabla-detalles.edicion tbody tr:first-child td {
+  border-bottom: 4px solid #000;
+  }
+
+  /* Si está en modo consulta, se quita */
+  #tabla-detalles.consulta tbody tr:first-child td {
+    border-bottom: none !important;
+  }
 
 .table-responsive {
   overflow: visible; /* Asegúrate de que el contenedor no limite el desbordamiento */

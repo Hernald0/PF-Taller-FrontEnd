@@ -23,6 +23,7 @@ import { Servicio } from 'src/app/models/servicio.model';
 import { Cliente } from 'src/app/models/cliente.model';
 import { AseguradoraService } from 'src/app/services/aseguradora.service';
 import { Aseguradora } from 'src/app/models/aseguradora.model';
+import { RecepcionVehiculo } from 'src/app/models/recepcionVehiculo.model';
  
  
  
@@ -69,9 +70,10 @@ export class RecepcionvehiculoComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
   displayDialog: boolean = false;
   private searchTerms = new Subject<string>();
-  turnoRecuperado : Turno;
+  turnoRecuperado : RecepcionVehiculo;
 
   private modo: 'ver' | 'editar' = 'editar';
+  esConsulta: boolean = false;
 
   constructor(private fb: FormBuilder,
               private servicioRepuestosServicios: ServiciosService,
@@ -91,6 +93,7 @@ export class RecepcionvehiculoComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['modo'] === 'ver') {
         this.modo = 'ver';
+        this.esConsulta = true;
       }
     });
     }
@@ -111,10 +114,12 @@ export class RecepcionvehiculoComponent implements OnInit {
         }
       );
 
-   
+   const ahora = new Date();
+   ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
+    console.log('Fecha y hora', ahora);
     this.recepcionForm = this.fb.group({
                                     idTurno: [''], 
-                                    fechaRecepcion: [new Date(), Validators.required],
+                                    fechaRecepcion: [ahora, Validators.required],
                                     usuario: ['UsuarioLogueado', Validators.required],
                                     cliente: this.fb.group({
                                             idCliente: [''], 
@@ -138,7 +143,7 @@ export class RecepcionvehiculoComponent implements OnInit {
                                     cuentaCorriente: [0],
                                     tarjetaCredito: [null],
                                     montoTarjetaCredito:  [{ value: '', disabled: true }] ,
-                                    observaciones: [''],            
+                                    motivoConsulta: [''],            
                                     kilometraje:[0],
                                     combustible: [0],
                                     aseguradora:[0],
@@ -146,8 +151,9 @@ export class RecepcionvehiculoComponent implements OnInit {
                                     inspector: [''],
                                     franquicia: [0],
                                   });
-
-    
+console.log('Es un Date?', this.recepcionForm.get('fechaRecepcion').value instanceof Date);
+  console.log('Valor:', this.recepcionForm.get('fechaRecepcion').value);
+    console.log(this.recepcionForm.value.fechaRecepcion);
   
     this.items = this.recepcionForm.get('items') as FormArray;
     
@@ -178,12 +184,13 @@ export class RecepcionvehiculoComponent implements OnInit {
 
       
     if (this.turnoId) {
-      
+     
+    setTimeout(() => {
       // Se está editando una venta existente
       this.turnoService.getTurno(this.turnoId).pipe(
         takeUntil(this.unsubscribe$)
       ).subscribe(res => {
-                          this.turnoRecuperado = res  as Turno;
+                          this.turnoRecuperado = res; //  as Turno;
                           console.log('this.turnoRecuperado', this.turnoRecuperado);
                           this.recepcionForm.patchValue({
                                                       idTurno: this.turnoId,
@@ -206,13 +213,21 @@ export class RecepcionvehiculoComponent implements OnInit {
                                                           numeroserie: this.turnoRecuperado.vehiculo.numeroSerie,
                                                           anio : this.turnoRecuperado.vehiculo.anio,
                                                       },
-                                                      
-                                                      observaciones: this.turnoRecuperado.motivoConsulta
+                                                                
+                                                      kilometraje:this.turnoRecuperado.kilometraje,
+                                                      combustible: this.turnoRecuperado.combustible,
+                                                      aseguradora: Number(this.turnoRecuperado.idAseguradora),
+                                                      nroSiniestro : this.turnoRecuperado.nroSiniestro,
+                                                      inspector: this.turnoRecuperado.inspector,
+                                                      franquicia: this.turnoRecuperado.franquicia,
+                                                      motivoConsulta: this.turnoRecuperado.motivoConsulta
+                                                       
                           });
+           
       
       this.dataResumenCliente = getDataResumenCliente(this.turnoRecuperado.cliente) ;
       this.dataResumenVehiculo = getDataResumenVehiculo(this.turnoRecuperado.vehiculo);
-
+       this.recepcionForm.get('aseguradora')!.setValue(this.turnoRecuperado.idAseguradora);                    
       this.items.clear();
 
       // Primero agregamos la fila vacía
@@ -223,6 +238,8 @@ export class RecepcionvehiculoComponent implements OnInit {
       this.turnoRecuperado.servicios.forEach((detalle, idx) => {
         this.items.insert(idx + 1, this.createItemFromDetalle(detalle));
       }); 
+
+      console.log('cantidad: ', this.items.length);
 
       this.recalcularTotalesYCampos();
       /*
@@ -239,6 +256,7 @@ export class RecepcionvehiculoComponent implements OnInit {
      
 
 
+          });
       });
     } else {
       // Nueva venta
@@ -487,7 +505,7 @@ addItem(index: number) {
               modelo : itemSeleccionado.item.datos.modelo,
               color : itemSeleccionado.item.datos.color,
               anio : itemSeleccionado.item.datos.anio,
-              numeroserie : '123123123'
+              numeroserie : itemSeleccionado.item.datos.numeroSerie
             }
           });
         }
@@ -528,7 +546,7 @@ addItem(index: number) {
     const importe  = itemFormGroup.get('precioUnitario').value;
     const cantidad = itemFormGroup.get('cantidad').value;
     let subtotal = importe * cantidad;
-    itemFormGroup.get('subtotal').setValue(subtotal);
+    itemFormGroup.get('subtotal').setValue(subtotal, { emitEvent: false });
     return (subtotal); 
     
   }
@@ -600,15 +618,10 @@ addItem(index: number) {
   this.calcularBonificacionItems();
   this.calcularServicios();
   this.calcularRepuestos();
-  //this.updateTotals()
+ 
 }
 
  
-  updateTotals() {
-    this.totalRepuestos = this.calcularRepuestos();
-    this.totalServicios = this.calcularServicios();
-    this.totalIVA = this.calcularIVARepuestosYServicios();
-  }  
 
   calcularTotalNeto(): number {
     return this.totalRepuestos + this.totalServicios;
@@ -680,7 +693,7 @@ addItem(index: number) {
 
          Franquicia  :  this.recepcionForm.get('franquicia').value,
 
-         Observaciones  :  this.recepcionForm.get('observaciones').value,
+         MotivoConsulta  :  this.recepcionForm.get('motivoConsulta').value,
 
          Usuario :  this.recepcionForm.get('usuario').value,
 

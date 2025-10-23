@@ -1,0 +1,31 @@
+<div class="container mt-3">
+  <h3>Usuarios</h3>
+  <button class="btn btn-primary mb-2" (click)="addUsuario()">Nuevo Usuario</button>
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th>Nombre Completo</th>
+        <th>Activo</th>
+        <th>Roles</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of usuarios">
+        <td>{{ u.usuarioId }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.nombreCompleto }}</td>
+        <td>{{ u.activo }}</td>
+        <td>{{ getNombresRoles(u) }}</td>
+        <td>
+          <button class="btn btn-sm btn-info" (click)="editUsuario(u)">Editar</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteUsuario(u)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

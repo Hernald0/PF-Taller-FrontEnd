@@ -25,6 +25,9 @@ export class Turno {
     hora?: Date;
 
     status: string;
+
+  
+
   
     constructor(cliente: Cliente, motivoConsulta: string, servicios: Servicio[], fechaSeleccionada: Date) {
       this.cliente = cliente;

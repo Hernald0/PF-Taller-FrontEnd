@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { of, Subject } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, switchMap, take, takeUntil } from 'rxjs/operators';
 import { Aseguradora } from 'src/app/models/aseguradora.model';
 import { Cliente } from 'src/app/models/cliente.model';
 import { ItemDto } from 'src/app/models/ItemDto.model';
@@ -18,6 +18,8 @@ import { OrdenService } from 'src/app/services/orden.service';
 import { AseguradoraService } from 'src/app/services/aseguradora.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
+import { Orden } from 'src/app/models/orden.model';
+import { VentaDetalle } from 'src/app/models/ventaDetalle.model';
 
 @Component({
   selector: 'app-orden',
@@ -60,9 +62,10 @@ export class OrdenComponent implements OnInit {
     private unsubscribe$ = new Subject<void>();
     displayDialog: boolean = false;
     private searchTerms = new Subject<string>();
-    turnoRecuperado : Turno;
+    turnoRecuperado : Orden;
   
-    private modo: 'ver' | 'editar' = 'editar';
+    private modo: 'ver' | 'editar' | 'nuevo' = 'editar';
+    private esConsulta: boolean = false;
   
     constructor(private fb: FormBuilder,
                 private servicioRepuestosServicios: ServiciosService,
@@ -82,8 +85,14 @@ export class OrdenComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params['modo'] === 'ver') {
           this.modo = 'ver';
+          this.esConsulta = true;
+        }else{
+          this.modo = 'editar';
+          this.esConsulta = false;
         }
       });
+
+     
       }
   
      goBack(){
@@ -93,21 +102,15 @@ export class OrdenComponent implements OnInit {
     ngOnInit() {
       
       this.ordenId = this.rutaActiva.snapshot.params.orderId;
-      console.log('this.ordenId: ', this.ordenId);
-      /*
-      this.rutaActiva.params.pipe(
-          takeUntil(this.unsubscribe$)
-        ).subscribe(
-          (params: Params) => {
-            this.ordenId = params.ordenId;
-          }
-        );*/
-  
-     
+      
+      if (!this.ordenId) this.modo = 'nuevo';
+         
       this.ordenForm = this.fb.group({
-                                      idTurno: [''], 
+                                      idTurno: [''],
+                                      idOrden: [null], 
                                       fechaRecepcion: [new Date(), Validators.required],
                                       usuario: ['UsuarioLogueado', Validators.required],
+                                      tecnicoAsignado: ['UsuarioLogueado', Validators.required],
                                       cliente: this.fb.group({
                                               idCliente: [''], 
                                               nombreCliente: [''], 
@@ -130,7 +133,8 @@ export class OrdenComponent implements OnInit {
                                       cuentaCorriente: [0],
                                       tarjetaCredito: [null],
                                       montoTarjetaCredito:  [{ value: '', disabled: true }] ,
-                                      observaciones: [''],            
+                                      observaciones: [''],
+                                      observacionesTecnicas : [''],           
                                       kilometraje:[0],
                                       combustible: [0],
                                       aseguradora:[0],
@@ -175,13 +179,13 @@ export class OrdenComponent implements OnInit {
         this.ordenService.getOrden(this.ordenId).pipe(
           takeUntil(this.unsubscribe$)
         ).subscribe(res => {
-                            this.turnoRecuperado = res  as Turno;
+                            this.turnoRecuperado = res as Orden;
                             console.log('this.ordenRecuperado', this.turnoRecuperado);
                             this.ordenForm.patchValue({
-                                                        idTurno: this.ordenId,
+                                                        idTurno: this.turnoRecuperado.id,
                                                         fechaRecepcion:new Date(this.turnoRecuperado.fecha),
-                                                         
-                                                        //items:  this.ventaRecuperada.items,
+                                                        idOrden:  this.ordenId,
+                                                       
                                                         cliente: {
                                                           idCliente: this.turnoRecuperado.cliente.id,
                                                           nombreCliente:  ((this.turnoRecuperado.cliente.persona.tipoPersona == 'F') 
@@ -195,15 +199,21 @@ export class OrdenComponent implements OnInit {
                                                             descVehiculo : this.turnoRecuperado.vehiculo.modelovehiculo.nombreModelo,
                                                             color: this.turnoRecuperado.vehiculo.color,
                                                             patente: this.turnoRecuperado.vehiculo.patente,
-                                                            numeroserie: this.turnoRecuperado.vehiculo.numeroSerie,
+                                                            numeroserie: this.turnoRecuperado.vehiculo.numeroSerie, 
                                                             anio : this.turnoRecuperado.vehiculo.anio,
                                                         },
-                                                        
+                                                        combustible: 50,
+                                                        kilometraje: 12312312,
+                                                        idAseguradora: 1,
+                                                        inspector: "123123",
+                                                        nroSiniestro: "123123",
+                                                        franquicia: 123123,
                                                         observaciones: this.turnoRecuperado.motivoConsulta
+                                                        
                             });
         
-        this.dataResumenCliente = getDataResumenCliente(this.turnoRecuperado.cliente) ;
-        this.dataResumenVehiculo = getDataResumenVehiculo(this.turnoRecuperado.vehiculo);
+        this.dataResumenCliente = this.getDataResumenCliente(this.turnoRecuperado.cliente) ;
+        this.dataResumenVehiculo = this.getDataResumenVehiculo(this.turnoRecuperado.vehiculo);
   
         this.items.clear();
   
@@ -211,13 +221,13 @@ export class OrdenComponent implements OnInit {
         this.items.push(this.createItem());
   
         //Luego insertamos los ítems de la venta después del primero (es decir, desde índice 1)
-        if (this.turnoRecuperado.servicios) 
-        this.turnoRecuperado.servicios.forEach((detalle, idx) => {
-          this.items.insert(idx + 1, this.createItemFromDetalle(detalle));
+        if (this.turnoRecuperado.items) 
+        this.turnoRecuperado.items.forEach((detalle, idx) => {
+          this.items.insert(idx + 1, this.createItemFromDetalle( detalle ));
         }); 
   
         this.recalcularTotalesYCampos();
-        /*
+       
         console.log('Items en el form:');
         this.items.controls.forEach((item: FormGroup, i: number) => {
           console.log(`Item ${i}`, {
@@ -226,7 +236,7 @@ export class OrdenComponent implements OnInit {
             bonificacion: item.get('bonificacion').value,
             iva: item.get('iva').value
           });
-        });*/
+        });
         
        
   
@@ -261,12 +271,13 @@ export class OrdenComponent implements OnInit {
     }
   
     
-    createItemFromDetalle(detalle: Servicio): FormGroup {
+    createItemFromDetalle(detalle: VentaDetalle): FormGroup {
       
       let idx =  this.items.length;
   
+      console.log('Valor detalle: ', detalle);
       return this.fb.group({   
-       
+       /*
           id: [detalle.id || null],
           tipo: 'Servicio',
           cantidad: 1,
@@ -274,15 +285,15 @@ export class OrdenComponent implements OnInit {
           iva: detalle.precioVenta * 1.21,
           bonificacion: [0],
           producto: [detalle],   
-          subtotal:  [0]
-          /*id: [detalle.Id || null],
+          subtotal:  [0]*/
+          id: [detalle.Id || null],
           tipo: [detalle.tipo || null],
           cantidad: [detalle.cantidad || 0 ],
           precioUnitario: [detalle.precioUnitario || 0],
           iva: [detalle.iva || 0],
           bonificacion: [detalle.bonificacion || 0],
           producto: [detalle|| null],  //  este campo es necesario para el HTML
-          subtotal:  [detalle.subtotal || null]*/
+          subtotal:  [detalle.subtotal || null]
       });
   
        
@@ -447,43 +458,54 @@ export class OrdenComponent implements OnInit {
         
         this.globalService.instanciarClasePorNombre(itemSeleccionado.clase, itemSeleccionado.item.Id);
   
-        this.globalService.instanciarClasePorNombreObservable().subscribe((datos: any) => {
-          console.log('Datos obtenidos:', datos);
-  
-          if (itemSeleccionado.clase === 'Cliente') {
-            this.ordenForm.patchValue({
-              cliente: {
-                idCliente: datos.id,
-                nombreCliente : datos.persona.razonSocial 
-                                ? datos.persona.razonSocial : datos.persona.apellido + ', ' + datos.persona.nombre,
-                direccionCliente: [
-                  datos.persona.direccion,
-                  datos.persona.nroDireccion, 
-                  datos.persona.dpto, 
-                  datos.persona.piso, 
-                  datos.persona.barrio, 
-                  datos.persona.localidad
-                ].filter(val => val).join(' '),  // Concatenación con espacios entre valores existentes
-                telefonoCliente: datos.persona.telfijo
-              }
-           
-            });
-          } else if (itemSeleccionado.clase === 'Empleado') {
-            // Lógica similar para asignar datos de empleado
-          } else if (itemSeleccionado.clase === 'Vehiculo') {
-  
-            this.ordenForm.patchValue({
-              vehiculo: {
-                patente : itemSeleccionado.item.patente.value,
-                marca : itemSeleccionado.item.datos.marca,
-                modelo : itemSeleccionado.item.datos.modelo,
-                color : itemSeleccionado.item.datos.color,
-                anio : itemSeleccionado.item.datos.anio,
-                numeroserie : '123123123'
-              }
-            });
-          }
-        });
+        this.globalService.instanciarClasePorNombreObservable()
+        .pipe(take(1))      
+        .subscribe((datos: any) => {
+                     
+              
+                      if (itemSeleccionado.clase === 'Cliente') {
+                       
+                        this.ordenForm.patchValue({
+                          cliente: {
+                            idCliente: datos.id,
+                            nombreCliente :((datos.persona.tipoPersona == 'F') 
+                                                                          ? datos.persona.apellido + ", " + datos.persona.nombre 
+                                                                          : datos.persona.razonSocial),
+                            direccionCliente: [
+                              datos.persona.direccion,
+                              datos.persona.nroDireccion, 
+                              datos.persona.dpto, 
+                              datos.persona.piso, 
+                              datos.persona.barrio, 
+                              datos.persona.localidad
+                            ].filter(val => val).join(' '),  // Concatenación con espacios entre valores existentes
+                            telefonoCliente: datos.persona.telfijo
+                          }
+                          
+                        }); 
+                       // console.log('antes de llamar a getDataResumenCliente',this.turnoRecuperado.cliente );
+                       this.dataResumenCliente = this.getDataResumenCliente(null) ;
+      
+
+                      } else if (itemSeleccionado.clase === 'Empleado') {
+                        // Lógica similar para asignar datos de empleado
+                      } else if (itemSeleccionado.clase === 'Vehiculo') {
+                         
+                        this.ordenForm.patchValue({
+                          vehiculo: {
+                            idVehiculo: datos.id,
+                            descVehiculo : datos.modelovehiculo.marcavehiculo.nombre + ' - ' +  datos.modelovehiculo.nombreModelo,
+                            color: datos.color,
+                            patente: datos.patente,
+                            numeroserie: datos.numeroSerie,
+                            anio : datos.anio,
+                          }
+                        });
+                         this.dataResumenVehiculo = this.getDataResumenVehiculo(null) ;
+                      }
+                    }
+                  
+                  );
    
       }
     }
@@ -638,14 +660,8 @@ export class OrdenComponent implements OnInit {
         this.camposReadOnly =  proteger;
     }
   
-   
-  
-    
-  
-  }
-  
-  function getDataResumenCliente(cliente: Cliente): string {
-      
+   getDataResumenCliente(cliente: Cliente): string {
+       
       var resumenCliente;
   
       if (cliente) {
@@ -655,12 +671,20 @@ export class OrdenComponent implements OnInit {
                               : cliente.persona.razonSocial) + ' | '  +
                            cliente.persona.telcelular;
                       
+      } else {
+
+          var clienteTemp = this.ordenForm.get('cliente').value;
+          console.log('clienteTemp ', clienteTemp);
+           resumenCliente = clienteTemp.idCliente + ' | ' +
+                            clienteTemp.nombreCliente + ' | '  +
+                            clienteTemp.telefonoCliente;
+
       };
   
       return resumenCliente;
     }
   
-    function getDataResumenVehiculo(vehiculo: Vehiculo): string {
+    getDataResumenVehiculo(vehiculo: Vehiculo): string {
       
       var resumenVehiculo;
   
@@ -670,9 +694,94 @@ export class OrdenComponent implements OnInit {
                            vehiculo.modelovehiculo.nombreModelo + ' | ' + 
                            vehiculo.patente;
                       
+      }else{
+          
+          var vehiculoTemp = this.ordenForm.get('vehiculo').value;
+         
+          console.log('vehiculoTemp ', vehiculoTemp);
+           resumenVehiculo = vehiculoTemp.idVehiculo + ' | ' + 
+                             vehiculoTemp.descVehiculo + ' | ' +                               
+                             vehiculoTemp.patente;
+
       };
   
       return resumenVehiculo;
     }
+
+    cancelarOrden(){
+      this.items.clear();
+      this.items.push(this.createItem());
+      this.dataResumenCliente = '';
+      this.dataResumenVehiculo = '';
+      this.ordenForm.reset();
+    }
+
+    submitOrden()
+    {
+        
+       
+       let itemsFiltrados = this.ordenForm.value.items
+                          .filter((item: any) => item.id !== "")
+                          .map((item: any) => ({
+                            itemId: item.producto.id,
+                            cantidad: item.cantidad,
+                            bonificacion: item.bonificacion,
+                            tipo: item.producto.tipo,
+                            precioUnitario: item.precioUnitario,
+                            iva: item.iva,
+                            subtotal: item.producto.subtotal,
+                          }));
+   
+    console.log(itemsFiltrados);                       
+
+    let payload =  {
+         //IdTurno:  this.ordenForm.get('idTurno').value,
+         IdCliente  :  this.ordenForm.get('cliente.idCliente').value,
+         IdVehiculo  :  this.ordenForm.get('vehiculo.idVehiculo').value,
+         FechaRecepcion :  this.ordenForm.get('fechaRecepcion').value,
+         Combustible :  this.value,  
+
+         Kilometraje  :    this.ordenForm.get('kilometraje').value,    
+         IdAseguradora  :  this.ordenForm.get('aseguradora').value.id,
+         Inspector  :  this.ordenForm.get('inspector').value,
+
+         NroSiniestro  :  this.ordenForm.get('nroSiniestro').value,
+
+         Franquicia  :  this.ordenForm.get('franquicia').value,
+
+         Observaciones  :  this.ordenForm.get('observaciones').value,
+
+         Usuario :  this.ordenForm.get('usuario').value,
+
+         Servicios : itemsFiltrados
+
+    };
   
+    let mensaje;
+
+    if (this.ordenId > 0){
+    
+       this.ordenService.postOrden(payload).subscribe( 
+              res => { 
+                //const clienteNombreORazonSocial = payload.cliente.persona.nombre || payload.cliente.persona.razonsocial;
+
+                this.messageService.add({severity:'success', 
+                                         detail:'Queda confirmada la Orden para el Cliente: "'});
+                //console.log('Respuesta POST: ' + res);
+                //this.EstadoConfirmado = true;
+              
+              }, 
+              err => { console.log( err);
+                      //this.hasError = true; 
+              }
+            );
+      }
+    }
+  
+  
+  }
+  
+   
+  
+    
     

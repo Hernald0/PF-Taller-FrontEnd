@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   login(user: Usuario) {
-    if (user.usuarioNombre !== '' && user.password !== '' ) {
+    if (user.username !== '' && user.password !== '' ) {
       this.loggedIn.next(true);
       
       console.log('valida login auth2' + this.loggedIn.getValue());

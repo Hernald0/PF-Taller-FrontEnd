@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Turno } from '../models/turno.model';
+import { RecepcionVehiculo } from '../models/recepcionVehiculo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class TurnoService {
   getTurno(id: number){
 
       //return this.http.get(`${this.endPoint}/${id}`, null);
-      return this.http.get(`${this.endPoint}/${id}`);
+      return this.http.get< RecepcionVehiculo>(`${this.endPoint}/${id}`);
             
   }
 

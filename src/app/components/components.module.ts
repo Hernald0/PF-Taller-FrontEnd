@@ -37,6 +37,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { AdminVentasComponent } from './admin-ventas/admin-ventas.component';
 import { AdminOrdersComponent } from './admin-orders/admin-orders.component'; 
 import { ProgressBarModule } from 'primeng/progressbar';
+import { UsuariosListComponent } from './usuarios-list/usuarios-list.component';
+import { UsuarioFormComponent } from './usuario-form/usuario-form.component';
 
 
 
@@ -64,7 +66,9 @@ import { ProgressBarModule } from 'primeng/progressbar';
     OrdenComponent,
     UsuariosComponent,
     AdminVentasComponent,
-    AdminOrdersComponent
+    AdminOrdersComponent,
+    UsuariosListComponent,
+    UsuarioFormComponent
   ],
   imports: [
     RouterModule,
